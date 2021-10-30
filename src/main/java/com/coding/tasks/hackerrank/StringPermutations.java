@@ -1,6 +1,6 @@
 package com.coding.tasks.hackerrank;
 
-public class Permutations {
+public class StringPermutations {
 
    public static void main(String[] args) {
       calculate("ABC");
