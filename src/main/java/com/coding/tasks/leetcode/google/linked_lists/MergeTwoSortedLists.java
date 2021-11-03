@@ -18,18 +18,16 @@ public class MergeTwoSortedLists {
       ListNode fake = new ListNode(0);
       ListNode tmpFake = fake;
 
-      ListNode tmpL1 = l1;
-      ListNode tmpL2 = l2;
-      while (tmpL1 != null || tmpL2 != null) {
-         int tmpL1Val = tmpL1 != null ? tmpL1.val : Integer.MAX_VALUE;
-         int tmpL2Val = tmpL2 != null ? tmpL2.val : Integer.MAX_VALUE;
+      while (l1 != null || l2 != null) {
+         int tmpL1Val = l1 != null ? l1.val : Integer.MAX_VALUE;
+         int tmpL2Val = l2 != null ? l2.val : Integer.MAX_VALUE;
 
          if (tmpL1Val > tmpL2Val) {
-            tmpFake.next = tmpL2;
-            tmpL2 = tmpL2.next;
+            tmpFake.next = l2;
+            l2 = l2.next;
          } else {
-            tmpFake.next = tmpL1;
-            tmpL1 = tmpL1.next;
+            tmpFake.next = l1;
+            l1 = l1.next;
          }
 
          tmpFake = tmpFake.next;
