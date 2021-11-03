@@ -1,4 +1,4 @@
-package com.coding.tasks.leetcode.google;
+package com.coding.tasks.leetcode.google.trees_and_graphs;
 
 import java.util.Objects;
 
