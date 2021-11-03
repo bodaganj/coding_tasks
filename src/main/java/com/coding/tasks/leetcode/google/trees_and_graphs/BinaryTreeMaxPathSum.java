@@ -9,12 +9,16 @@ public class BinaryTreeMaxPathSum {
       TreeNode tn7 = new TreeNode(7);
       TreeNode tn20 = new TreeNode(20, tn15, tn7);
       TreeNode tn9 = new TreeNode(9, null, null);
-      TreeNode root = new TreeNode(-10, tn9, tn20);
+      TreeNode root = new TreeNode(10, tn9, tn20);
+
+      TreeNode root0 = new TreeNode(0);
 
       System.out.println(maxPathSum(root));
+      System.out.println(maxPathSum(root0));
    }
 
    private static int maxPathSum(TreeNode root) {
+      max_sum = Integer.MIN_VALUE;
       max_gain(root);
       return max_sum;
    }
