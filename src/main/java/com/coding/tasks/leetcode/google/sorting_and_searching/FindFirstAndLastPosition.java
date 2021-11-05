@@ -1,9 +1,5 @@
 package com.coding.tasks.leetcode.google.sorting_and_searching;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class FindFirstAndLastPosition {
 
    private static FindFirstAndLastPosition findFirstAndLastPosition = new FindFirstAndLastPosition();
@@ -23,53 +19,41 @@ public class FindFirstAndLastPosition {
    }
 
    public int[] searchRange(int[] nums, int target) {
-      if (nums == null || nums.length == 0) {
+      int firstOccurrence = this.findBound(nums, target, true);
+      if (firstOccurrence == -1) {
          return new int[]{-1, -1};
       }
+      int lastOccurrence = this.findBound(nums, target, false);
+      return new int[]{firstOccurrence, lastOccurrence};
+   }
 
-      if (nums[0] > target || nums[nums.length - 1] < target) {
-         return new int[]{-1, -1};
-      }
+   private int findBound(int[] nums, int target, boolean isFirst) {
+      int length = nums.length;
+      int begin = 0, end = length - 1;
 
-      if (nums.length == 1) {
-         if (nums[0] != target) {
-            return new int[]{-1, -1};
+      while (begin <= end) {
+         int mid = (begin + end) / 2;
+
+         if (nums[mid] == target) {
+            if (isFirst) {
+               if (mid == begin || nums[mid - 1] != target) {
+                  return mid;
+               } else {
+                  end = mid - 1;
+               }
+            } else {
+               if (mid == end || nums[mid + 1] != target) {
+                  return mid;
+               } else {
+                  begin = mid + 1;
+               }
+            }
+         } else if (nums[mid] > target) {
+            end = mid - 1;
          } else {
-            return new int[]{0, 0};
+            begin = mid + 1;
          }
       }
-
-      List<Integer> input = Arrays.stream(nums).boxed().collect(Collectors.toList());
-
-      int initialMiddleValue = 0;
-      while (input.size() >= 1) {
-         int middle = input.size() / 2;
-         Integer middleElement = input.get(middle);
-
-         if (middleElement > target) {
-            initialMiddleValue += middle;
-            input = input.subList(0, middle);
-         } else if (middleElement < target) {
-            initialMiddleValue += middle;
-            input = input.subList(middle, input.size());
-         } else {
-            int left = middle;
-            int leftCounter = 0;
-            while (middle - leftCounter >= 0 && input.get(middle - leftCounter) == target) {
-               left = middle - leftCounter;
-               leftCounter++;
-            }
-
-            int right = middle;
-            int rightCounter = 0;
-            while (middle + rightCounter < input.size() && input.get(middle + rightCounter) == target) {
-               right = middle + rightCounter;
-               rightCounter++;
-            }
-
-            return new int[]{left + initialMiddleValue, right + initialMiddleValue};
-         }
-      }
-      return new int[]{-1, -1};
+      return -1;
    }
 }
