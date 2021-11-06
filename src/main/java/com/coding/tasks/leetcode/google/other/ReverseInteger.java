@@ -11,26 +11,11 @@ public class ReverseInteger {
    }
 
    private static int reverse(int x) {
-      if (x == 0) {
-         return 0;
-      }
-      char[] chars = String.valueOf(x).toCharArray();
-      StringBuilder sb = new StringBuilder();
-      for (char aChar : chars) {
-         if (aChar == '-') {
-            continue;
-         }
-         sb.append(aChar);
-      }
-      String finalString = sb.reverse().toString();
-      String noZeroAtStart = finalString.replaceAll("^(0+)", "");
-      int output;
+      String reversed = new StringBuilder().append(Math.abs(x)).reverse().toString();
       try {
-         output = Integer.parseInt(noZeroAtStart);
+         return x < 0 ? Integer.parseInt(reversed) * -1 : Integer.parseInt(reversed);
       } catch (NumberFormatException ex) {
          return 0;
       }
-
-      return chars[0] == '-' ? -1 * output : output;
    }
 }
