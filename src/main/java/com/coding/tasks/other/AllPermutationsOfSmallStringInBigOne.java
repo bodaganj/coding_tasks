@@ -1,4 +1,4 @@
-package com.coding.tasks;
+package com.coding.tasks.other;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package com.coding.tasks;
+package com.coding.tasks.other;
 
 public class Division {
 
