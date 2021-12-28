@@ -5,23 +5,26 @@ import java.util.Arrays;
 public class RotateArray {
 
    public static void main(String[] args) {
-      int[] arr = new int[]{1, 2, 3, 4, 5, 6, 7};
-      System.out.println(Arrays.toString(arr));
-      rotate(arr, 3);
-      System.out.println(Arrays.toString(arr));
+      int[] arr1 = new int[]{1, 2};
+      System.out.println(Arrays.toString(arr1));
+      rotate(arr1, 3);
+      System.out.println(Arrays.toString(arr1));
+
+      int[] arr2 = new int[]{1, 2, 3, 4, 5, 6, 7};
+      System.out.println(Arrays.toString(arr2));
+      rotate(arr2, 3);
+      System.out.println(Arrays.toString(arr2));
    }
 
    private static void rotate(int[] nums, int k) {
       int length = nums.length;
-
+      if (nums.length <= 1) {
+         return;
+      }
       int[] newArray = new int[length];
 
       for (int i = 0; i < length; i++) {
-         if (length > (i + k)) {
-            newArray[i + k] = nums[i];
-         } else {
-            newArray[(i + k) - length] = nums[i];
-         }
+         newArray[(i + k) % length] = nums[i];
       }
 
       System.arraycopy(newArray, 0, nums, 0, nums.length);
