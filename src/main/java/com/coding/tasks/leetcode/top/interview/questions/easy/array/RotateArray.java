@@ -30,8 +30,8 @@ public class RotateArray {
       System.arraycopy(newArray, 0, nums, 0, nums.length);
    }
 
-   /**
-    * best one!!!
+   /*
+     best one!!!
     */
 //   public void rotate(int[] nums, int k) {
 //      k %= nums.length;
