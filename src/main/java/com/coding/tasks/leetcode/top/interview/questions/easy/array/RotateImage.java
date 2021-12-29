@@ -1,8 +1,8 @@
-package com.coding.tasks.cracking.the.code.arrays.and.strings;
+package com.coding.tasks.leetcode.top.interview.questions.easy.array;
 
 import java.util.Arrays;
 
-public class RotateMatrix {
+public class RotateImage {
 
    public static void main(String[] args) {
       int[][] array = new int[][]{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
