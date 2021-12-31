@@ -1,8 +1,5 @@
 package com.coding.tasks.leetcode.top.interview.questions.easy.string;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 public class CountAndSay {
 
    //   countAndSay(1) = "1"
@@ -24,52 +21,26 @@ public class CountAndSay {
             result = "1";
          } else {
             StringBuilder sb = new StringBuilder();
-            Map<Character, Integer> map = new LinkedHashMap<>();
-            for (char c : result.toCharArray()) {
-               if (map.size() == 1 && !map.containsKey(c)) {
-                  sb.append(map.values().stream().findFirst().get());
-                  sb.append(map.keySet().stream().findFirst().get());
-                  map = new LinkedHashMap<>();
-                  map.put(c, 1);
+            int counter = 1;
+            int j = 1;
+            char[] chars = result.toCharArray();
+            Character tmp = chars[0];
+            while (j < chars.length) {
+               if (tmp == chars[j]) {
+                  counter++;
                } else {
-                  map.put(c, map.getOrDefault(c, 0) + 1);
+                  sb.append(counter).append(tmp);
+                  counter = 1;
+                  tmp = chars[j];
                }
+               j++;
             }
-
-            for (Map.Entry<Character, Integer> entry : map.entrySet()) {
-               sb.append(entry.getValue()).append(entry.getKey());
+            if (counter > 0) {
+               sb.append(counter).append(tmp);
             }
-
             result = sb.toString();
          }
       }
       return result;
    }
-
-//   private static String countAndSay(int n) {
-//      return countAndSay1(n, "");
-//   }
-//
-//   private static String countAndSay1(int n, String result) {
-//      if (n == 1) {
-//         result = "1";
-//         return result;
-//      } else {
-//         if (result.isBlank()) {
-//            return countAndSay1(n - 1, result);
-//         } else {
-//            Map<Character, Integer> map = new LinkedHashMap<>();
-//            for (char c : result.toCharArray()) {
-//               map.put(c, map.getOrDefault(c, 0) + 1);
-//            }
-//            StringBuilder sb = new StringBuilder();
-//            for (Map.Entry<Character, Integer> entry : map.entrySet()) {
-//               sb.append(entry.getValue()).append(entry.getKey());
-//            }
-//
-//            result = sb.toString();
-//            return result;
-//         }
-//      }
-//   }
 }
