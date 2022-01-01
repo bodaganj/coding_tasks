@@ -16,36 +16,16 @@ public class RomanToInteger {
 
       int answer = 0;
       int i = 0;
-      int length = s.length();
-
-      while (i < length) {
-         char c = s.charAt(i);
-
-         if (c == 'C') {
-            if (s.indexOf("CM") == i || s.indexOf("CD") == i) {
-               answer += integers.get(roman.indexOf("" + c + s.charAt(i + 1)));
-               i++;
-            } else {
-               answer += integers.get(roman.indexOf(c + ""));
+      while (i < s.length()) {
+         if (i < s.length() - 1) {
+            String twoStrings = s.substring(i, i + 2);
+            if (roman.contains(twoStrings)) {
+               answer += integers.get(roman.indexOf(twoStrings));
+               i = i + 2;
+               continue;
             }
-         } else if (c == 'X') {
-            if (s.indexOf("XC") == i || s.indexOf("XL") == i) {
-               answer += integers.get(roman.indexOf("" + c + s.charAt(i + 1)));
-               i++;
-            } else {
-               answer += integers.get(roman.indexOf(c + ""));
-            }
-         } else if (c == 'I') {
-            if (s.indexOf("IX") == i || s.indexOf("IV") == i) {
-               answer += integers.get(roman.indexOf("" + c + s.charAt(i + 1)));
-               i++;
-            } else {
-               answer += integers.get(roman.indexOf(c + ""));
-            }
-         } else {
-            answer += integers.get(roman.indexOf(c + ""));
          }
-
+         answer += integers.get(roman.indexOf(s.charAt(i) + ""));
          i++;
       }
       return answer;
