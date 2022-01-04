@@ -1,8 +1,7 @@
 package com.coding.tasks.leetcode.amazon.arrays_and_strings;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LongestSubstringWithoutCharacters {
 
@@ -14,19 +13,19 @@ public class LongestSubstringWithoutCharacters {
    }
 
    private static int lengthOfLongestSubstring(String s) {
-      int longestSubstring = 0;
+      int ans = 0;
+      Map<Character, Integer> map = new HashMap<>();
+      for (int i = 0, j = 0; j < s.length(); j++) {
+         char currentChar = s.charAt(j);
 
-      if (!Objects.isNull(s) && !s.isEmpty()) {
-         for (int i = 0; i < s.length(); i++) {
-            Set<Character> set = new HashSet<>();
-            int j = i;
-            while (j < s.length() && set.add(s.charAt(j))) {
-               longestSubstring = Math.max(longestSubstring, set.size());
-               j++;
-            }
+         if (map.containsKey(currentChar)) {
+            i = Math.max(i, map.get(currentChar));
          }
+
+         ans = Math.max(ans, j - i + 1);
+         map.put(currentChar, j + 1);
       }
-      return longestSubstring;
+      return ans;
    }
 
    // this one is better!!!!!

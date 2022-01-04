@@ -1,14 +1,12 @@
 package com.coding.tasks.leetcode.google.arrays_and_strings;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Queue;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LongestSubstringWithoutRepeatingChar {
 
    public static void main(String[] args) {
+      System.out.println(lengthOfLongestSubstring("abba"));
       System.out.println(lengthOfLongestSubstring("abcabcbb"));
       System.out.println(lengthOfLongestSubstring("bbbbb"));
       System.out.println(lengthOfLongestSubstring("pwwkew"));
@@ -18,29 +16,18 @@ public class LongestSubstringWithoutRepeatingChar {
    }
 
    private static int lengthOfLongestSubstring(String s) {
-      if (Objects.isNull(s) || s.isEmpty()) {
-         return 0;
-      }
+      int ans = 0;
+      Map<Character, Integer> map = new HashMap<>();
+      for (int i = 0, j = 0; j < s.length(); j++) {
+         char currentChar = s.charAt(j);
 
-      int max = 0;
-      List<Character> input = s.chars().mapToObj(obj -> (char) obj).collect(Collectors.toList());
-      Queue<Character> queue = new LinkedList<>();
-
-      for (Character letter : input) {
-         if (queue.contains(letter)) {
-            max = Math.max(max, queue.size());
-            while (!queue.isEmpty()) {
-               Character poll = queue.poll();
-               if (poll == null || poll.equals(letter)) {
-                  break;
-               }
-            }
-            queue.add(letter);
-         } else {
-            queue.add(letter);
-            max = Math.max(max, queue.size());
+         if (map.containsKey(currentChar)) {
+            i = Math.max(i, map.get(currentChar));
          }
+
+         ans = Math.max(ans, j - i + 1);
+         map.put(currentChar, j + 1);
       }
-      return max;
+      return ans;
    }
 }
