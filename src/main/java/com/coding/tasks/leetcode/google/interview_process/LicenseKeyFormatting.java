@@ -8,19 +8,16 @@ public class LicenseKeyFormatting {
    }
 
    private static String licenseKeyFormatting(String s, int k) {
-      String stringWithoutDashes = s.replaceAll("-", "").toUpperCase();
-
-      StringBuilder stringBuilder = new StringBuilder();
-
-      char[] chars = stringWithoutDashes.toCharArray();
-      int counter = 1;
-      for(int index = chars.length - 1; index >= 0; index--) {
-         stringBuilder.append(chars[index]);
-         if (counter % k == 0 && index != 0) {
-            stringBuilder.append("-");
+      String str = s.replaceAll("-", "").toUpperCase();
+      StringBuilder sb = new StringBuilder();
+      int counter = 0;
+      for (int i = str.length() - 1; i >= 0; i--) {
+         if (counter % k == 0 && counter != 0) {
+            sb.append("-");
          }
+         sb.append(str.charAt(i));
          counter++;
       }
-      return stringBuilder.reverse().toString();
+      return sb.reverse().toString();
    }
 }
