@@ -1,11 +1,7 @@
 package com.coding.tasks.leetcode.google.interview_process;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class UniqueEmailAddresses {
 
@@ -35,49 +31,18 @@ public class UniqueEmailAddresses {
    }
 
    private static int numUniqueEmails(String[] emails) {
-      Set<String> finalSet = new HashSet<>();
+      Set<String> set = new HashSet<>();
 
       for (String email : emails) {
-         List<String> listOfLetters = Arrays.stream(email.split("")).collect(Collectors.toList());
-         int indexOfAt = listOfLetters.indexOf("@");
+         String[] split = email.split("@");
+         String localName = split[0];
+         String domain = split[1];
 
-         List<String> domainName = listOfLetters.subList(indexOfAt, listOfLetters.size());
-         List<String> localName = listOfLetters.subList(0, indexOfAt);
-         List<String> localNameWithoutPlus = new ArrayList<>();
-         if (localName.contains("+")) {
-            int indexOf = localName.indexOf("+");
-            localNameWithoutPlus = localName.subList(0, indexOf);
-         }
+         localName = localName.replaceAll("\\.", "").split("\\+", 2)[0];
 
-         List<String> localNameWithoutDots;
-         if (localNameWithoutPlus.isEmpty()) {
-            localNameWithoutDots = localName.stream().filter(letter -> !letter.equals(".")).collect(Collectors.toList());
-         } else {
-            localNameWithoutDots = localNameWithoutPlus.stream().filter(letter -> !letter.equals(".")).collect(Collectors.toList());
-         }
-
-         finalSet.add(String.join("", localNameWithoutDots) + String.join("", domainName));
+         set.add(localName + "@" + domain);
       }
 
-      return finalSet.size();
+      return set.size();
    }
-
-   // better way to do:
-//   public int numUniqueEmails(String[] emails) {
-//      // hash set to store all the unique emails
-//      Set<String> uniqueEmails = new HashSet<>();
-//
-//      for (String email : emails) {
-//         // split into two parts local and domain
-//         String[] parts = email.split("@");
-//
-//         // split local by '+'
-//         String[] local = parts[0].split("\\+");
-//
-//         // remove all '.', and concatenate '@' and append domain
-//         uniqueEmails.add(local[0].replace(".", "") + "@" + parts[1]);
-//      }
-//
-//      return uniqueEmails.size();
-//   }
 }

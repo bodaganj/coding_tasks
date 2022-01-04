@@ -1,5 +1,6 @@
 package com.coding.tasks.leetcode.google.interview_process;
 
+import java.util.Map;
 import java.util.TreeMap;
 
 public class OddEvenJumps {
@@ -14,7 +15,54 @@ public class OddEvenJumps {
       System.out.println(oddEvenJumps(third));
    }
 
+   // Time O(NlogN)
+   // Space O(N)
+   // best way to solve (DP + TreeMap tricks)
+   private static int oddEvenJumps(int[] arr) {
+      int initialLength = arr.length;
+
+      // the last index is always "good index"
+      int result = 1;
+
+      // array which says if the current index is "good" one, because we are starting with odd step each try
+      boolean[] oddBoolArray = new boolean[initialLength];
+      // array for even steps. Based on this array we are getting the odd array values
+      boolean[] evenBoolArray = new boolean[initialLength];
+      oddBoolArray[initialLength - 1] = evenBoolArray[initialLength - 1] = true;
+
+      // TreeMap is a very handy structure here (ceilingEntry and floorEntry methods!!!!! are the magic here)
+      TreeMap<Integer, Integer> digitToIndexMapping = new TreeMap<>();
+      // add array values which were checked here
+      digitToIndexMapping.put(arr[initialLength - 1], initialLength - 1);
+
+      for (int i = initialLength - 2; i >= 0; --i) {
+         // do we have ability to make ODD jump and to which index
+         Map.Entry<Integer, Integer> hi = digitToIndexMapping.ceilingEntry(arr[i]);
+         // do we have ability to make EVEN jump and to which index
+         Map.Entry<Integer, Integer> lo = digitToIndexMapping.floorEntry(arr[i]);
+
+         if (hi != null) {
+            // if we are able to make odd jump, then check whether the next index where we will make even jump from is a "good index"
+            oddBoolArray[i] = evenBoolArray[hi.getValue()];
+         }
+         if (lo != null) {
+            // if we are able to make even jump, then check whether the next index where we will make odd jump from is a "good index"
+            evenBoolArray[i] = oddBoolArray[lo.getValue()];
+         }
+
+         // if the current index is a "good index" in terms of odd jump (because this is the first one) then we are HAPPY
+         if (oddBoolArray[i]) {
+            result++;
+         }
+
+         // add checked value and index to map
+         digitToIndexMapping.put(arr[i], i);
+      }
+      return result;
+   }
+
    // recursion way will fail with Time Limit error
+   // same as brut force method (Time Limit)
 //   private static int oddEvenJumps(int[] arr) {
 //      int totalCount = 1;
 //      List<Integer> input = Arrays.stream(arr).boxed().collect(Collectors.toList());
@@ -52,37 +100,4 @@ public class OddEvenJumps {
 //         return recursion(listToTheLeft.subList(indexOf, input.size() - 1), jumpCounter);
 //      }
 //   }
-
-   // Time O(NlogN)
-   // Space O(N)
-   // better way to solve
-   private static int oddEvenJumps(int[] arr) {
-      int lengthOfInitialArray = arr.length;
-      int result = 1;
-
-      boolean[] higherBoolArray = new boolean[lengthOfInitialArray];
-      boolean[] lowerBoolArray = new boolean[lengthOfInitialArray];
-      higherBoolArray[lengthOfInitialArray - 1] = lowerBoolArray[lengthOfInitialArray - 1] = true;
-
-      TreeMap<Integer, Integer> digitToIndexMapping = new TreeMap<>();
-      digitToIndexMapping.put(arr[lengthOfInitialArray - 1], lengthOfInitialArray - 1);
-
-      for (int i = lengthOfInitialArray - 2; i >= 0; --i) {
-         Integer hi = digitToIndexMapping.ceilingKey(arr[i]);
-         Integer lo = digitToIndexMapping.floorKey(arr[i]);
-
-         if (hi != null) {
-            higherBoolArray[i] = lowerBoolArray[digitToIndexMapping.get(hi)];
-         }
-         if (lo != null) {
-            lowerBoolArray[i] = higherBoolArray[digitToIndexMapping.get(lo)];
-         }
-
-         if (higherBoolArray[i]) {
-            result++;
-         }
-         digitToIndexMapping.put(arr[i], i);
-      }
-      return result;
-   }
 }
