@@ -1,15 +1,34 @@
 package com.coding.tasks.leetcode.google.arrays_and_strings;
 
-import java.util.Arrays;
-
 public class JumpInt {
 
    public static void main(String[] args) {
+      System.out.println(canJump(new int[]{1, 3, 2}));
       System.out.println(canJump(new int[]{2, 3, 1, 1, 4}));
       System.out.println(canJump(new int[]{3, 2, 1, 0, 4}));
       System.out.println(canJump(new int[]{3, 2, 0, 0, 4}));
       System.out.println(canJump(new int[]{1, 0, 1, 0}));
       System.out.println(canJump(new int[]{2, 3, 1, 1, 4}));
+   }
+
+   private static boolean canJump(int[] nums) {
+      boolean[] boolArray = new boolean[nums.length];
+      boolArray[boolArray.length - 1] = true;
+
+      for (int i = 0; i < nums.length - 1; i++) {
+         int j = 0;
+         while (j < nums[i] && (i + j) < boolArray.length) {
+            boolArray[i + j] = true;
+            j++;
+         }
+      }
+
+      for (boolean b : boolArray) {
+         if (!b) {
+            return false;
+         }
+      }
+      return true;
    }
 
 //   private static boolean canJump(int[] nums) {
@@ -35,29 +54,4 @@ public class JumpInt {
 //      }
 //      return true;
 //   }
-
-   // greedy
-//   public boolean canJump(int[] nums) {
-//      int lastPos = nums.length - 1;
-//      for (int i = nums.length - 1; i >= 0; i--) {
-//         if (i + nums[i] >= lastPos) {
-//            lastPos = i;
-//         }
-//      }
-//      return lastPos == 0;
-//   }
-
-
-   // top !!
-   private static boolean canJump(int[] nums) {
-      int length = nums.length;
-      int max = 0;
-      for (int i = 0; i <= max; i++) {
-         max = Math.max(max, i + nums[i]);
-         if (max >= length - 1) {
-            return true;
-         }
-      }
-      return false;
-   }
 }

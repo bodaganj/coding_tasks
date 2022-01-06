@@ -1,4 +1,4 @@
-package com.coding.tasks.leetcode.amazon.arrays_and_strings;
+package com.coding.tasks.leetcode.google.arrays_and_strings;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,9 +7,8 @@ public class MinimumWindowSubstring {
 
    public static void main(String[] args) {
       System.out.println(minWindow("ADOBECODEBANC", "ABC"));
-      System.out.println(minWindow("bdab", "ab"));
-      System.out.println(minWindow("aaaaaaaaaaaabbbbbcdd", "abcdd"));
       System.out.println(minWindow("a", "a"));
+      System.out.println(minWindow("a", "b"));
       System.out.println(minWindow("cabwefgewcwaefgcf", "cae"));
    }
 
