@@ -1,7 +1,6 @@
 package com.coding.tasks.leetcode.top.interview.questions.easy.linked_list;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 public class ReverseLinkedList {
 
@@ -26,38 +25,18 @@ public class ReverseLinkedList {
    }
 
    private static ListNode reverseList(ListNode head) {
-      List<ListNode> list = new ArrayList<>();
-      ListNode tmp = head;
-      while (tmp != null) {
-         list.add(tmp);
-         tmp = tmp.next;
-      }
-      list.get(0).next = null;
+      ListNode prev = null;
+      ListNode current = head;
 
-      ListNode fake = new ListNode(0, null);
-      tmp = fake;
-      for (int i = list.size() - 1; i >= 0; i--) {
-         tmp.next = list.get(i);
-         tmp = tmp.next;
+      while (!Objects.isNull(current)) {
+         ListNode next = current.next;
+         current.next = prev;
+         prev = current;
+         current = next;
       }
 
-      return fake.next;
+      return prev;
    }
-
-   /**
-    * The best solution!!!!
-    */
-//   private static ListNode reverseList(ListNode head) {
-//      ListNode prev = null;
-//      ListNode curr = head;
-//      while (curr != null) {
-//         ListNode nextTemp = curr.next;
-//         curr.next = prev;
-//         prev = curr;
-//         curr = nextTemp;
-//      }
-//      return prev;
-//   }
 
    static class ListNode {
 
