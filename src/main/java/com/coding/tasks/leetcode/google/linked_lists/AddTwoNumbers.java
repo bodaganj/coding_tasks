@@ -1,7 +1,5 @@
 package com.coding.tasks.leetcode.google.linked_lists;
 
-import java.util.Objects;
-
 public class AddTwoNumbers {
 
    public static void main(String[] args) {
@@ -26,65 +24,39 @@ public class AddTwoNumbers {
       ListNode l7 = new ListNode(9, l6);
 
       ListNode listNode = addTwoNumbers(l3, l7);
-      System.out.println(listNode);
+
+      while (listNode != null) {
+         System.out.println(listNode.val);
+         listNode = listNode.next;
+      }
    }
 
    private static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-      return addRecursively(l1, l2, 0);
-   }
+      ListNode dummyHead = new ListNode(0);
+      ListNode ln1 = l1;
+      ListNode ln2 = l2;
+      ListNode current = dummyHead;
+      int carry = 0;
 
-   private static ListNode addRecursively(ListNode l1, ListNode l2, int counter) {
-      int sum = l1.val + l2.val + counter;
-      if (sum >= 10) {
-         if (Objects.isNull(l1.next) && Objects.isNull(l2.next)) {
-            ListNode last0 = new ListNode(1);
-            return new ListNode(sum % 10, last0);
-         } else if (Objects.isNull(l1.next)) {
-            return new ListNode(sum % 10, addRecursively(new ListNode(0), l2.next, sum / 10));
-         } else if (Objects.isNull(l2.next)) {
-            return new ListNode(sum % 10, addRecursively(l1.next, new ListNode(0), sum / 10));
-         } else {
-            return new ListNode(sum % 10, addRecursively(l1.next, l2.next, sum / 10));
+      while (ln1 != null || ln2 != null) {
+         int val1 = (ln1 != null) ? ln1.val : 0;
+         int val2 = (ln2 != null) ? ln2.val : 0;
+         int sum = carry + val1 + val2;
+         carry = sum / 10;
+         current.next = new ListNode(sum % 10);
+         current = current.next;
+         if (ln1 != null) {
+            ln1 = ln1.next;
          }
-      } else {
-         if (Objects.isNull(l1.next) && Objects.isNull(l2.next)) {
-            return new ListNode(sum);
-         } else if (Objects.isNull(l1.next)) {
-            return new ListNode(sum, addRecursively(new ListNode(0), l2.next, sum / 10));
-         } else if (Objects.isNull(l2.next)) {
-            return new ListNode(sum, addRecursively(l1.next, new ListNode(0), sum / 10));
-         } else {
-            return new ListNode(sum, addRecursively(l1.next, l2.next, sum / 10));
+         if (ln2 != null) {
+            ln2 = ln2.next;
          }
       }
+      if (carry > 0) {
+         current.next = new ListNode(carry);
+      }
+      return dummyHead.next;
    }
-   // without recursion
-//   private static ListNode addTwoNumbers11(ListNode l1, ListNode l2) {
-//      ListNode dummyHead = new ListNode(0);
-//      ListNode ln1 = l1;
-//      ListNode ln2 = l2;
-//      ListNode current = dummyHead;
-//      int carry = 0;
-//
-//      while (ln1 != null || ln2 != null) {
-//         int val1 = (ln1 != null) ? ln1.val : 0;
-//         int val2 = (ln2 != null) ? ln2.val : 0;
-//         int sum = carry + val1 + val2;
-//         carry = sum / 10;
-//         current.next = new ListNode(sum % 10);
-//         current = current.next;
-//         if (ln1 != null) {
-//            ln1 = ln1.next;
-//         }
-//         if (ln2 != null) {
-//            ln2 = ln2.next;
-//         }
-//      }
-//      if (carry > 0) {
-//         current.next = new ListNode(carry);
-//      }
-//      return dummyHead.next;
-//   }
 
    public static class ListNode {
 
