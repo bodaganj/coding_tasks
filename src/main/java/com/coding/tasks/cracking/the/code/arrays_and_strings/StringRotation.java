@@ -1,4 +1,4 @@
-package com.coding.tasks.cracking.the.code.arrays.and.strings;
+package com.coding.tasks.cracking.the.code.arrays_and_strings;
 
 public class StringRotation {
 
