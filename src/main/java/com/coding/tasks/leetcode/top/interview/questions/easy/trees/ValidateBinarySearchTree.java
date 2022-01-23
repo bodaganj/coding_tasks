@@ -6,10 +6,10 @@ import java.util.List;
 public class ValidateBinarySearchTree {
 
    public static void main(String[] args) {
-//      TreeNode tn0 = new TreeNode(0);
+      TreeNode tn0 = new TreeNode(0);
       TreeNode tn3 = new TreeNode(3);
-//      TreeNode tn5 = new TreeNode(5, null, tn0);
-      TreeNode tn5 = new TreeNode(5);
+      TreeNode tn5 = new TreeNode(5, null, tn0);
+//      TreeNode tn5 = new TreeNode(5);
       TreeNode tn4 = new TreeNode(4, tn3, tn5);
       TreeNode tn1 = new TreeNode(1);
       TreeNode tn2 = new TreeNode(2, tn1, tn4);
@@ -21,12 +21,14 @@ public class ValidateBinarySearchTree {
       System.out.println(isValidBST(tn111));
    }
 
+   // Time = O(n)
+   // Space = O(n)
    private static boolean isValidBST(TreeNode root) {
       List<Integer> list = new ArrayList<>();
-      inOrderTraversal(root, list);
+      inOrderTraversal(root, list); // O(n)
 
       int min = list.get(0);
-      for (int i = 1; i < list.size(); i++) {
+      for (int i = 1; i < list.size(); i++) { // O(n)
          int integer = list.get(i);
          if (min >= integer) {
             return false;
@@ -38,13 +40,12 @@ public class ValidateBinarySearchTree {
    }
 
    private static void inOrderTraversal(TreeNode root, List<Integer> list) {
-      if (root.left != null) {
-         inOrderTraversal(root.left, list);
+      if (root == null) {
+         return;
       }
+      inOrderTraversal(root.left, list);
       list.add(root.val);
-      if (root.right != null) {
-         inOrderTraversal(root.right, list);
-      }
+      inOrderTraversal(root.right, list);
    }
 
    static class TreeNode {
