@@ -1,7 +1,5 @@
 package com.coding.tasks.leetcode.google;
 
-import java.util.Objects;
-
 public class InvertBinaryTree {
 
    /**
@@ -24,14 +22,14 @@ public class InvertBinaryTree {
    }
 
    private static TreeNode invertTree(TreeNode root) {
-      if (Objects.isNull(root)) {
-         return null;
-      }
+      if (root != null) {
+         TreeNode tmp = root.left;
+         root.left = root.right;
+         root.right = tmp;
 
-      TreeNode right = invertTree(root.right);
-      TreeNode left = invertTree(root.left);
-      root.left = right;
-      root.right = left;
+         invertTree(root.left);
+         invertTree(root.right);
+      }
 
       return root;
    }
