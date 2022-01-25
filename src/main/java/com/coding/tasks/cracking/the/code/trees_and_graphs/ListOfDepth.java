@@ -12,8 +12,9 @@ public class ListOfDepth {
    private static List<List<Integer>> totalList = new ArrayList<>();
 
    public static void main(String[] args) {
+      TreeNode tn6 = new TreeNode(6);
       TreeNode tn3 = new TreeNode(3);
-      TreeNode tn5 = new TreeNode(5);
+      TreeNode tn5 = new TreeNode(5, null, tn6);
       TreeNode tn4 = new TreeNode(4, tn3, tn5);
       TreeNode tn1 = new TreeNode(1);
       TreeNode tn2 = new TreeNode(2, tn1, tn4);
@@ -34,13 +35,21 @@ public class ListOfDepth {
    }
 
    private static void rec(TreeNode node, List<Integer> listOfNodes) {
+      if (node.left != null || node.right != null) {
+         listOfNodes.add(node.val);
+
+         if (node.left != null) {
+            rec(node.left, new ArrayList<>(listOfNodes));
+         }
+
+         if (node.right != null) {
+            rec(node.right, new ArrayList<>(listOfNodes));
+         }
+      }
+
       if (node.left == node.right) {
          listOfNodes.add(node.val);
          totalList.add(listOfNodes);
-      } else {
-         listOfNodes.add(node.val);
-         rec(node.left, new ArrayList<>(listOfNodes));
-         rec(node.right, new ArrayList<>(listOfNodes));
       }
    }
 
