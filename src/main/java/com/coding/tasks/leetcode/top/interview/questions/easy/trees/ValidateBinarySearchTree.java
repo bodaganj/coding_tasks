@@ -23,6 +23,7 @@ public class ValidateBinarySearchTree {
 
    // Time = O(n)
    // Space = O(n)
+   // No extra list is needed!!!! Should be improved
    private static boolean isValidBST(TreeNode root) {
       List<Integer> list = new ArrayList<>();
       inOrderTraversal(root, list); // O(n)
