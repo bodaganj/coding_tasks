@@ -2,10 +2,6 @@ package com.coding.tasks.leetcode.google;
 
 public class InvertBinaryTree {
 
-   /**
-    * BFS (via queues) might be used also!!
-    * @param args
-    */
    public static void main(String[] args) {
       TreeNode treeNodeOne = new TreeNode(1);
       TreeNode treeNodeThree = new TreeNode(3);
@@ -33,6 +29,20 @@ public class InvertBinaryTree {
 
       return root;
    }
+
+//   private static TreeNode invertTree(TreeNode root) {
+//      if (root == null) {
+//         return null;
+//      }
+//
+//      TreeNode left = invertTree(root.left);
+//      TreeNode right = invertTree(root.right);
+//
+//      root.left = right;
+//      root.right = left;
+//
+//      return root;
+//   }
 
    static class TreeNode {
 
