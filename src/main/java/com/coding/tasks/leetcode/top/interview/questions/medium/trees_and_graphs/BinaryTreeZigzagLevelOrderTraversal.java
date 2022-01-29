@@ -29,14 +29,18 @@ public class BinaryTreeZigzagLevelOrderTraversal {
       boolean reverse = true;
       while (!queue.isEmpty()) {
          int size = queue.size();
-         List<Integer> list = new ArrayList<>();
+         LinkedList<Integer> list = new LinkedList<>();
          while (size-- > 0) {
             TreeNode poll = queue.poll();
             if (poll == null) {
                continue;
             }
 
-            list.add(poll.val);
+            if (reverse) {
+               list.addFirst(poll.val);
+            } else {
+               list.addLast(poll.val);
+            }
             queue.add(poll.right);
             queue.add(poll.left);
          }
@@ -45,14 +49,8 @@ public class BinaryTreeZigzagLevelOrderTraversal {
             continue;
          }
 
-         if (reverse) {
-            Collections.reverse(list);
-            result.add(list);
-            reverse = false;
-         } else {
-            result.add(list);
-            reverse = true;
-         }
+         reverse = !reverse;
+         result.add(list);
       }
 
       return result;
