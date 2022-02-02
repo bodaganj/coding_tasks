@@ -1,17 +1,10 @@
 package com.coding.tasks.leetcode.top.interview.questions.hard.trees_and_graphs;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-
 public class LongestIncreasingPathInMatrix {
 
-//   private static int max;
+   private static int max;
+
+   private static int[][] directions = new int[][]{{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
 
    public static void main(String[] args) {
       int[][] arr1 = new int[][]{
@@ -31,97 +24,132 @@ public class LongestIncreasingPathInMatrix {
    }
 
    /**
-    * Graph theory (bhs approach)
+    * The way it should be implemented
     */
    private static int longestIncreasingPath(int[][] matrix) {
       if (matrix == null || matrix.length == 0) {
          return 0;
       }
 
-      int maxPath = 1;
-
-      // 1 create dif predefined lists/maps
-      List<List<Tuple>> rules = getRules(matrix);
-      Map<Tuple, List<Tuple>> directionMapping = getDirectionMapping(rules);
-      Queue<Tuple> queue = getNoInTuplesQueue(rules, matrix);
-
-      Queue<Integer> currentPathSizeQueue = new LinkedList<>();
-      int counter = 0;
-      while (counter < queue.size()) {
-         currentPathSizeQueue.offer(1);
-         counter++;
-      }
-
-      // 2 bhs
-      while (!queue.isEmpty()) {
-         Tuple poll = queue.poll();
-         Integer currentPathSize = currentPathSizeQueue.poll();
-
-         if (directionMapping.containsKey(poll)) {
-            currentPathSize += 1;
-            maxPath = Math.max(maxPath, currentPathSize);
-            for (Tuple tuple : directionMapping.get(poll)) {
-               queue.offer(tuple);
-               currentPathSizeQueue.offer(currentPathSize);
-            }
-         }
-      }
-
-      return maxPath;
-   }
-
-   private static Map<Tuple, List<Tuple>> getDirectionMapping(List<List<Tuple>> rules) {
-      Map<Tuple, List<Tuple>> mapping = new HashMap<>();
-      for (List<Tuple> rule : rules) {
-         List<Tuple> list = mapping.getOrDefault(rule.get(0), new ArrayList<>());
-         list.add(rule.get(1));
-         mapping.put(rule.get(0), list);
-      }
-
-      return mapping;
-   }
-
-   private static Queue<Tuple> getNoInTuplesQueue(List<List<Tuple>> rules, int[][] matrix) {
-      Set<Tuple> set = new HashSet<>();
-      for (List<Tuple> rule : rules) {
-         set.add(rule.get(1));
-      }
-
-      Queue<Tuple> noInTupleQueue = new LinkedList<>();
+      int maxLength = 0;
+      int[][] memo = new int[matrix.length][matrix[0].length];
       for (int i = 0; i < matrix.length; i++) {
          for (int j = 0; j < matrix[0].length; j++) {
-            Tuple tuple = new Tuple(i, j);
-            if (!set.contains(tuple)) {
-               noInTupleQueue.offer(tuple);
-            }
+            maxLength = Math.max(maxLength, dfs(matrix, i, j, memo));
          }
       }
 
-      return noInTupleQueue;
+      return maxLength;
    }
 
-   private static List<List<Tuple>> getRules(int[][] matrix) {
-      List<List<Tuple>> list = new ArrayList<>();
-
-      for (int i = 0; i < matrix.length; i++) {
-         for (int j = 0; j < matrix[0].length; j++) {
-            if (i + 1 < matrix.length && matrix[i][j] < matrix[i + 1][j]) {
-               list.add(List.of(new Tuple(i, j), new Tuple(i + 1, j)));
-            }
-            if (i - 1 >= 0 && matrix[i][j] < matrix[i - 1][j]) {
-               list.add(List.of(new Tuple(i, j), new Tuple(i - 1, j)));
-            }
-            if (j + 1 < matrix[0].length && matrix[i][j] < matrix[i][j + 1]) {
-               list.add(List.of(new Tuple(i, j), new Tuple(i, j + 1)));
-            }
-            if (j - 1 >= 0 && matrix[i][j] < matrix[i][j - 1]) {
-               list.add(List.of(new Tuple(i, j), new Tuple(i, j - 1)));
-            }
-         }
+   private static int dfs(int[][] matrix, int i, int j, int[][] memo) {
+      if (memo[i][j] != 0) {
+         return memo[i][j];
       }
 
-      return list;
+      for (int[] direction : directions) {
+         int newI = i + direction[0];
+         int newJ = j + direction[1];
+
+         if (newI >= 0 && newI < matrix.length && newJ >= 0 && newJ < matrix[0].length && matrix[i][j] < matrix[newI][newJ]) {
+            memo[i][j] = Math.max(memo[i][j], dfs(matrix, newI, newJ, memo));
+         }
+      }
+      return ++memo[i][j];
    }
+
+   /**
+    * Graph theory (bhs approach)
+    */
+//   private static int longestIncreasingPath(int[][] matrix) {
+//      if (matrix == null || matrix.length == 0) {
+//         return 0;
+//      }
+//
+//      int maxPath = 1;
+//
+//      // 1 create dif predefined lists/maps
+//      List<List<Tuple>> rules = getRules(matrix);
+//      Map<Tuple, List<Tuple>> directionMapping = getDirectionMapping(rules);
+//      Queue<Tuple> queue = getNoInTuplesQueue(rules, matrix);
+//
+//      Queue<Integer> currentPathSizeQueue = new LinkedList<>();
+//      int counter = 0;
+//      while (counter < queue.size()) {
+//         currentPathSizeQueue.offer(1);
+//         counter++;
+//      }
+//
+//      // 2 bhs
+//      while (!queue.isEmpty()) {
+//         Tuple poll = queue.poll();
+//         Integer currentPathSize = currentPathSizeQueue.poll();
+//
+//         if (directionMapping.containsKey(poll)) {
+//            currentPathSize += 1;
+//            maxPath = Math.max(maxPath, currentPathSize);
+//            for (Tuple tuple : directionMapping.get(poll)) {
+//               queue.offer(tuple);
+//               currentPathSizeQueue.offer(currentPathSize);
+//            }
+//         }
+//      }
+//
+//      return maxPath;
+//   }
+//
+//   private static Map<Tuple, List<Tuple>> getDirectionMapping(List<List<Tuple>> rules) {
+//      Map<Tuple, List<Tuple>> mapping = new HashMap<>();
+//      for (List<Tuple> rule : rules) {
+//         List<Tuple> list = mapping.getOrDefault(rule.get(0), new ArrayList<>());
+//         list.add(rule.get(1));
+//         mapping.put(rule.get(0), list);
+//      }
+//
+//      return mapping;
+//   }
+//
+//   private static Queue<Tuple> getNoInTuplesQueue(List<List<Tuple>> rules, int[][] matrix) {
+//      Set<Tuple> set = new HashSet<>();
+//      for (List<Tuple> rule : rules) {
+//         set.add(rule.get(1));
+//      }
+//
+//      Queue<Tuple> noInTupleQueue = new LinkedList<>();
+//      for (int i = 0; i < matrix.length; i++) {
+//         for (int j = 0; j < matrix[0].length; j++) {
+//            Tuple tuple = new Tuple(i, j);
+//            if (!set.contains(tuple)) {
+//               noInTupleQueue.offer(tuple);
+//            }
+//         }
+//      }
+//
+//      return noInTupleQueue;
+//   }
+//
+//   private static List<List<Tuple>> getRules(int[][] matrix) {
+//      List<List<Tuple>> list = new ArrayList<>();
+//
+//      for (int i = 0; i < matrix.length; i++) {
+//         for (int j = 0; j < matrix[0].length; j++) {
+//            if (i + 1 < matrix.length && matrix[i][j] < matrix[i + 1][j]) {
+//               list.add(List.of(new Tuple(i, j), new Tuple(i + 1, j)));
+//            }
+//            if (i - 1 >= 0 && matrix[i][j] < matrix[i - 1][j]) {
+//               list.add(List.of(new Tuple(i, j), new Tuple(i - 1, j)));
+//            }
+//            if (j + 1 < matrix[0].length && matrix[i][j] < matrix[i][j + 1]) {
+//               list.add(List.of(new Tuple(i, j), new Tuple(i, j + 1)));
+//            }
+//            if (j - 1 >= 0 && matrix[i][j] < matrix[i][j - 1]) {
+//               list.add(List.of(new Tuple(i, j), new Tuple(i, j - 1)));
+//            }
+//         }
+//      }
+//
+//      return list;
+//   }
 
    /**
     * Time Limit Exception
