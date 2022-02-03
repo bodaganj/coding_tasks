@@ -1,4 +1,4 @@
-package com.coding.tasks.leetcode.top.interview.questions.hard.trees_and_graphs;
+package com.coding.tasks.leetcode.amazon.trees_and_graphs;
 
 import java.util.ArrayList;
 import java.util.HashSet;
