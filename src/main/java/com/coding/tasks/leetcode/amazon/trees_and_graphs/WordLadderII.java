@@ -1,98 +1,113 @@
 package com.coding.tasks.leetcode.amazon.trees_and_graphs;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
 public class WordLadderII {
 
+   Map<String, List<String>> adjList = new HashMap<>();
+   List<String> currPath = new ArrayList<>();
+   List<List<String>> shortestPaths = new ArrayList<>();
+
    public static void main(String[] args) {
 
    }
 
-   private static List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
-      if (!wordList.contains(endWord)) {
-         return Collections.emptyList();
+   public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+      // copying the words into the set for efficient deletion in BFS
+      Set<String> copiedWordList = new HashSet<>(wordList);
+      // build the DAG using BFS
+      bfs(beginWord, copiedWordList);
+
+      // every path will start from the beginWord
+      currPath.add(beginWord);
+      // traverse the DAG to find all the paths between beginWord and endWord
+      backtrack(beginWord, endWord);
+
+      return shortestPaths;
+   }
+
+   private List<String> findNeighbors(String word, Set<String> wordList) {
+      List<String> neighbors = new ArrayList<>();
+      char[] charList = word.toCharArray();
+
+      for (int i = 0; i < word.length(); i++) {
+         char oldChar = charList[i];
+
+         // replace the i-th character with all letters from a to z except the original character
+         for (char c = 'a'; c <= 'z'; c++) {
+            charList[i] = c;
+
+            // skip if the character is same as original or if the word is not present in the wordList
+            if (c == oldChar || !wordList.contains(String.valueOf(charList))) {
+               continue;
+            }
+            neighbors.add(String.valueOf(charList));
+         }
+         charList[i] = oldChar;
+      }
+      return neighbors;
+   }
+
+   private void backtrack(String source, String destination) {
+      // store the path if we reached the endWord
+      if (source.equals(destination)) {
+         List<String> tempPath = new ArrayList<>(currPath);
+         shortestPaths.add(tempPath);
       }
 
-      Set<List<String>> result = new HashSet<>();
-      int amountOfWords = Integer.MAX_VALUE;
+      if (!adjList.containsKey(source)) {
+         return;
+      }
 
-      Queue<String> queue = new LinkedList<>();
-      queue.offer(beginWord);
+      for (int i = 0; i < adjList.get(source).size(); i++) {
+         currPath.add(adjList.get(source).get(i));
+         backtrack(adjList.get(source).get(i), destination);
+         currPath.remove(currPath.size() - 1);
+      }
+   }
 
-      Queue<List<String>> pathQueue = new LinkedList<>();
-      pathQueue.offer(List.of(beginWord));
+   private void bfs(String beginWord, Set<String> wordList) {
+      Queue<String> q = new LinkedList<>();
+      q.add(beginWord);
 
-      Queue<Set<String>> visitedQueue = new LinkedList<>();
-      visitedQueue.offer(Set.of(beginWord));
+      Map<String, Integer> isEnqueued = new HashMap<>();
+      isEnqueued.put(beginWord, 1);
 
-      while (!queue.isEmpty()) {
-         String poll = queue.poll();
-         List<String> pathPoll = pathQueue.poll();
-         Set<String> visitedPoll = visitedQueue.poll();
+      while (q.size() > 0) {
+         // visited will store the words of current layer
+         List<String> visited = new ArrayList<>();
 
-         if (pathPoll.size() >= amountOfWords) {
-            continue;
-         }
+         for (int i = q.size() - 1; i >= 0; i--) {
+            String currWord = q.poll();
 
-         for (String word : getAdjacent(poll, wordList, visitedPoll)) {
-            List<String> newList = new ArrayList<>(pathPoll);
-            newList.add(word);
+            // findNeighbors will have the adjacent words of the currWord
+            List<String> neighbors = findNeighbors(currWord, wordList);
+            for (String word : neighbors) {
+               visited.add(word);
 
-            if (word.equals(endWord)) {
-               if (newList.size() < amountOfWords) {
-                  amountOfWords = newList.size();
-                  result = new HashSet<>();
-                  result.add(newList);
-               } else if (newList.size() == amountOfWords) {
-                  result.add(newList);
+               if (!adjList.containsKey(currWord)) {
+                  adjList.put(currWord, new ArrayList<>());
                }
-            } else {
-               if (newList.size() < amountOfWords) {
-                  queue.offer(word);
 
-                  pathQueue.offer(newList);
-
-                  Set<String> newVisited = new HashSet<>(visitedPoll);
-                  newVisited.add(word);
-                  visitedQueue.offer(newVisited);
+               // add the edge from currWord to word in the list
+               adjList.get(currWord).add(word);
+               if (!isEnqueued.containsKey(word)) {
+                  q.add(word);
+                  isEnqueued.put(word, 1);
                }
             }
          }
-      }
-
-      return new ArrayList<>(result);
-   }
-
-   private static List<String> getAdjacent(String str, List<String> wordList, Set<String> visited) {
-      List<String> list = new ArrayList<>();
-      for (String word : wordList) {
-         if (!visited.contains(word) && !str.equals(word)) {
-            if (areSimilar(str, word)) {
-               list.add(word);
-            }
+         // removing the words of the previous layer
+         for (String s : visited) {
+            wordList.remove(s);
          }
       }
-
-      return list;
-   }
-
-   private static boolean areSimilar(String word1, String word2) {
-      int amountOfDiff = 0;
-      for (int i = 0; i < word1.length(); i++) {
-         if (word1.charAt(i) != word2.charAt(i)) {
-            amountOfDiff++;
-         }
-
-         if (amountOfDiff > 1) {
-            return false;
-         }
-      }
-      return true;
    }
 }
