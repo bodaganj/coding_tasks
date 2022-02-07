@@ -1,8 +1,11 @@
 package com.coding.tasks.leetcode.amazon.trees_and_graphs;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DiameterOfBinaryTree {
 
-   private static int maxPath;
+   private static List<TreeNode> maxPath;
 
    public static void main(String[] args) {
       TreeNode tn5 = new TreeNode(5);
@@ -12,25 +15,55 @@ public class DiameterOfBinaryTree {
       TreeNode tn1 = new TreeNode(1, tn2, tn3);
 
       System.out.println(diameterOfBinaryTree(tn1));
+
+      TreeNode t9 = new TreeNode(9);
+      TreeNode t8 = new TreeNode(8);
+      TreeNode t7 = new TreeNode(7, t9, null);
+      TreeNode t6 = new TreeNode(6, t8, null);
+      TreeNode t5 = new TreeNode(5, t7, null);
+      TreeNode t4 = new TreeNode(4, t6, null);
+      TreeNode t3 = new TreeNode(3);
+      TreeNode t2 = new TreeNode(2, t4, t5);
+      TreeNode t1 = new TreeNode(1, t2, t3);
+
+      System.out.println(diameterOfBinaryTree(t1));
    }
 
    private static int diameterOfBinaryTree(TreeNode root) {
-      maxPath = 0;
+      maxPath = new ArrayList<>();
       dfs(root);
-      return maxPath;
+      for (TreeNode treeNode : maxPath) {
+         System.out.print(treeNode.val + " -> ");
+      }
+      System.out.println();
+
+      return maxPath.size() - 1;
    }
 
-   private static int dfs(TreeNode node) {
+   private static List<TreeNode> dfs(TreeNode node) {
       if (node == null) {
-         return -1;
+         return new ArrayList<>();
       }
 
-      int left = 1 + dfs(node.left);
-      int right = 1 + dfs(node.right);
+      List<TreeNode> left = dfs(node.left);
+      List<TreeNode> right = dfs(node.right);
 
-      maxPath = Math.max(maxPath, left + right);
+      List<TreeNode> potentialMax = new ArrayList<>();
+      potentialMax.addAll(left);
+      potentialMax.add(node);
+      potentialMax.addAll(right);
 
-      return Math.max(left, right);
+      if (potentialMax.size() > maxPath.size()) {
+         maxPath = potentialMax;
+      }
+
+      if (left.size() > right.size()) {
+         left.add(node);
+         return left;
+      } else {
+         right.add(node);
+         return right;
+      }
    }
 
    static class TreeNode {
