@@ -2,29 +2,26 @@ package com.coding.tasks.cracking.the.code.recursion_and_dp;
 
 public class TripleStep {
 
-   private static int counter;
-
    public static void main(String[] args) {
       System.out.println(getDifferentWays(3));
       System.out.println(getDifferentWays(5));
    }
 
    private static int getDifferentWays(int n) {
-      counter = 0;
-      claim(n);
-      return counter;
+      int[] memo = new int[n + 1];
+      return claim(0, n, memo);
    }
 
-   private static void claim(int n) {
-      if (n == 0) {
-         counter++;
+   private static int claim(int i, int n, int[] memo) {
+      if (i == n) {
+         return 1;
+      } else if (i > n) {
+         return 0;
+      } else if (memo[i] > 0) {
+         return memo[i];
       } else {
-         if (n - 1 >= 0) {
-            claim(n - 1);
-         }
-         if (n - 2 >= 0) {
-            claim(n - 2);
-         }
+         memo[i] = claim(i + 1, n, memo) + claim(i + 2, n, memo);
+         return memo[i];
       }
    }
 }
