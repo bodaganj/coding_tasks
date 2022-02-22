@@ -62,13 +62,12 @@ public class DecodeWays {
       int shortAns = 0;
       int longAns = 0;
       char c0 = s.charAt(0);
-
       long count = mapping.keySet().stream().filter(key -> key.startsWith(Character.toString(c0))).count();
+
       if (count > 1 && s.length() > 1) {
-         char c1 = s.charAt(1);
          StringBuilder sb = new StringBuilder();
          sb.append(c0);
-         sb.append(c1);
+         sb.append(s.charAt(1));
          if (mapping.keySet().stream().filter(key -> key.startsWith(sb.toString())).count() == 1) {
             longAns = rec(s.substring(2), memo);
          }
