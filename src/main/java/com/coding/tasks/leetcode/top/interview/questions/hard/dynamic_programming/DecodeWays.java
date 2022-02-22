@@ -1,13 +1,11 @@
 package com.coding.tasks.leetcode.top.interview.questions.hard.dynamic_programming;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class DecodeWays {
 
-   private static Map<String, String> mapping;
+   private static final Map<String, String> mapping;
 
    static {
       mapping = new HashMap<>();
@@ -49,20 +47,20 @@ public class DecodeWays {
       if (s.startsWith("0")) {
          return 0;
       }
-
-//      Map<String, String> memo = new HashMap<>();
-
-      List<String> ans = new ArrayList<>();
-      rec(s, "", ans);
-      return ans.size();
+      return rec(s, new HashMap<>());
    }
 
-   private static void rec(String s, String current, List<String> ans) {
-      if (s.isBlank()) {
-         ans.add(current);
-         return;
+   private static int rec(String s, Map<String, Integer> memo) {
+      if (memo.containsKey(s)) {
+         return memo.get(s);
       }
 
+      if (s.isBlank()) {
+         return 1;
+      }
+
+      int shortAns = 0;
+      int longAns = 0;
       char c0 = s.charAt(0);
 
       long count = mapping.keySet().stream().filter(key -> key.startsWith(Character.toString(c0))).count();
@@ -72,14 +70,15 @@ public class DecodeWays {
          sb.append(c0);
          sb.append(c1);
          if (mapping.keySet().stream().filter(key -> key.startsWith(sb.toString())).count() == 1) {
-            String newCurr = current + sb;
-            rec(s.substring(2), newCurr, ans);
+            longAns = rec(s.substring(2), memo);
          }
       }
 
       if (count >= 1) {
-         String newCurr = current + c0;
-         rec(s.substring(1), newCurr, ans);
+         shortAns = rec(s.substring(1), memo);
       }
+
+      memo.put(s, longAns + shortAns);
+      return memo.get(s);
    }
 }
