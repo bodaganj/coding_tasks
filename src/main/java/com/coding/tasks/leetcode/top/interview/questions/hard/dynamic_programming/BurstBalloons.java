@@ -1,6 +1,5 @@
 package com.coding.tasks.leetcode.top.interview.questions.hard.dynamic_programming;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,32 +22,28 @@ public class BurstBalloons {
          i++;
       }
 
+      if (list.size() > 0) {
+         list.addFirst(1);
+         list.addLast(1);
+      }
+
       rec(list, 0);
       return max;
    }
 
    // TLE
    private static void rec(List<Integer> list, int currentSum) {
-      if (list.isEmpty()) {
+      if (list.size() == 2) {
          max = Math.max(max, currentSum);
          return;
       }
 
-      for (int i = 0; i < list.size(); i++) {
-         int boost;
+      for (int i = 1; i < list.size() - 1; i++) {
+         int boost = list.get(i - 1) * list.get(i) * list.get(i + 1);
 
-         if (i > 0 && i < list.size() - 1) {
-            boost = list.get(i - 1) * list.get(i) * list.get(i + 1);
-         } else if (i == 0 && i < list.size() - 1) {
-            boost = list.get(i) * list.get(i + 1);
-         } else if (i > 0 && i >= list.size() - 1) {
-            boost = list.get(i - 1) * list.get(i);
-         } else {
-            boost = list.get(i);
-         }
-
-         List<Integer> tmp = new ArrayList<>(list);
+         LinkedList<Integer> tmp = new LinkedList<>(list);
          tmp.remove(i);
+
          rec(tmp, currentSum + boost);
       }
    }
