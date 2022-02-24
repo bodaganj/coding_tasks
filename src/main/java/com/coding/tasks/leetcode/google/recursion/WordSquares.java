@@ -11,10 +11,7 @@ public class WordSquares {
 
    private static List<List<String>> wordSquares(String[] words) {
       List<List<String>> ans = new ArrayList<>();
-      for (int i = 0; i < words.length; i++) {
-         rec(i, new ArrayList<>(), words, ans);
-      }
-
+      rec(0, new ArrayList<>(), words, ans);
       return ans;
    }
 
