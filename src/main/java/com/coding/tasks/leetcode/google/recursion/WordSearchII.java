@@ -34,7 +34,7 @@ public class WordSearchII {
    }
 
    private static void dfs(Tuple current, int nextIndex, String word, Set<Tuple> visited, Set<String> ans, char[][] board) {
-      if (nextIndex == word.length()) {
+      if (nextIndex == word.length() || ans.contains(word)) {
          ans.add(word);
          return;
       }
