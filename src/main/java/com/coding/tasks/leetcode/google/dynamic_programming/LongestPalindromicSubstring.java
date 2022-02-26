@@ -1,69 +1,78 @@
 package com.coding.tasks.leetcode.google.dynamic_programming;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 public class LongestPalindromicSubstring {
 
-   private static LongestPalindromicSubstring longestPalindromicSubstring = new LongestPalindromicSubstring();
-
    public static void main(String[] args) {
-      System.out.println(longestPalindromicSubstring.longestPalindrome("aacabdkacaa"));
+      System.out.println(longestPalindrome("ababad"));
    }
 
-   public String longestPalindrome(String s) {
-      Set<String> palindromes = new HashSet<>();
-
-      List<Character> inputChars = s.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
-
-      Map<Character, List<Integer>> charIndexesMapping = new HashMap<>();
-      for (int i = 0; i < inputChars.size(); i++) {
-         char aChar = inputChars.get(i);
-         if (charIndexesMapping.containsKey(aChar)) {
-            List<Integer> integers = charIndexesMapping.get(aChar);
-            integers.add(i);
-            charIndexesMapping.put(aChar, integers);
-         } else {
-            List<Integer> tmp = new ArrayList<>();
-            tmp.add(i);
-            charIndexesMapping.put(aChar, tmp);
+   // O(n^2)
+   private static String longestPalindrome(String s) {
+      if (s == null || s.length() < 1) {
+         return "";
+      }
+      int start = 0;
+      int end = 0;
+      for (int i = 0; i < s.length(); i++) {
+         int len1 = expandAroundCenter(s, i, i);
+         int len2 = expandAroundCenter(s, i, i + 1);
+         int len = Math.max(len1, len2);
+         if (len > end - start) {
+            start = i - (len - 1) / 2;
+            end = i + len / 2;
          }
       }
-
-      for (Character aChar : inputChars) {
-         List<Integer> indexesList = charIndexesMapping.get(aChar);
-         if (indexesList.size() == 1) {
-            continue;
-         }
-
-         for (int i = 0; i < indexesList.size() - 1; i++) {
-            for (int j = i + 1; j < indexesList.size(); j++) {
-               StringBuilder sb = new StringBuilder();
-               for (Character character : inputChars.subList(indexesList.get(i), indexesList.get(j) + 1)) {
-                  sb.append(character);
-               }
-
-               if (isPalindrome(sb)) {
-                  palindromes.add(sb.toString());
-               }
-            }
-         }
-      }
-
-      if (palindromes.isEmpty()) {
-         return String.valueOf(s.charAt(0));
-      } else {
-         return palindromes.stream().max(Comparator.comparingInt(String::length)).get();
-      }
+      return s.substring(start, end + 1);
    }
 
-   private boolean isPalindrome(StringBuilder sb) {
-      return sb.toString().equals(sb.reverse().toString());
+   private static int expandAroundCenter(String s, int left, int right) {
+      int L = left;
+      int R = right;
+      while (L >= 0 && R < s.length() && s.charAt(L) == s.charAt(R)) {
+         L--;
+         R++;
+      }
+      return R - L - 1;
    }
+
+   // TLE even with memo
+//   private static String longestPalindrome(String str) {
+//      char[] chars = str.toCharArray();
+//      String longest = chars[0] + "";
+//      int[][] memo = new int[str.length() + 1][str.length() + 1];
+//
+//      for (int i = 0; i < str.length(); i++) {
+//         for (int j = 0; j < i; j++) {
+//            String potentialPalindrome = str.substring(j, i + 1);
+//            if (isPalindrome(chars, j, i, memo) && potentialPalindrome.length() > longest.length()) {
+//               longest = potentialPalindrome;
+//            }
+//         }
+//      }
+//
+//      return longest;
+//   }
+//
+//   private static boolean isPalindrome(char[] str, int i, int j, int[][] memo) {
+//      int x = i;
+//      int y = j;
+//
+//      while (x < y) {
+//         if (memo[x][y] == 1) {
+//            return true;
+//         }
+//         if (memo[x][y] == -1) {
+//            return false;
+//         }
+//
+//         if (str[x] != str[y]) {
+//            memo[x][y] = -1;
+//            return false;
+//         }
+//         x++;
+//         y--;
+//      }
+//      memo[i][j] = 1;
+//      return true;
+//   }
 }
