@@ -114,6 +114,7 @@ public class WordSearch2 {
          if (i >= 0 && i < board.length && j >= 0 && j < board[0].length && visitedCoord[i][j] != 1 && node.children.containsKey(board[i][j])) {
             visitedCoord[i][j] = 1;
             dfs(board, i, j, node.children.get(board[i][j]), ans, visitedCoord, visitedWords);
+            visitedCoord[i][j] = 0;
          }
       }
    }
