@@ -1,4 +1,4 @@
-package com.coding.tasks.leetcode.top.interview.questions.medium.backtracking;
+package com.coding.tasks.leetcode.amazon.recursion;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -78,7 +78,7 @@ public class WordSearch {
 
       @Override
       public boolean equals(Object o) {
-         Tuple t = (Tuple) o;
+         WordSearch.Tuple t = (Tuple) o;
          return t != null && t.x == this.x && t.y == this.y;
       }
 
