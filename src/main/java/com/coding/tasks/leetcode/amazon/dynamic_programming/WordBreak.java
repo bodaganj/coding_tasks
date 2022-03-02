@@ -17,11 +17,11 @@ public class WordBreak {
       f[0] = true;
 
       char[] chars = s.toCharArray();
-      for (int i = 0; i < chars.length; i++) {
+      for (int i = 1; i <= chars.length; i++) {
          for (String word : wordDict) {
-            if (i + 1 >= word.length()) {
-               if (f[i + 1 - word.length()] && s.startsWith(word, i + 1 - word.length())) {
-                  f[i + 1] = true;
+            if (i >= word.length()) {
+               if (f[i - word.length()] && s.startsWith(word, i - word.length())) {
+                  f[i] = true;
                   break;
                }
             }
