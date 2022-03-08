@@ -18,27 +18,23 @@ public class ValidAnagram {
          return false;
       }
 
-      Map<Character, Integer> firstMapping = new HashMap<>();
+      Map<Character, Integer> mapping = new HashMap<>();
       for (char letter : s.toCharArray()) {
-         firstMapping.put(letter, firstMapping.getOrDefault(letter, 0) + 1);
+         mapping.put(letter, mapping.getOrDefault(letter, 0) + 1);
       }
 
-      Map<Character, Integer> secondMapping = new HashMap<>();
       for (char letter : t.toCharArray()) {
-         secondMapping.put(letter, secondMapping.getOrDefault(letter, 0) + 1);
-      }
-
-      if (!firstMapping.keySet().equals(secondMapping.keySet())) {
-         return false;
-      }
-
-      for (Map.Entry<Character, Integer> characterIntegerEntry : firstMapping.entrySet()) {
-         Character key = characterIntegerEntry.getKey();
-         if (!firstMapping.get(key).equals(secondMapping.get(key))) {
+         if (!mapping.containsKey(letter)) {
             return false;
+         }
+         int tmp = mapping.get(letter) - 1;
+         if (tmp == 0) {
+            mapping.remove(letter);
+         } else {
+            mapping.put(letter, tmp);
          }
       }
 
-      return true;
+      return mapping.isEmpty();
    }
 }
