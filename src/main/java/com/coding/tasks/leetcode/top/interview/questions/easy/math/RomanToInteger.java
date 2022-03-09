@@ -31,24 +31,19 @@ public class RomanToInteger {
 
       int i = 0;
       while (i < chars.length) {
-         if (i < chars.length - 1) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(chars[i]);
-            sb.append(chars[i + 1]);
+         StringBuilder sb = new StringBuilder();
+         sb.append(chars[i]);
 
-            if (mapping.containsKey(sb.toString())) {
-               ans += mapping.get(sb.toString());
-               i = i + 2;
-            } else {
-               ans += mapping.get(chars[i] + "");
+         if (i < chars.length - 1) {
+            if (mapping.containsKey(sb.toString() + chars[i + 1])) {
+               sb.append(chars[i + 1]);
                i++;
             }
-         } else {
-            ans += mapping.get(chars[i] + "");
-            i++;
          }
-      }
 
+         ans += mapping.get(sb.toString());
+         i++;
+      }
       return ans;
    }
 }
