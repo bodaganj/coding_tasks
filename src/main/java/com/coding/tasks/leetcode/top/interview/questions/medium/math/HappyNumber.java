@@ -19,13 +19,13 @@ public class HappyNumber {
          if (n == 1) {
             return true;
          } else {
-            String str = n + "";
-
-            n = 0;
-            for (char aChar : str.toCharArray()) {
-               int i = Integer.parseInt(aChar + "");
-               n += i * i;
+            int tmp = 0;
+            while (n != 0) {
+               int i = n % 10;
+               tmp += i * i;
+               n /= 10;
             }
+            n = tmp;
          }
       }
 
