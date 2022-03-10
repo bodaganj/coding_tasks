@@ -6,9 +6,11 @@ import java.util.List;
 public class LargestNumber {
 
    public static void main(String[] args) {
-//      System.out.println(largestNumber(new int[]{10, 2}));
-//      System.out.println(largestNumber(new int[]{3, 30, 34, 5, 9}));
+      System.out.println(largestNumber(new int[]{10, 2}));
+      System.out.println(largestNumber(new int[]{3, 30, 34, 5, 9}));
       System.out.println(largestNumber(new int[]{3, 30, 34}));
+      System.out.println(largestNumber(new int[]{111311, 1113}));
+      System.out.println(largestNumber(new int[]{8308, 8308, 830}));
    }
 
    private static String largestNumber(int[] nums) {
@@ -37,10 +39,18 @@ public class LargestNumber {
                i++;
             }
 
-            if (i == fL - 1) {
-               return 1;
+            if (i == sL) {
+               if (Integer.parseInt(o1.charAt(i) + "") == 0) {
+                  return 1;
+               } else {
+                  return -1;
+               }
             } else {
-               return -1;
+               if (Integer.parseInt(o2.charAt(i) + "") == 0) {
+                  return 1;
+               } else {
+                  return -1;
+               }
             }
          }
       });
