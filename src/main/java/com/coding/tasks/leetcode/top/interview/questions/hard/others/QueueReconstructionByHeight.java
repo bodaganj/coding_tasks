@@ -41,10 +41,8 @@ public class QueueReconstructionByHeight {
       Set<int[]> seen = new HashSet<>();
 
       for (int i = 0; i < people.length; i++) {
-         int finalI = i;
          int[] toBeAdded = Arrays.stream(people)
                                  .filter(p -> !seen.contains(p))
-                                 .filter(p -> p[1] <= finalI)
                                  .filter(p -> p[1] == seen.stream().filter(s -> s[0] >= p[0]).count())
                                  .min(Comparator.comparingInt(p -> p[0]))
                                  .get();
