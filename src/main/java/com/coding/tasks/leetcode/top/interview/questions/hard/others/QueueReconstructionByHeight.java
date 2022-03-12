@@ -1,6 +1,7 @@
 package com.coding.tasks.leetcode.top.interview.questions.hard.others;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,25 +40,17 @@ public class QueueReconstructionByHeight {
       int[][] ans = new int[people.length][2];
       Set<int[]> seen = new HashSet<>();
 
-      int position = 0;
-      while (position < people.length) {
-         int[] toBeAdded = new int[1];
-         int minHeight = Integer.MAX_VALUE;
-         for (int[] person : people) {
-            if (seen.isEmpty() || !seen.contains(person)) {
-               if (person[1] <= position) {
-                  long count = seen.stream().filter(s -> s[0] >= person[0]).count();
-                  if (count == person[1] && minHeight > person[0]) {
-                     toBeAdded = person;
-                     minHeight = person[0];
-                  }
-               }
-            }
-         }
+      for (int i = 0; i < people.length; i++) {
+         int finalI = i;
+         int[] toBeAdded = Arrays.stream(people)
+                                 .filter(p -> !seen.contains(p))
+                                 .filter(p -> p[1] <= finalI)
+                                 .filter(p -> p[1] == seen.stream().filter(s -> s[0] >= p[0]).count())
+                                 .min(Comparator.comparingInt(p -> p[0]))
+                                 .get();
 
          seen.add(toBeAdded);
-         ans[position] = toBeAdded;
-         position++;
+         ans[i] = toBeAdded;
       }
 
       return ans;
