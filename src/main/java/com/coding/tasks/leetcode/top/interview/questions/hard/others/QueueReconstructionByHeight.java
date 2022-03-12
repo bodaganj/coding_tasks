@@ -7,23 +7,23 @@ import java.util.Set;
 public class QueueReconstructionByHeight {
 
    public static void main(String[] args) {
-//      System.out.println(Arrays.deepToString(reconstructQueue(new int[][]{
-//         {7, 0},
-//         {4, 4},
-//         {7, 1},
-//         {5, 0},
-//         {6, 1},
-//         {5, 2}
-//      })));
-//
-//      System.out.println(Arrays.deepToString(reconstructQueue(new int[][]{
-//         {6, 0},
-//         {5, 0},
-//         {4, 0},
-//         {3, 2},
-//         {2, 2},
-//         {1, 4}
-//      })));
+      System.out.println(Arrays.deepToString(reconstructQueue(new int[][]{
+         {7, 0},
+         {4, 4},
+         {7, 1},
+         {5, 0},
+         {6, 1},
+         {5, 2}
+      })));
+
+      System.out.println(Arrays.deepToString(reconstructQueue(new int[][]{
+         {6, 0},
+         {5, 0},
+         {4, 0},
+         {3, 2},
+         {2, 2},
+         {1, 4}
+      })));
 
       System.out.println(Arrays.deepToString(reconstructQueue(new int[][]{
          {7, 0},
@@ -40,16 +40,17 @@ public class QueueReconstructionByHeight {
       Set<int[]> seen = new HashSet<>();
 
       int position = 0;
-      while (ans[people.length - 1][0] == 0 && ans[people.length - 1][1] == 0) {
+      while (position < people.length) {
          int[] toBeAdded = new int[1];
          int minHeight = Integer.MAX_VALUE;
-
          for (int[] person : people) {
             if (seen.isEmpty() || !seen.contains(person)) {
-               // get people with i <= position and minimum height
-               if (person[1] <= position && person[0] < minHeight) {
-                  toBeAdded = person;
-                  minHeight = person[0];
+               if (person[1] <= position) {
+                  long count = seen.stream().filter(s -> s[0] >= person[0]).count();
+                  if (count == person[1] && minHeight > person[0]) {
+                     toBeAdded = person;
+                     minHeight = person[0];
+                  }
                }
             }
          }
