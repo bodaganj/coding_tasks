@@ -12,7 +12,6 @@ public class Candy {
 
    private static int candy(int[] ratings) {
       int[] candies = new int[ratings.length];
-      Arrays.fill(candies, 1);
 
       for (int i = 1; i < ratings.length; i++) {
          if (ratings[i] > ratings[i - 1]) {
@@ -26,6 +25,6 @@ public class Candy {
          }
       }
 
-      return Arrays.stream(candies).sum();
+      return Arrays.stream(candies).sum() + ratings.length;
    }
 }

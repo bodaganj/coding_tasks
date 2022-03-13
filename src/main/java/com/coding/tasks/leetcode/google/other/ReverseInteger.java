@@ -11,11 +11,17 @@ public class ReverseInteger {
    }
 
    private static int reverse(int x) {
-      String reversed = new StringBuilder().append(Math.abs(x)).reverse().toString();
+      StringBuilder sb = new StringBuilder();
+      sb.append(Math.abs(x));
+      sb.reverse();
+
+      int i;
       try {
-         return x < 0 ? Integer.parseInt(reversed) * -1 : Integer.parseInt(reversed);
-      } catch (NumberFormatException ex) {
+         i = Integer.parseInt(sb.toString());
+      } catch (NumberFormatException e) {
          return 0;
       }
+
+      return x < 0 ? i * -1 : i;
    }
 }
