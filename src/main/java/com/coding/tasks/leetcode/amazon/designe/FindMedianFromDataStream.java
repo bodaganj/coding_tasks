@@ -58,7 +58,7 @@ public class FindMedianFromDataStream {
       }
 
       public double findMedian() {
-         if ((firstPartQueue.size() + secondPartQueue.size()) % 2 == 0) {
+         if (firstPartQueue.size() == secondPartQueue.size()) {
             return (firstPartQueue.peek() + secondPartQueue.peek()) / 2.0;
          } else {
             return firstPartQueue.peek();
