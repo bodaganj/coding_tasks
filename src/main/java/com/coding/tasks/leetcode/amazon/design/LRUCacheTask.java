@@ -1,4 +1,4 @@
-package com.coding.tasks.leetcode.amazon.designe;
+package com.coding.tasks.leetcode.amazon.design;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

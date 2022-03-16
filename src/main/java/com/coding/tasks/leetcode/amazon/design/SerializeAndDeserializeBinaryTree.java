@@ -1,4 +1,7 @@
-package com.coding.tasks.leetcode.amazon.designe;
+package com.coding.tasks.leetcode.amazon.design;
+
+import java.util.Arrays;
+import java.util.LinkedList;
 
 public class SerializeAndDeserializeBinaryTree {
 
@@ -9,13 +12,13 @@ public class SerializeAndDeserializeBinaryTree {
 //      TreeNode n2 = new TreeNode(-2, null, null);
 //      TreeNode n1 = new TreeNode(-1, n2, n3);
 
-//      TreeNode n5 = new TreeNode(5, null, null);
-//      TreeNode n4 = new TreeNode(4, null, null);
-//      TreeNode n3 = new TreeNode(3, n4, n5);
-//      TreeNode n2 = new TreeNode(2, null, null);
-//      TreeNode n1 = new TreeNode(1, n2, n3);
+      TreeNode n5 = new TreeNode(5, null, null);
+      TreeNode n4 = new TreeNode(4, null, null);
+      TreeNode n3 = new TreeNode(3, n4, n5);
+      TreeNode n2 = new TreeNode(2, null, null);
+      TreeNode n1 = new TreeNode(1, n2, n3);
 
-      TreeNode n1 = new TreeNode(1);
+//      TreeNode n1 = new TreeNode(1);
 
       pr(n1);
       System.out.println("============");
@@ -38,8 +41,6 @@ public class SerializeAndDeserializeBinaryTree {
 
    static class Codec {
 
-      private static int index = 0;
-
       // Encodes a tree to a single string.
       public String serialize(TreeNode root) {
          StringBuilder sb = new StringBuilder();
@@ -49,10 +50,9 @@ public class SerializeAndDeserializeBinaryTree {
 
       // Decodes your encoded data to tree.
       public TreeNode deserialize(String data) {
-         index = 0;
          String[] split = data.split(",");
-         TreeNode root = recDes(split);
-         return root;
+         LinkedList<String> list = new LinkedList<>(Arrays.asList(split));
+         return recDes(list);
       }
 
       private void recSer(TreeNode root, StringBuilder sb) {
@@ -65,19 +65,17 @@ public class SerializeAndDeserializeBinaryTree {
          }
       }
 
-      private TreeNode recDes(String[] split) {
-         if (index >= split.length) {
-            return null;
-         }
-         if (split[index].equals("n")) {
-            index++;
+      private TreeNode recDes(LinkedList<String> list) {
+         String first = list.getFirst();
+         if (first.equals("n")) {
+            list.removeFirst();
             return null;
          } else {
-            TreeNode node = new TreeNode(Integer.parseInt(split[index]));
-            index++;
+            TreeNode node = new TreeNode(Integer.parseInt(first));
+            list.removeFirst();
 
-            node.left = recDes(split);
-            node.right = recDes(split);
+            node.left = recDes(list);
+            node.right = recDes(list);
 
             return node;
          }
