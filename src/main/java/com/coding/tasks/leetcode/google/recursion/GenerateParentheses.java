@@ -12,21 +12,25 @@ public class GenerateParentheses {
 
    private static List<String> generateParenthesis(int n) {
       List<String> ans = new ArrayList<>();
-      rec("", ans, n, 0, 0);
+      rec(new StringBuilder(), ans, n, 0, 0);
       return ans;
    }
 
-   private static void rec(String current, List<String> ans, int n, int amountOpen, int amountClose) {
+   private static void rec(StringBuilder current, List<String> ans, int n, int amountOpen, int amountClose) {
       if (amountOpen == n && amountClose == n) {
-         ans.add(current);
+         ans.add(current.toString());
          return;
       }
 
       if (amountOpen < n) {
-         rec(current + "(", ans, n, amountOpen + 1, amountClose);
+         current.append("(");
+         rec(current, ans, n, amountOpen + 1, amountClose);
+         current.deleteCharAt(current.length() - 1);
       }
       if (amountClose < n && amountClose < amountOpen) {
-         rec(current + ")", ans, n, amountOpen, amountClose + 1);
+         current.append(")");
+         rec(current, ans, n, amountOpen, amountClose + 1);
+         current.deleteCharAt(current.length() - 1);
       }
    }
 }
