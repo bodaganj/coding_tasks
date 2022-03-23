@@ -8,16 +8,16 @@ public class PostOrderTraversal {
       TreeNode tn4 = new TreeNode(4, tn3, tn5);
       TreeNode tn1 = new TreeNode(1);
       TreeNode tn2 = new TreeNode(2, tn1, tn4);
-      preOrderTravers(tn2);
+      postOrderTravers(tn2);
    }
 
-   private static void preOrderTravers(TreeNode root) {
+   private static void postOrderTravers(TreeNode root) {
       if (root == null) {
          return;
       }
 
-      preOrderTravers(root.left);
-      preOrderTravers(root.right);
+      postOrderTravers(root.left);
+      postOrderTravers(root.right);
       System.out.println(root.val);
    }
 
