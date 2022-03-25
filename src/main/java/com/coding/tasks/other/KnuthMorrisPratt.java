@@ -3,12 +3,12 @@ package com.coding.tasks.other;
 public class KnuthMorrisPratt {
 
    public static void main(String[] args) {
-      System.out.println("False = " + isMatching("abcd", "ef"));
-      System.out.println("True = " + isMatching("abcbcglx", "bcgl"));
-      System.out.println("True = " + isMatching("abcxabcdabxabcdabcdabcy", "abcdabcy"));
+//      System.out.println("False = " + isMatching("abcd", "ef"));
+//      System.out.println("True = " + isMatching("abcbcglx", "bcgl"));
+//      System.out.println("True = " + isMatching("abcxabcdabxabcdabcdabcy", "abcdabcy"));
       System.out.println("True = " + isMatching("xccaabaaxccbaaaxccaabaabaaaxcc", "aabaabaaa"));
-      System.out.println("True = " + isMatching("aaaaab", "aaab"));
-      System.out.println("True = " + isMatching("adsgwadsxdsgwadsgz", "dsgwadsgz"));
+//      System.out.println("True = " + isMatching("aaaaab", "aaab"));
+//      System.out.println("True = " + isMatching("adsgwadsxdsgwadsgz", "dsgwadsgz"));
    }
 
    private static boolean isMatching(String text, String pattern) {
@@ -39,41 +39,27 @@ public class KnuthMorrisPratt {
    }
 
    private static int[] getPatternPrefixPresence(String pattern) {
-      int i = 0;
-      int j = 1;
-      int length = pattern.length();
-      int[] array = new int[length];
+      int[] arr = new int[pattern.length()];
 
-      while (j < length) {
-         if (pattern.charAt(i) == pattern.charAt(j)) {
-            array[j] = array[j - 1] + 1;
-            i++;
+      // length of the previous longest prefix suffix
+      int len = 0;
+      int j = 1;
+
+      while (j < pattern.length()) {
+         if (pattern.charAt(j) == pattern.charAt(len)) {
+            len++;
+            arr[j] = len;
             j++;
          } else {
-            boolean isJSet = false;
-            while (!isJSet) {
-               if (i == 0) {
-                  if (pattern.charAt(i) == pattern.charAt(j)) {
-                     array[j] = array[i] + 1;
-                     i++;
-                  } else {
-                     array[j] = 0;
-                  }
-                  j++;
-                  isJSet = true;
-               } else {
-                  i = array[i - 1];
-                  if (pattern.charAt(i) == pattern.charAt(j)) {
-                     array[j] = array[i] + 1;
-                     isJSet = true;
-                     i++;
-                     j++;
-                  }
-               }
+            if (len != 0) {
+               len = arr[len - 1];
+            } else {
+               arr[j] = len;
+               j++;
             }
          }
       }
 
-      return array;
+      return arr;
    }
 }
