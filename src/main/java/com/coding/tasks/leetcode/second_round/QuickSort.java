@@ -36,17 +36,15 @@ public class QuickSort {
    }
 
    private static void sort(int[] arr, int left, int right) {
-      if (left > right || left < 0 || left >= arr.length || right >= arr.length) {
-         return;
+      if (left < right) {
+         int part = partition(arr, left, right);
+         sort(arr, left, part - 1);
+         sort(arr, part + 1, right);
       }
-      int middle = left + (right - left) / 2;
-
-      int part = partition(arr, left, middle, right);
-      sort(arr, left, part - 1);
-      sort(arr, part + 1, right);
    }
 
-   private static int partition(int[] arr, int left, int middle, int right) {
+   private static int partition(int[] arr, int left, int right) {
+      int middle = left + (right - left) / 2;
       swap(arr, middle, right);
       int leftCounter = left;
       int rightCounter = right - 1;
