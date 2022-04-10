@@ -20,5 +20,17 @@ public class RotateImage {
    }
 
    private static void rotateMatrix(int[][] matrix) {
+      int length = matrix.length;
+      int columnShift = 0;
+      for (int i = 0; i < length / 2; i++) {
+         for (int j = columnShift; j < length - columnShift - 1; j++) {
+            int tmp = matrix[i][j];
+            matrix[i][j] = matrix[length - j - 1][i];
+            matrix[length - j - 1][i] = matrix[length - 1 - i][length - 1 - j];
+            matrix[length - 1 - i][length - 1 - j] = matrix[j][length - 1 - i];
+            matrix[j][length - 1 - i] = tmp;
+         }
+         columnShift++;
+      }
    }
 }

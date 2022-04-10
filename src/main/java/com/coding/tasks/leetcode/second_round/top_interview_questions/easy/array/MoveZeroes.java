@@ -11,8 +11,34 @@ public class MoveZeroes {
       System.out.println(Arrays.toString(array));
    }
 
-   //   Input:  [0,1,0,3,12]
-   //   Output: [1,3,12,0,0]
    private static void moveZeroes(int[] nums) {
+      int zeroCounter = -1;
+      int i = 0;
+      while (zeroCounter < 0 && i < nums.length) {
+         if (nums[i] == 0) {
+            zeroCounter = i;
+         } else {
+            i++;
+         }
+      }
+
+      if (zeroCounter < 0) {
+         return;
+      }
+
+      int current = zeroCounter + 1;
+      while (current < nums.length) {
+         if (nums[current] != 0) {
+            swap(nums, zeroCounter, current);
+            zeroCounter++;
+         }
+         current++;
+      }
+   }
+
+   private static void swap(int[] nums, int left, int right) {
+      int tmp = nums[left];
+      nums[left] = nums[right];
+      nums[right] = tmp;
    }
 }
