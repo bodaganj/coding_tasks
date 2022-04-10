@@ -1,10 +1,19 @@
 package com.coding.tasks.leetcode.second_round.top_interview_questions.easy.array;
 
-import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ContainsDuplicate {
 
    private static boolean containsDuplicate(int[] nums) {
-      return !(Arrays.stream(nums).distinct().count() == nums.length);
+      Set<Integer> set = new HashSet<>();
+
+      for (int num : nums) {
+         if (!set.add(num)) {
+            return true;
+         }
+      }
+
+      return false;
    }
 }
