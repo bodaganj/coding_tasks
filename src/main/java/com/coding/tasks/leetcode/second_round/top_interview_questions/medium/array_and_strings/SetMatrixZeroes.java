@@ -5,21 +5,21 @@ import java.util.Arrays;
 public class SetMatrixZeroes {
 
    public static void main(String[] args) {
-//      int[][] arr1 = new int[][]{
-//         {1, 1, 1, 1, 1},
-//         {1, 0, 1, 1, 1},
-//         {1, 1, 1, 0, 1}
-//      };
-//      setZeroes(arr1);
-//      System.out.println(Arrays.deepToString(arr1));
+      int[][] arr1 = new int[][]{
+         {1, 1, 1, 1, 1},
+         {1, 0, 1, 1, 1},
+         {1, 1, 1, 0, 1}
+      };
+      setZeroes(arr1);
+      System.out.println(Arrays.deepToString(arr1));
 
-//      int[][] arr2 = new int[][]{
-//         {0, 1, 1, 0},
-//         {1, 1, 1, 1},
-//         {1, 1, 1, 1}
-//      };
-//      setZeroes(arr2);
-//      System.out.println(Arrays.deepToString(arr2));
+      int[][] arr2 = new int[][]{
+         {0, 1, 1, 0},
+         {1, 1, 1, 1},
+         {1, 1, 1, 1}
+      };
+      setZeroes(arr2);
+      System.out.println(Arrays.deepToString(arr2));
 
       int[][] arr3 = new int[][]{
          {1, 1, 1, 1},
