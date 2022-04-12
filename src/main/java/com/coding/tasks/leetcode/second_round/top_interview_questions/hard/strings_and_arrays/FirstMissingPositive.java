@@ -26,7 +26,7 @@ public class FirstMissingPositive {
 
       // mark all nums[i] <= 0 or > n as 1
       for (int i = 0; i < n; i++) {
-         if ((nums[i] <= 0) || (nums[i] > n)) {
+         if (nums[i] <= 0 || nums[i] > n) {
             nums[i] = 1;
          }
       }
