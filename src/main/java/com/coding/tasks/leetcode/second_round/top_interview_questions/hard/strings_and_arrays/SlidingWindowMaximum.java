@@ -2,7 +2,6 @@ package com.coding.tasks.leetcode.second_round.top_interview_questions.hard.stri
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -16,20 +15,22 @@ public class SlidingWindowMaximum {
 
    private static int[] maxSlidingWindow(int[] nums, int k) {
       List<Integer> ans = new ArrayList<>();
-      Queue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+      Queue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(b[0], a[0]));
       for (int i = 0; i < k; i++) {
-         pq.offer(nums[i]);
+         pq.offer(new int[]{nums[i], i});
       }
-      ans.add(pq.element());
+      ans.add(pq.element()[0]);
 
       int left = 0;
       int right = k;
       while (right < nums.length) {
-         pq.remove(nums[left]);
-         pq.add(nums[right]);
+         pq.add(new int[]{nums[right], right});
+         while (!pq.isEmpty() && pq.peek()[1] <= left) {
+            pq.poll();
+         }
          left++;
          right++;
-         ans.add(pq.element());
+         ans.add(pq.peek()[0]);
       }
 
       int[] res = new int[ans.size()];
