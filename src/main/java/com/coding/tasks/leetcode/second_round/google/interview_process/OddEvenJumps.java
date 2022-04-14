@@ -22,12 +22,9 @@ public class OddEvenJumps {
       oddFlag[oddFlag.length - 1] = true;
       evenFlag[evenFlag.length - 1] = true;
 
+      TreeMap<Integer, Integer> tree = new TreeMap<>();
+      tree.put(arr[arr.length - 1], arr.length - 1);
       for (int i = arr.length - 2; i >= 0; i--) {
-         TreeMap<Integer, Integer> tree = new TreeMap<>();
-         for (int j = i + 1; j < arr.length; j++) {
-            tree.put(arr[j], j);
-         }
-
          Map.Entry<Integer, Integer> oddEntry = tree.ceilingEntry(arr[i]);
          if (oddEntry != null && evenFlag[oddEntry.getValue()]) {
             oddFlag[i] = true;
@@ -38,6 +35,8 @@ public class OddEvenJumps {
          if (evenEntry != null && oddFlag[evenEntry.getValue()]) {
             evenFlag[i] = true;
          }
+
+         tree.put(arr[i], i);
       }
       return ans;
    }
