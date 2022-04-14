@@ -1,7 +1,7 @@
 package com.coding.tasks.leetcode.second_round.google.arrays_and_strings;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 public class LongestSubstringWithoutRepeatingChar {
 
@@ -17,23 +17,16 @@ public class LongestSubstringWithoutRepeatingChar {
 
    private static int lengthOfLongestSubstring(String s) {
       int left = 0;
-      int right = 0;
-      Map<Character, Integer> mapping = new HashMap<>();
+      Set<Character> mapping = new HashSet<>();
       char[] chars = s.toCharArray();
       int max = 0;
-      while (right < chars.length) {
-         if (mapping.containsKey(chars[right])) {
-            while (mapping.containsKey(chars[right])) {
-               mapping.put(chars[left], mapping.get(chars[left]) - 1);
-               if (mapping.get(chars[left]) == 0) {
-                  mapping.remove(chars[left]);
-               }
-               left++;
-            }
-         } else {
-            mapping.put(chars[right], 1);
-            right++;
+      for (char aChar : chars) {
+         while (mapping.contains(aChar)) {
+            mapping.remove(chars[left]);
+            left++;
          }
+
+         mapping.add(aChar);
          max = Math.max(max, mapping.size());
       }
 
