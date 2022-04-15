@@ -12,20 +12,13 @@ public class JumpInt {
    }
 
    private static boolean canJump(int[] nums) {
-      boolean[] dp = new boolean[nums.length];
-      dp[dp.length - 1] = true;
-
+      int lastTrueIndex = nums.length - 1;
       for (int i = nums.length - 2; i >= 0; i--) {
-         int counter = 1;
-         while (counter <= nums[i]) {
-            if (dp[i + counter]) {
-               dp[i] = true;
-               break;
-            }
-            counter++;
+         if (i + nums[i] >= lastTrueIndex) {
+            lastTrueIndex = i;
          }
       }
 
-      return dp[0];
+      return lastTrueIndex == 0;
    }
 }
