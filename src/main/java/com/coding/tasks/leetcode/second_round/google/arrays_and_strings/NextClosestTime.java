@@ -1,15 +1,48 @@
 package com.coding.tasks.leetcode.second_round.google.arrays_and_strings;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
 
 public class NextClosestTime {
 
    public static void main(String[] args) {
       System.out.println(nextClosestTime("19:34")); // 19:39
+      System.out.println(nextClosestTime1("19:34")); // 19:39
       System.out.println(nextClosestTime("23:59")); // 22:22
+      System.out.println(nextClosestTime1("23:59")); // 22:22
       System.out.println(nextClosestTime("13:55")); // 15:11
+      System.out.println(nextClosestTime1("13:55")); // 15:11
+   }
+
+   private static String nextClosestTime1(String time) {
+      char[] res = time.toCharArray();
+      TreeSet<Character> set = new TreeSet<>(Arrays.asList(res[0], res[1], res[3], res[4]));
+
+      res[4] = next(set, res[4], '9');
+      if (time.charAt(4) < res[4]) {
+         return new String(res);
+      }
+
+      res[3] = next(set, res[3], '5');
+      if (time.charAt(3) < res[3]) {
+         return new String(res);
+      }
+
+      res[1] = next(set, res[1], res[0] == '2' ? '3' : '9');
+      if (time.charAt(1) < res[1]) {
+         return new String(res);
+      }
+
+      res[0] = next(set, res[0], '2');
+      return new String(res);
+   }
+
+   private static char next(TreeSet<Character> set, char c, char limit) {
+      Character n = set.higher(c);
+      return n == null || n > limit ? set.first() : n;
    }
 
    private static String nextClosestTime(String time) {
