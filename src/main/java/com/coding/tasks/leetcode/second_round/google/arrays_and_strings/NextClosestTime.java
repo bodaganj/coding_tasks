@@ -32,19 +32,21 @@ public class NextClosestTime {
    }
 
    private static String getClosestMinutes(String current, List<Integer> all) {
-      if (Integer.parseInt("" + current.charAt(1)) < all.get(all.size() - 1)) { // increase last digit for mins
-         int potentialFirstMinDigit = -1;
+      int secondInt = Integer.parseInt("" + current.charAt(1));
+      int firstInt = Integer.parseInt("" + current.charAt(0));
+
+      int potentialFirstMinDigit = -1;
+      if (secondInt < all.get(all.size() - 1)) { // increase last digit for mins
          for (Integer integer : all) {
-            if (integer > Integer.parseInt("" + current.charAt(1))) {
+            if (integer > secondInt) {
                potentialFirstMinDigit = integer;
                break;
             }
          }
-         return "" + current.charAt(0) + potentialFirstMinDigit;
+         return "" + firstInt + potentialFirstMinDigit;
       } else { // increase first digit for mins
-         int potentialFirstMinDigit = -1;
          for (Integer integer : all) {
-            if (integer > Integer.parseInt("" + current.charAt(0))) {
+            if (integer > firstInt) {
                potentialFirstMinDigit = integer;
                break;
             }
@@ -62,16 +64,19 @@ public class NextClosestTime {
    }
 
    private static String getClosestHours(String current, List<Integer> all) {
-      if (Integer.parseInt("" + current.charAt(0)) == 0) {
-         if (Integer.parseInt("" + current.charAt(1)) < all.get(all.size() - 1)) {
+      int secondInt = Integer.parseInt("" + current.charAt(1));
+      int firstInt = Integer.parseInt("" + current.charAt(0));
+
+      if (firstInt == 0) {
+         if (secondInt < all.get(all.size() - 1)) {
             int potentialFirstMinDigit = -1;
             for (Integer integer : all) {
-               if (integer > Integer.parseInt("" + current.charAt(1))) {
+               if (integer > secondInt) {
                   potentialFirstMinDigit = integer;
                   break;
                }
             }
-            return "" + current.charAt(0) + potentialFirstMinDigit;
+            return "" + firstInt + potentialFirstMinDigit;
          } else {
             if (all.contains(1)) {
                return "" + 1 + all.get(0);
@@ -81,16 +86,16 @@ public class NextClosestTime {
                return "" + all.get(0) + all.get(0);
             }
          }
-      } else if (Integer.parseInt("" + current.charAt(0)) == 1) {
-         if (Integer.parseInt("" + current.charAt(1)) < all.get(all.size() - 1)) {
+      } else if (firstInt == 1) {
+         if (secondInt < all.get(all.size() - 1)) {
             int potentialFirstMinDigit = -1;
             for (Integer integer : all) {
-               if (integer > Integer.parseInt("" + current.charAt(1))) {
+               if (integer > secondInt) {
                   potentialFirstMinDigit = integer;
                   break;
                }
             }
-            return "" + current.charAt(0) + potentialFirstMinDigit;
+            return "" + firstInt + potentialFirstMinDigit;
          } else {
             if (all.contains(2)) {
                return "" + 2 + all.get(0);
@@ -99,16 +104,16 @@ public class NextClosestTime {
             }
          }
       } else {
-         if (Integer.parseInt("" + current.charAt(1)) < all.get(all.size() - 1)) {
+         if (secondInt < all.get(all.size() - 1)) {
             int potentialFirstMinDigit = -1;
             for (Integer integer : all) {
-               if (integer > Integer.parseInt("" + current.charAt(1))) {
+               if (integer > secondInt) {
                   potentialFirstMinDigit = integer;
                   break;
                }
             }
             if (potentialFirstMinDigit < 4 && potentialFirstMinDigit >= 0) {
-               return "" + current.charAt(0) + potentialFirstMinDigit;
+               return "" + firstInt + potentialFirstMinDigit;
             } else {
                return "" + all.get(0) + all.get(0);
             }
