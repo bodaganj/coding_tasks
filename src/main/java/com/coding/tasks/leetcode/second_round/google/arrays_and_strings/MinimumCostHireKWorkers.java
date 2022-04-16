@@ -38,44 +38,51 @@ public class MinimumCostHireKWorkers {
 //   }
 
    private static double mincostToHireWorkers(int[] quality, int[] wage, int k) {
-      int N = quality.length;
-      Worker[] workers = new Worker[N];
-      for (int i = 0; i < N; ++i) {
+      Worker[] workers = new Worker[quality.length];
+      for (int i = 0; i < quality.length; i++) {
          workers[i] = new Worker(quality[i], wage[i]);
       }
-      Arrays.sort(workers);
+      Arrays.sort(workers); // Create array of workers (quality + ratio) and sort it
 
       double ans = Double.MAX_VALUE;
       Queue<Integer> queue = new PriorityQueue<>(Collections.reverseOrder());
-      int ratioSum = 0;
+      int qualitySum = 0;
+
       for (Worker worker : workers) {
          queue.offer(worker.quality);
-         ratioSum += worker.quality;
+
+         /**
+          * (THE CORE OF THE LOGIC) overall wage = overall quality * wage of the worker who will be earning his minimal wage
+          * that is why workers are sorted according to ratio (if I have N ratio, then I can pay to worker with M ratio (M <= N), but not vise versa)
+          */
+         qualitySum += worker.quality;
          while (queue.size() > k) {
-            ratioSum -= queue.poll();
+            qualitySum -= queue.poll();
          }
          if (queue.size() == k) {
-            ans = Math.min(ans, ratioSum * worker.ratio());
+            ans = Math.min(ans, qualitySum * worker.ratio());
          }
       }
       return ans;
    }
+
+   static class Worker implements Comparable<Worker> {
+
+      public int quality, wage;
+
+      public Worker(int q, int w) {
+         quality = q;
+         wage = w;
+      }
+
+      public double ratio() {
+         return (double) wage / quality;
+      }
+
+      public int compareTo(Worker other) {
+         return Double.compare(ratio(), other.ratio());
+      }
+   }
 }
 
-class Worker implements Comparable<Worker> {
 
-   public int quality, wage;
-
-   public Worker(int q, int w) {
-      quality = q;
-      wage = w;
-   }
-
-   public double ratio() {
-      return (double) wage / quality;
-   }
-
-   public int compareTo(Worker other) {
-      return Double.compare(ratio(), other.ratio());
-   }
-}
