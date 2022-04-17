@@ -11,8 +11,6 @@ public class ImplementStrStr {
    }
 
    private static int strStr(String haystack, String needle) {
-//      return haystack.indexOf(needle);
-
       if (needle.equals("")) {
          return 0;
       }
@@ -29,33 +27,6 @@ public class ImplementStrStr {
             j = 0;
          }
       }
-//
       return -1;
-
-//      if (needle.isBlank()) {
-//         return 0;
-//      }
-//
-//      char[] charsOfHaystack = haystack.toCharArray();
-//      char[] charsOfNeedle = needle.toCharArray();
-//      int needleLength = charsOfNeedle.length;
-//
-//      int i = 0;
-//      int j = 0;
-//
-//      while (i < charsOfHaystack.length && j < needleLength) {
-//         if (charsOfHaystack[i] == charsOfNeedle[j]) {
-//            if (j == needleLength - 1) {
-//               return i - needleLength + 1;
-//            }
-//            i++;
-//            j++;
-//         } else {
-//            i = i - j + 1;
-//            j = 0;
-//         }
-//      }
-//
-//      return -1;
    }
 }
