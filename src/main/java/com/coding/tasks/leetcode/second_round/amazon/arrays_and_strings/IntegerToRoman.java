@@ -8,13 +8,15 @@ import java.util.TreeMap;
 public class IntegerToRoman {
 
    public static void main(String[] args) {
-//      System.out.println(intToRoman(3));
-//      System.out.println(intToRoman(4));
-//      System.out.println(intToRoman(12));
-//      System.out.println(intToRoman(113));
-//      System.out.println(intToRoman(114));
-//      System.out.println(intToRoman(1994));
+      System.out.println(intToRoman(3));
+      System.out.println(intToRoman(4));
+      System.out.println(intToRoman(12));
+      System.out.println(intToRoman(113));
+      System.out.println(intToRoman(114));
+      System.out.println(intToRoman(1994));
       System.out.println(intToRoman(10));
+      System.out.println(intToRoman(20));
+      System.out.println(intToRoman(21));
    }
 
    private static String intToRoman(int num) {
@@ -36,10 +38,13 @@ public class IntegerToRoman {
       exceptions.put(900, "CM");
 
       LinkedList<String> list = new LinkedList<>();
-      int counter = 0;
-      do {
-         int curr = num % 10;
-         curr = curr * (int) Math.pow(10, counter);
+      int counter = 1;
+      while (num > 0) {
+         int curr = num % (int) Math.pow(10, counter);
+         while (curr == 0) {
+            counter++;
+            curr = num % (int) Math.pow(10, counter);
+         }
 
          if (mapping.containsKey(curr)) {
             list.addFirst(mapping.get(curr));
@@ -47,30 +52,22 @@ public class IntegerToRoman {
             list.addFirst(exceptions.get(curr));
          } else {
             Integer prevKey = mapping.floorKey(curr);
-            Integer prevOfPrev = mapping.floorKey(prevKey - 1);
-            StringBuilder tmpVal;
-            if (prevOfPrev == null) {
-               int tmpInt = prevKey + prevKey;
-               tmpVal = new StringBuilder(mapping.get(prevKey) + mapping.get(prevKey));
-               while (tmpInt != curr) {
+            StringBuilder tmpVal = new StringBuilder(mapping.get(prevKey));
+            int tmpInt = prevKey;
+            while (tmpInt != curr) {
+               if (tmpInt + prevKey <= curr) {
                   tmpInt += prevKey;
                   tmpVal.append(mapping.get(prevKey));
-               }
-            } else {
-               int tmpInt = prevKey + prevOfPrev;
-               tmpVal = new StringBuilder(mapping.get(prevKey) + mapping.get(prevOfPrev));
-               while (tmpInt != curr) {
-                  tmpInt += prevOfPrev;
-                  tmpVal.append(mapping.get(prevOfPrev));
+               } else {
+                  prevKey = mapping.floorKey(prevKey - 1);
                }
             }
-
             list.addFirst(tmpVal.toString());
          }
 
-         num /= 10;
+         num -= curr;
          counter++;
-      } while (num > 0);
+      }
 
       return String.join("", list);
    }
