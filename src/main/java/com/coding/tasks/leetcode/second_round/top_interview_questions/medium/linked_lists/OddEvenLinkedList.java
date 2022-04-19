@@ -3,7 +3,8 @@ package com.coding.tasks.leetcode.second_round.top_interview_questions.medium.li
 public class OddEvenLinkedList {
 
    public static void main(String[] args) {
-      ListNode l5 = new ListNode(5);
+      ListNode l6 = new ListNode(6);
+      ListNode l5 = new ListNode(5, l6);
       ListNode l4 = new ListNode(4, l5);
       ListNode l3 = new ListNode(3, l4);
       ListNode l2 = new ListNode(2, l3);
@@ -15,10 +16,43 @@ public class OddEvenLinkedList {
          System.out.println(listNode.val);
          listNode = listNode.next;
       }
+      System.out.println("========");
+      ListNode l55 = new ListNode(5);
+      ListNode l44 = new ListNode(4, l55);
+      ListNode l33 = new ListNode(3, l44);
+      ListNode l22 = new ListNode(2, l33);
+      ListNode l11 = new ListNode(1, l22);
+
+      ListNode listNode1 = oddEvenList(l11);
+
+      while (listNode1 != null) {
+         System.out.println(listNode1.val);
+         listNode1 = listNode1.next;
+      }
    }
 
    private static ListNode oddEvenList(ListNode head) {
-      return null;
+      if (head == null || head.next == null) {
+         return head;
+      }
+
+      ListNode dummy = new ListNode(0);
+      dummy.next = head;
+      ListNode even = head.next;
+
+      ListNode tmpOdd = head;
+      ListNode tmpEven = even;
+
+      while (tmpOdd.next != null && tmpEven.next != null) {
+         tmpOdd.next = tmpOdd.next.next;
+         tmpOdd = tmpOdd.next;
+
+         tmpEven.next = tmpEven.next.next;
+         tmpEven = tmpEven.next;
+      }
+
+      tmpOdd.next = even;
+      return dummy.next;
    }
 
    static class ListNode {
