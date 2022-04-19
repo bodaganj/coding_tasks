@@ -3,26 +3,37 @@ package com.coding.tasks.leetcode.second_round.top_interview_questions.easy.link
 public class ReverseLinkedList {
 
    public static void main(String[] args) {
-//      ListNode l3 = new ListNode(3, null);
-//      ListNode l2 = new ListNode(2, l3);
-//      ListNode l1 = new ListNode(1, l2);
-//
-//      ListNode tmp = l1;
-//      while (tmp != null) {
-//         System.out.print(tmp.val + " ");
-//         tmp = tmp.next;
-//      }
-//
-//      tmp = reverseList(l1);
-//      System.out.println();
-//
-//      while (tmp != null) {
-//         System.out.print(tmp.val + " ");
-//         tmp = tmp.next;
-//      }
-//   }
-//
-//   private static ListNode reverseList(ListNode head) {
+      ListNode l3 = new ListNode(3, null);
+      ListNode l2 = new ListNode(2, l3);
+      ListNode l1 = new ListNode(1, l2);
+
+      ListNode tmp = l1;
+      while (tmp != null) {
+         System.out.print(tmp.val + " ");
+         tmp = tmp.next;
+      }
+
+      tmp = reverseList(l1);
+      System.out.println();
+
+      while (tmp != null) {
+         System.out.print(tmp.val + " ");
+         tmp = tmp.next;
+      }
+   }
+
+   private static ListNode reverseList(ListNode head) {
+      ListNode prev = null;
+      ListNode curr = head;
+
+      while (curr != null) {
+         ListNode tmp = curr.next;
+         curr.next = prev;
+         prev = curr;
+         curr = tmp;
+      }
+
+      return prev;
    }
 
    static class ListNode {

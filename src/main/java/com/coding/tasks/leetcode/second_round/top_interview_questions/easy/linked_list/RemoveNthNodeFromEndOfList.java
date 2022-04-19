@@ -77,6 +77,25 @@ public class RemoveNthNodeFromEndOfList {
       return dummy.next;
    }
 
+   private static ListNode removeNthFromEndOneLoop(ListNode head, int n) {
+      ListNode dummy = new ListNode(0, head);
+      ListNode tmp = dummy;
+      int counterRight = 0;
+      int counterLeft = 0;
+      ListNode toDelete = dummy;
+      while (tmp != null) {
+         tmp = tmp.next;
+         counterRight++;
+         if (counterRight - n > counterLeft + 1) {
+            counterLeft++;
+            toDelete = toDelete.next;
+         }
+      }
+      toDelete.next = toDelete.next.next;
+
+      return dummy.next;
+   }
+
    static class ListNode {
 
       int val;
