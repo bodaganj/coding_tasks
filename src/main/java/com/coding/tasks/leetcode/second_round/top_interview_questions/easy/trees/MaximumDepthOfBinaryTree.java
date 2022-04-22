@@ -1,5 +1,8 @@
 package com.coding.tasks.leetcode.second_round.top_interview_questions.easy.trees;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class MaximumDepthOfBinaryTree {
 
    private static int max = 0;
@@ -27,7 +30,7 @@ public class MaximumDepthOfBinaryTree {
       System.out.println(maxDepth(tn0));
    }
 
-   private static int maxDepth(TreeNode root) {
+   private static int maxDepth1(TreeNode root) {
       if (root == null) {
          return 0;
       }
@@ -43,6 +46,32 @@ public class MaximumDepthOfBinaryTree {
          getMax(node.left, current + 1);
          getMax(node.right, current + 1);
       }
+   }
+
+   private static int maxDepth(TreeNode root) {
+      int max = 0;
+      if (root == null) {
+         return max;
+      }
+
+      Queue<TreeNode> queue = new LinkedList<>();
+      queue.offer(root);
+
+      while (!queue.isEmpty()) {
+         max++;
+         int size = queue.size();
+         while (size > 0) {
+            size--;
+            TreeNode poll = queue.poll();
+            if (poll.left != null) {
+               queue.offer(poll.left);
+            }
+            if (poll.right != null) {
+               queue.offer(poll.right);
+            }
+         }
+      }
+      return max;
    }
 
    static class TreeNode {
