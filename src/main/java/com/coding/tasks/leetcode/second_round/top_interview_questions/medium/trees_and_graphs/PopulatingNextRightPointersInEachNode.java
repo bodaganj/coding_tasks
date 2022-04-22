@@ -10,11 +10,32 @@ public class PopulatingNextRightPointersInEachNode {
       Node node3 = new Node(3, node6, node7, null);
       Node node2 = new Node(2, node4, node5, null);
       Node node1 = new Node(1, node2, node3, null);
-//      Node connect = connect(node1);
-//      System.out.println(connect);
-//   }
-//
-//   private static Node connect(Node root) {
+      Node connect = connect(node1);
+      System.out.println(connect);
+   }
+
+   private static Node connect(Node root) {
+      if (root == null) {
+         return null;
+      }
+
+      connectNext(root);
+      return root;
+   }
+
+   private static void connectNext(Node root) {
+      if (root == null) {
+         return;
+      }
+
+      if (root.left != null) {
+         root.left.next = root.right;
+      }
+      if (root.right != null && root.next != null) {
+         root.right.next = root.next.left;
+      }
+      connectNext(root.left);
+      connectNext(root.right);
    }
 
    static class Node {
