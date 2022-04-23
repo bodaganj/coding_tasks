@@ -1,11 +1,7 @@
 package com.coding.tasks.leetcode.second_round.top_interview_questions.hard.trees_and_graphs;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -41,14 +37,11 @@ public class FriendCircles {
    }
 
    /**
-    * 1. create list of all connected cities
-    * 2. go for all cities (increment counter if not visited yet)
-    * 3. mark the city and all its connected cities as visited
-    * 4. return counter
+    * 1. go for all cities (increment counter if not visited yet)
+    * 2. mark the city and all its connected cities as visited
+    * 3. return counter
     */
    private static int findCircleNum(int[][] isConnected) {
-      Map<Integer, List<Integer>> mapping = createMapping(isConnected);
-
       int counter = 0;
       Set<Integer> visited = new HashSet<>();
       for (int i = 0; i < isConnected.length; i++) {
@@ -64,11 +57,12 @@ public class FriendCircles {
                while (size > 0) {
                   size--;
                   Integer poll = queue.poll();
-                  List<Integer> tmp = mapping.get(poll);
-                  for (Integer integer : tmp) {
-                     if (!visited.contains(integer)) {
-                        queue.offer(integer);
-                        visited.add(integer);
+                  for (int j = 0; j < isConnected[0].length; j++) {
+                     if (isConnected[poll][j] == 1) {
+                        if (!visited.contains(j)) {
+                           queue.offer(j);
+                           visited.add(j);
+                        }
                      }
                   }
                }
@@ -77,23 +71,5 @@ public class FriendCircles {
       }
 
       return counter;
-   }
-
-   private static Map<Integer, List<Integer>> createMapping(int[][] isConnected) {
-      Map<Integer, List<Integer>> mapping = new HashMap<>();
-      for (int i = 0; i < isConnected.length; i++) {
-         for (int j = i; j < isConnected[0].length; j++) {
-            if (isConnected[i][j] == 1) {
-               List<Integer> tmpI = mapping.getOrDefault(i, new ArrayList<>());
-               tmpI.add(j);
-               mapping.put(i, tmpI);
-
-               List<Integer> tmpJ = mapping.getOrDefault(j, new ArrayList<>());
-               tmpJ.add(i);
-               mapping.put(j, tmpJ);
-            }
-         }
-      }
-      return mapping;
    }
 }
