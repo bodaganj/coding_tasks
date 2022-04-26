@@ -2,15 +2,18 @@ package com.coding.tasks.leetcode.second_round.amazon.trees_and_graphs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 
 public class WordLadderII {
 
    public static void main(String[] args) {
       System.out.println(findLadders("hit", "cog", List.of("hot", "dot", "dog", "lot", "log", "cog")));
+      System.out.println(findLadders("a", "c", List.of("a", "b", "c")));
    }
 
    private static List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
@@ -30,11 +33,14 @@ public class WordLadderII {
       path.add(beginWord);
       queuePath.offer(path);
 
+      Set<String> visited = new HashSet<>();
+
       while (!queueWords.isEmpty()) {
          int size = queueWords.size();
          while (size > 0) {
             String wordPoll = queueWords.poll();
             List<String> pathPoll = queuePath.poll();
+            visited.add(wordPoll);
 
             if (wordPoll.equals(endWord)) {
                if (pathPoll.size() < maxLength) {
@@ -43,8 +49,8 @@ public class WordLadderII {
                }
                ans.add(pathPoll);
             } else {
-               for (String s : wordList) {
-                  if (!s.equals(wordPoll) && areSimilar(wordPoll, s)) {
+               for (String s : mapping.get(wordPoll)) {
+                  if (!visited.contains(s)) {
                      queueWords.offer(s);
 
                      List<String> tmp = new ArrayList<>(pathPoll);
@@ -68,27 +74,15 @@ public class WordLadderII {
    private static Map<String, List<String>> getMapping(String beginWord, List<String> wordList) {
       Map<String, List<String>> mapping = new HashMap<>();
 
-      List<String> beginSimilar = new ArrayList<>();
-      for (String s : wordList) {
-         if (areSimilar(beginWord, s)) {
-            beginSimilar.add(s);
-         }
-      }
-      mapping.put(beginWord, beginSimilar);
+      Set<String> set = new HashSet<>(wordList);
+      set.add(beginWord);
 
-      for (int i = 0; i < wordList.size(); i++) {
-         for (int j = i + 1; j < wordList.size(); j++) {
-            String first = wordList.get(i);
-            String second = wordList.get(j);
-
-            if (areSimilar(first, second)) {
-               List<String> tmp1 = mapping.getOrDefault(first, new ArrayList<>());
-               tmp1.add(second);
-               mapping.put(first, tmp1);
-
-               List<String> tmp2 = mapping.getOrDefault(second, new ArrayList<>());
-               tmp2.add(first);
-               mapping.put(second, tmp2);
+      for (String elem1 : set) {
+         for (String elem2 : set) {
+            if (!elem1.equals(elem2) && areSimilar(elem1, elem2)) {
+               List<String> tmp = mapping.getOrDefault(elem1, new ArrayList<>());
+               tmp.add(elem2);
+               mapping.put(elem1, tmp);
             }
          }
       }
