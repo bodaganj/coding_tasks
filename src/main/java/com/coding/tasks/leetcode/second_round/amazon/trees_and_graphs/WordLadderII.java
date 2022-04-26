@@ -18,12 +18,12 @@ public class WordLadderII {
 
    private static List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
       List<List<String>> ans = new ArrayList<>();
-      int maxLength = Integer.MAX_VALUE;
 
       Map<String, List<String>> mapping = getMapping(beginWord, wordList);
       if (!mapping.containsKey(endWord)) {
          return ans;
       }
+      Set<String> visited = new HashSet<>();
 
       Queue<String> queueWords = new LinkedList<>();
       queueWords.offer(beginWord);
@@ -33,8 +33,6 @@ public class WordLadderII {
       path.add(beginWord);
       queuePath.offer(path);
 
-      Set<String> visited = new HashSet<>();
-
       while (!queueWords.isEmpty()) {
          int size = queueWords.size();
          while (size > 0) {
@@ -43,10 +41,6 @@ public class WordLadderII {
             visited.add(wordPoll);
 
             if (wordPoll.equals(endWord)) {
-               if (pathPoll.size() < maxLength) {
-                  maxLength = pathPoll.size();
-                  ans = new ArrayList<>();
-               }
                ans.add(pathPoll);
             } else {
                for (String s : mapping.get(wordPoll)) {
