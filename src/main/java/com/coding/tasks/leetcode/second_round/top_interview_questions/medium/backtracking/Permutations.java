@@ -13,10 +13,25 @@ public class Permutations {
 
    private static List<List<Integer>> permute(int[] nums) {
       List<List<Integer>> total = new ArrayList<>();
-      rec(nums, new HashSet<>(), new ArrayList<>(), total);
+      rec(new ArrayList<>(), nums, new HashSet<>(), total);
       return total;
    }
 
-   private static void rec(int[] nums, Set<Integer> usedIndexes, List<Integer> current, List<List<Integer>> total) {
+   private static void rec(List<Integer> current, int[] nums, Set<Integer> used, List<List<Integer>> total) {
+      if (current.size() == nums.length) {
+         total.add(current);
+      } else {
+         for (int num : nums) {
+            if (!used.contains(num)) {
+               Set<Integer> newUsed = new HashSet<>(used);
+               newUsed.add(num);
+
+               List<Integer> tmp = new ArrayList<>(current);
+               tmp.add(num);
+
+               rec(tmp, nums, newUsed, total);
+            }
+         }
+      }
    }
 }
