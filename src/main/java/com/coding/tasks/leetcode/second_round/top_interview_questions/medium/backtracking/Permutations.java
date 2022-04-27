@@ -19,17 +19,17 @@ public class Permutations {
 
    private static void rec(List<Integer> current, int[] nums, Set<Integer> used, List<List<Integer>> total) {
       if (current.size() == nums.length) {
-         total.add(current);
+         total.add(new ArrayList<>(current));
       } else {
          for (int num : nums) {
             if (!used.contains(num)) {
-               Set<Integer> newUsed = new HashSet<>(used);
-               newUsed.add(num);
+               used.add(num);
+               current.add(num);
 
-               List<Integer> tmp = new ArrayList<>(current);
-               tmp.add(num);
+               rec(current, nums, used, total);
 
-               rec(tmp, nums, newUsed, total);
+               used.remove(num);
+               current.remove(current.size() - 1);
             }
          }
       }
