@@ -12,15 +12,13 @@ public class WordSearchII {
    private static int[][] dirs = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
    public static void main(String[] args) {
-//      System.out.println(findWords(new char[][]{
-//                                      {'o', 'a', 'a', 'n'}, {'e', 't', 'a', 'e'}, {'i', 'h', 'k', 'r'}, {'i', 'f', 'l', 'v'}
-//                                   },
-//                                   new String[]{"oath", "pea", "eat", "rain"}));
-
       System.out.println(findWords(new char[][]{
                                       {'o', 'a', 'a', 'n'}, {'e', 't', 'a', 'e'}, {'i', 'h', 'k', 'r'}, {'i', 'f', 'l', 'v'}
                                    },
                                    new String[]{"oath", "pea", "eat", "rain"}));
+
+      System.out.println(findWords(new char[][]{{'a', 'b', 'c'}, {'a', 'e', 'd'}, {'a', 'f', 'g'}},
+                                   new String[]{"abcdefg", "gfedcbaaa", "eaabcdgfa", "befa", "dgc", "ade"}));
    }
 
    private static List<String> findWords(char[][] board, String[] words) {
@@ -37,7 +35,7 @@ public class WordSearchII {
             for (List<Integer> coordinates : startingPointsOfAllChars.get(word.charAt(0))) {
                Set<List<Integer>> visited = new HashSet<>();
                visited.add(coordinates);
-               if (dfs(coordinates, board, word.substring(1), visited)) {
+               if (dfs(coordinates, board, word, 1, visited)) {
                   ans.add(word);
                   break;
                }
@@ -49,8 +47,8 @@ public class WordSearchII {
       return ans;
    }
 
-   private static boolean dfs(List<Integer> coordinates, char[][] board, String str, Set<List<Integer>> visited) {
-      if (str.isEmpty()) {
+   private static boolean dfs(List<Integer> coordinates, char[][] board, String word, int index, Set<List<Integer>> visited) {
+      if (index == word.length()) {
          return true;
       }
 
@@ -58,12 +56,17 @@ public class WordSearchII {
          int i = coordinates.get(0) + dir[0];
          int j = coordinates.get(1) + dir[1];
 
-         if (i >= 0 && i < board.length && j >= 0 && j < board[0].length && !visited.contains(List.of(i,
-                                                                                                      j)) && board[i][j] == str.charAt(0)) {
-            visited.add(coordinates);
-            boolean flag = dfs(List.of(i, j), board, str.substring(1), visited);
-            visited.remove(coordinates);
-            return flag;
+         if (i >= 0 && i < board.length && j >= 0 && j < board[0].length &&
+            !visited.contains(List.of(i, j)) && board[i][j] == word.charAt(index)) {
+
+            visited.add(List.of(i, j));
+            boolean flag = dfs(List.of(i, j), board, word, index + 1, visited);
+
+            if (flag) {
+               return true;
+            } else {
+               visited.remove(List.of(i, j));
+            }
          }
       }
 
