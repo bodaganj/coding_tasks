@@ -6,14 +6,17 @@ public class RegularExpressionMatching {
       System.out.println(isMatch("abgcccfklm", "ab.c*f.*"));
       System.out.println(isMatch("aa", "a*"));
       System.out.println(isMatch("aab", "c*a*b"));
+      System.out.println(isMatch("aaa", "ab*ac*a"));
    }
 
    private static boolean isMatch(String s, String p) {
       String pattern = removeRedundantAsterisks(p);
       boolean[][] dp = new boolean[s.length() + 1][pattern.length() + 1];
       dp[0][0] = true;
-      if (pattern.charAt(0) == '*') {
-         dp[0][1] = true;
+      for (int i = 1; i < dp[0].length; i++) {
+         if (pattern.charAt(i - 1) == '*') {
+            dp[0][i] = dp[0][i - 2];
+         }
       }
 
       for (int i = 0; i < s.length(); i++) {
@@ -21,14 +24,9 @@ public class RegularExpressionMatching {
             if (s.charAt(i) == pattern.charAt(j) || pattern.charAt(j) == '.') {
                dp[i + 1][j + 1] = dp[i][j];
             } else if (pattern.charAt(j) == '*') {
-               if (pattern.charAt(j - 1) == '.') {
-                  if (dp[i + 1][j] || dp[i][j + 1]) {
-                     dp[i + 1][j + 1] = true;
-                  }
-               } else if (pattern.charAt(j - 1) == s.charAt(i)) {
-                  if (dp[i + 1][j] || dp[i][j + 1]) {
-                     dp[i + 1][j + 1] = true;
-                  }
+               dp[i + 1][j + 1] = dp[i + 1][j - 1];
+               if (pattern.charAt(j - 1) == '.' || pattern.charAt(j - 1) == s.charAt(i)) {
+                  dp[i + 1][j + 1] = dp[i + 1][j + 1] | dp[i][j + 1];
                }
             }
          }
