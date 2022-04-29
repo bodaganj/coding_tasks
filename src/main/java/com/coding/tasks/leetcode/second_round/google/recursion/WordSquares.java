@@ -11,6 +11,7 @@ import java.util.Queue;
 public class WordSquares {
 
    public static void main(String[] args) {
+      System.out.println(wordSquares(new String[]{"abaa", "aaab", "baaa", "aaba"}));
       System.out.println(wordSquares(new String[]{"area", "lead", "wall", "lady", "ball"}));
       System.out.println(wordSquares(new String[]{"a"}));
    }
@@ -42,7 +43,7 @@ public class WordSquares {
          for (String withPrefix : stringWithPrefix) {
             current.add(withPrefix);
             rec(trie, words, current, ans);
-            current.remove(withPrefix);
+            current.remove(current.size() - 1);
          }
       }
    }
