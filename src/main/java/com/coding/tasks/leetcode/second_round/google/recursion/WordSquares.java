@@ -11,42 +11,38 @@ import java.util.Queue;
 public class WordSquares {
 
    public static void main(String[] args) {
-      System.out.println(wordSquares(new String[]{"ball", "area", "lead", "lady"}));
+      System.out.println(wordSquares(new String[]{"area", "lead", "wall", "lady", "ball"}));
+      System.out.println(wordSquares(new String[]{"a"}));
    }
 
    private static List<List<String>> wordSquares(String[] words) {
-      if (words.length < 4) {
-         return Collections.emptyList();
-      } else {
-         Trie trie = createTrie(words);
-         List<List<String>> ans = new ArrayList<>();
-         rec(trie, words, new ArrayList<>(), ans);
-         return ans;
+      Trie trie = createTrie(words);
+      List<List<String>> ans = new ArrayList<>();
+      for (String word : words) {
+         List<String> current = new ArrayList<>();
+         current.add(word);
+         rec(trie, words, current, ans);
       }
+
+      return ans;
    }
 
    private static void rec(Trie trie, String[] words, List<String> current, List<List<String>> ans) {
       if (current.size() == words[0].length()) {
          ans.add(new ArrayList<>(current));
       } else {
-         for (String word : words) {
-            if (current.isEmpty()) {
-               current.add(word);
-               rec(trie, words, current, ans);
-            } else {
-               StringBuilder sb = new StringBuilder();
-               int size = current.size();
-               for (String s : current) {
-                  sb.append(s.charAt(size));
-               }
-               String prefix = sb.toString();
-               List<String> stringWithPrefix = getStringWithPrefix(prefix, trie);
-               for (String withPrefix : stringWithPrefix) {
-                  current.add(withPrefix);
-                  rec(trie, words, current, ans);
-                  current.remove(withPrefix);
-               }
-            }
+         StringBuilder sb = new StringBuilder();
+         int size = current.size();
+         for (String s : current) {
+            sb.append(s.charAt(size));
+         }
+         String prefix = sb.toString();
+
+         List<String> stringWithPrefix = getStringWithPrefix(prefix, trie);
+         for (String withPrefix : stringWithPrefix) {
+            current.add(withPrefix);
+            rec(trie, words, current, ans);
+            current.remove(withPrefix);
          }
       }
    }
