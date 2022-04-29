@@ -3,14 +3,13 @@ package com.coding.tasks.leetcode.second_round.google.recursion;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 
 public class WordSquares {
 
    public static void main(String[] args) {
+      System.out.println(wordSquares(new String[]{"abat", "baba", "atan", "atal"}));
       System.out.println(wordSquares(new String[]{"abaa", "aaab", "baaa", "aaba"}));
       System.out.println(wordSquares(new String[]{"area", "lead", "wall", "lady", "ball"}));
       System.out.println(wordSquares(new String[]{"a"}));
@@ -58,33 +57,7 @@ public class WordSquares {
          }
       }
 
-      List<String> ans = new ArrayList<>();
-      // try all children of tmp
-      Queue<TreeNode> nodesQueue = new LinkedList<>();
-      Queue<String> stringQueue = new LinkedList<>();
-      for (Map.Entry<Character, TreeNode> entry : tmp.children.entrySet()) {
-         nodesQueue.offer(entry.getValue());
-         stringQueue.offer(prefix);
-      }
-
-      while (!nodesQueue.isEmpty()) {
-         int size = nodesQueue.size();
-         while (size > 0) {
-            size--;
-            String string = stringQueue.poll();
-            TreeNode poll = nodesQueue.poll();
-            String newStr = string + poll.value;
-            if (poll.isWord) {
-               ans.add(newStr);
-            } else {
-               for (Map.Entry<Character, TreeNode> entry : poll.children.entrySet()) {
-                  nodesQueue.offer(entry.getValue());
-                  stringQueue.offer(newStr);
-               }
-            }
-         }
-      }
-      return ans;
+      return tmp.listWords;
    }
 
    private static Trie createTrie(String[] words) {
@@ -99,8 +72,8 @@ public class WordSquares {
                tmp.children.put(aChar, treeNode);
                tmp = treeNode;
             }
+            tmp.listWords.add(word);
          }
-         tmp.isWord = true;
       }
       return trie;
    }
@@ -118,7 +91,7 @@ public class WordSquares {
 
       public Character value;
       public Map<Character, TreeNode> children = new HashMap<>();
-      public boolean isWord = false;
+      public List<String> listWords = new ArrayList<>();
 
       public TreeNode(Character value) {
          this.value = value;
