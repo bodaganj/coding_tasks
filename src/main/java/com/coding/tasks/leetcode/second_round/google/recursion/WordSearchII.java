@@ -46,25 +46,23 @@ public class WordSearchII {
          if (newNode.word != null) {
             ans.add(newNode.word);
             newNode.word = null;
-            removeWordFromTrie(newNode.word);
          }
 
-         for (int[] dir : dirs) {
-            int i = coordinates.get(0) + dir[0];
-            int j = coordinates.get(1) + dir[1];
-            List<Integer> newCoordinates = List.of(i, j);
+         if (!newNode.children.isEmpty()) {
+            for (int[] dir : dirs) {
+               int i = coordinates.get(0) + dir[0];
+               int j = coordinates.get(1) + dir[1];
+               List<Integer> newCoordinates = List.of(i, j);
 
-            if (i >= 0 && i < matrix.length && j >= 0 && j < matrix[0].length && !visited.contains(newCoordinates)) {
-               visited.add(newCoordinates);
-               dfs(newCoordinates, visited, newNode, ans);
-               visited.remove(newCoordinates);
+               if (i >= 0 && i < matrix.length && j >= 0 && j < matrix[0].length && !visited.contains(newCoordinates) &&
+                  newNode.children.containsKey(matrix[newCoordinates.get(0)][newCoordinates.get(1)])) {
+                  visited.add(newCoordinates);
+                  dfs(newCoordinates, visited, newNode, ans);
+                  visited.remove(newCoordinates);
+               }
             }
          }
       }
-   }
-
-   private static void removeWordFromTrie(String word) {
-
    }
 
    private static Trie createTrie(String[] words) {
@@ -75,7 +73,7 @@ public class WordSearchII {
             if (tmp.children.containsKey(aChar)) {
                tmp = tmp.children.get(aChar);
             } else {
-               TreeNode newNode = new TreeNode(aChar);
+               TreeNode newNode = new TreeNode();
                tmp.children.put(aChar, newNode);
                tmp = newNode;
             }
@@ -91,18 +89,16 @@ public class WordSearchII {
       public TreeNode root;
 
       public Trie() {
-         this.root = new TreeNode(' ');
+         this.root = new TreeNode();
       }
    }
 
    static class TreeNode {
 
-      public Character val;
       public Map<Character, TreeNode> children = new HashMap<>();
       public String word = null;
 
-      public TreeNode(Character val) {
-         this.val = val;
+      public TreeNode() {
       }
    }
 }
