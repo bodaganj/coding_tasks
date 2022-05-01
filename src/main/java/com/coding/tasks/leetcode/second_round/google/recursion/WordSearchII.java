@@ -14,8 +14,8 @@ public class WordSearchII {
    private static int[][] dirs = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
    public static void main(String[] args) {
-//      System.out.println(findWords(new char[][]{{'o', 'a', 'a', 'n'}, {'e', 't', 'a', 'e'}, {'i', 'h', 'k', 'r'}, {'i', 'f', 'l', 'v'}},
-//                                   new String[]{"oath", "pea", "eat", "rain"}));
+      System.out.println(findWords(new char[][]{{'o', 'a', 'a', 'n'}, {'e', 't', 'a', 'e'}, {'i', 'h', 'k', 'r'}, {'i', 'f', 'l', 'v'}},
+                                   new String[]{"oath", "pea", "eat", "rain"}));
 
       System.out.println(findWords(new char[][]{{'a'}},
                                    new String[]{"a"}));
@@ -32,7 +32,7 @@ public class WordSearchII {
             Set<List<Integer>> visited = new HashSet<>();
             visited.add(currentCoordinates);
             dfs(currentCoordinates, visited, trie.root, ans);
-            visited.add(currentCoordinates);
+            visited.remove(currentCoordinates);
          }
       }
 
@@ -40,21 +40,25 @@ public class WordSearchII {
    }
 
    private static void dfs(List<Integer> coordinates, Set<List<Integer>> visited, TreeNode node, List<String> ans) {
-      if (node.word != null) {
-         ans.add(node.word);
-         node.word = null;
-         removeWordFromTrie(node.word);
-      }
+      if (node.children.containsKey(matrix[coordinates.get(0)][coordinates.get(1)])) {
+         TreeNode newNode = node.children.get(matrix[coordinates.get(0)][coordinates.get(1)]);
 
-      for (int[] dir : dirs) {
-         int i = coordinates.get(0) + dir[0];
-         int j = coordinates.get(1) + dir[1];
+         if (newNode.word != null) {
+            ans.add(newNode.word);
+            newNode.word = null;
+            removeWordFromTrie(newNode.word);
+         }
 
-         if (i >= 0 && i < matrix.length && j >= 0 && j < matrix[0].length && node.children.containsKey(matrix[i][j])) {
+         for (int[] dir : dirs) {
+            int i = coordinates.get(0) + dir[0];
+            int j = coordinates.get(1) + dir[1];
             List<Integer> newCoordinates = List.of(i, j);
-            visited.add(newCoordinates);
-            dfs(newCoordinates, visited, node.children.get(matrix[i][j]), ans);
-            visited.add(newCoordinates);
+
+            if (i >= 0 && i < matrix.length && j >= 0 && j < matrix[0].length && !visited.contains(newCoordinates)) {
+               visited.add(newCoordinates);
+               dfs(newCoordinates, visited, newNode, ans);
+               visited.remove(newCoordinates);
+            }
          }
       }
    }
