@@ -15,21 +15,15 @@ public class MeetingRooms2 {
    private static int minMeetingRooms(int[][] intervals) {
       Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
 
-      int max = 1;
       Queue<Integer> queue = new PriorityQueue<>();
       for (int[] interval : intervals) {
-         if (queue.isEmpty()) {
-            queue.offer(interval[1]);
-         } else {
+         if (!queue.isEmpty()) {
             if (queue.peek() <= interval[0]) {
                queue.poll();
-               queue.offer(interval[1]);
-            } else {
-               queue.offer(interval[1]);
-               max = Math.max(max, queue.size());
             }
          }
+         queue.offer(interval[1]);
       }
-      return max;
+      return queue.size();
    }
 }
