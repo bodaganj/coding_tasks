@@ -6,6 +6,8 @@ public class PeakIndexInMountainArray {
       System.out.println(peakIndexInMountainArray(new int[]{0, 1, 0}));
       System.out.println(peakIndexInMountainArray(new int[]{0, 2, 1, 0}));
       System.out.println(peakIndexInMountainArray(new int[]{0, 10, 5, 2}));
+      System.out.println(peakIndexInMountainArray(new int[]{0, 4, 5, 2}));
+      System.out.println(peakIndexInMountainArray(new int[]{3, 5, 3, 2, 0}));
    }
 
    private static int peakIndexInMountainArray(int[] arr) {
