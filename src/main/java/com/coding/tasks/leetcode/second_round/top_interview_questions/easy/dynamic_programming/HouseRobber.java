@@ -16,8 +16,7 @@ public class HouseRobber {
 
       int fMax = nums[0];
       for (int i = 2; i < nums.length; i++) {
-         int tmp = fMax + nums[i];
-         nums[i] = tmp;
+         nums[i] = fMax + nums[i];
          fMax = Math.max(fMax, nums[i - 1]);
       }
 
