@@ -18,8 +18,9 @@ public class CoinChange {
       int[][] dp = new int[coins.length + 1][amount + 1];
 
       for (int i = 1; i < dp.length; i++) {
+         int currentCoin = coins[i - 1];
          for (int j = 1; j < dp[0].length; j++) {
-            if (j == coins[i - 1]) {
+            if (j == currentCoin) {
                dp[i][j] = 1;
             } else if (j > coins[i - 1]) {
                if (dp[i - 1][j] != 0 && dp[i][j - coins[i - 1]] != 0) {
