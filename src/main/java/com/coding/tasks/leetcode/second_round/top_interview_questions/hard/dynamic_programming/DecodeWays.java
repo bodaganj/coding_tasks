@@ -22,7 +22,6 @@ public class DecodeWays {
 
    private static int rec(String str, int index, Map<Integer, Integer> memo) {
       int length = str.length();
-
       if (index == length) {
          return 1;
       } else if (memo.containsKey(index)) {
