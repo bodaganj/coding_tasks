@@ -22,20 +22,7 @@ public class BestTimeToBuyAndSellStockWithCooldown {
       int[] dp = new int[length];
       dp[0] = 0;
       for (int i = 1; i < length; i++) {
-         for (int j = 0; j < i; j++) {
-            if (prices[i] > prices[j]) {
-               int currentMax = prices[i] - prices[j];
-               if (j - 2 >= 0) {
-                  int max = 0;
-                  for (int k = 0; k <= j - 2; k++) {
-                     max = Math.max(max, dp[k]);
-                  }
-                  currentMax += max;
-               }
 
-               dp[i] = Math.max(dp[i], currentMax);
-            }
-         }
       }
 
       return Arrays.stream(dp).max().getAsInt();
