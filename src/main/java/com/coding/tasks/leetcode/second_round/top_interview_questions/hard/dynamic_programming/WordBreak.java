@@ -1,8 +1,10 @@
 package com.coding.tasks.leetcode.second_round.top_interview_questions.hard.dynamic_programming;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class WordBreak {
 
@@ -10,16 +12,36 @@ public class WordBreak {
       System.out.println(wordBreak("leetcode", List.of("leet", "code"))); // true
       System.out.println(wordBreak("applepenapple", List.of("apple", "pen"))); // true
       System.out.println(wordBreak("catsandog", List.of("cats", "dog", "sand", "and", "cat"))); // false
-
-//      System.out.println(wordBreak("cars", List.of("car", "ca", "rs")));
-//      System.out.println(wordBreak("azaza", List.of("ff", "fv")));
-//      System.out.println(wordBreak("cars", List.of("car", "ca", "s")));
-//      System.out.println(wordBreak("aaaaaaa", List.of("aaaa", "aaa", "asdf", "sdfd")));
    }
 
    private static boolean wordBreak(String s, List<String> wordDict) {
+      if (!areDistinctOk(s, wordDict)) {
+         return false;
+      }
+
       TreeNode root = createTrie(wordDict);
       return dfs(s, root);
+   }
+
+   private static boolean areDistinctOk(String s, List<String> wordDict) {
+      Set<Character> distinctS = new HashSet<>();
+      for (char c : s.toCharArray()) {
+         distinctS.add(c);
+      }
+
+      Set<Character> distinctW = new HashSet<>();
+      for (String word : wordDict) {
+         for (char c : word.toCharArray()) {
+            distinctW.add(c);
+         }
+      }
+
+      for (Character distinct : distinctS) {
+         if (!distinctW.contains(distinct)) {
+            return false;
+         }
+      }
+      return true;
    }
 
    private static boolean dfs(String s, TreeNode node) {
@@ -47,10 +69,10 @@ public class WordBreak {
    }
 
    private static TreeNode createTrie(List<String> wordDict) {
-      Trie trie = new Trie();
+      TreeNode root = new TreeNode(' ');
       TreeNode tmp;
       for (String word : wordDict) {
-         tmp = trie.root;
+         tmp = root;
          for (char aChar : word.toCharArray()) {
             if (tmp.children.containsKey(aChar)) {
                tmp = tmp.children.get(aChar);
@@ -62,12 +84,7 @@ public class WordBreak {
          }
          tmp.word = word;
       }
-      return trie.root;
-   }
-
-   static class Trie {
-
-      public TreeNode root = new TreeNode(' ');
+      return root;
    }
 
    static class TreeNode {
