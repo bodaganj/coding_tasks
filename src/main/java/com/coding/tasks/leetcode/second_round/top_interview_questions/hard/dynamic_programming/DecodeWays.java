@@ -38,11 +38,47 @@ public class DecodeWays {
    }
 
    public static void main(String[] args) {
-//      System.out.println(numDecodings("12"));
-//      System.out.println(numDecodings("226"));
-//      System.out.println(numDecodings("06"));
-//   }
-//
-//   private static int numDecodings(String s) {
+      System.out.println(numDecodings("12"));
+      System.out.println(numDecodings("226"));
+      System.out.println(numDecodings("06"));
+      System.out.println(numDecodings("27"));
+      System.out.println(numDecodings("10011"));
+   }
+
+   private static int numDecodings(String s) {
+      if (s.charAt(0) == '0') {
+         return 0;
+      }
+      return rec(s);
+   }
+
+   private static int rec(String str) {
+      if (str.isEmpty()) {
+         return 1;
+      } else if (str.length() > 1 && str.substring(str.length() - 2).equals("00")) {
+         return 0;
+      } else {
+         int counter = 0;
+         char lastChar = str.charAt(str.length() - 1);
+
+         if (lastChar == '0') {
+            counter += rec(str.substring(0, str.length() - 2));
+         } else {
+            counter += rec(str.substring(0, str.length() - 1));
+
+            if (str.length() > 1) {
+               String substring = str.substring(0, str.length() - 2);
+               char beforeLastChar = str.charAt(str.length() - 2);
+
+               if (beforeLastChar == '1') {
+                  counter += rec(substring);
+               } else if (beforeLastChar == '2' && lastChar < '7') {
+                  counter += rec(substring);
+               }
+            }
+         }
+
+         return counter;
+      }
    }
 }
