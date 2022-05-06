@@ -5,38 +5,6 @@ import java.util.Map;
 
 public class DecodeWays {
 
-   private static final Map<String, String> mapping;
-
-   static {
-      mapping = new HashMap<>();
-      mapping.put("1", "A");
-      mapping.put("2", "B");
-      mapping.put("3", "C");
-      mapping.put("4", "D");
-      mapping.put("5", "E");
-      mapping.put("6", "F");
-      mapping.put("7", "G");
-      mapping.put("8", "H");
-      mapping.put("9", "I");
-      mapping.put("10", "J");
-      mapping.put("11", "K");
-      mapping.put("12", "L");
-      mapping.put("13", "M");
-      mapping.put("14", "N");
-      mapping.put("15", "O");
-      mapping.put("16", "P");
-      mapping.put("17", "Q");
-      mapping.put("18", "R");
-      mapping.put("19", "S");
-      mapping.put("20", "T");
-      mapping.put("21", "U");
-      mapping.put("22", "V");
-      mapping.put("23", "W");
-      mapping.put("24", "X");
-      mapping.put("25", "Y");
-      mapping.put("26", "Z");
-   }
-
    public static void main(String[] args) {
       System.out.println(numDecodings("12"));
       System.out.println(numDecodings("226"));
@@ -49,36 +17,35 @@ public class DecodeWays {
       if (s.charAt(0) == '0') {
          return 0;
       }
-      return rec(s);
+      return rec(s, 0, new HashMap<>());
    }
 
-   private static int rec(String str) {
-      if (str.isEmpty()) {
+   private static int rec(String str, int index, Map<Integer, Integer> memo) {
+      int length = str.length();
+
+      if (index == length) {
          return 1;
-      } else if (str.length() > 1 && str.substring(str.length() - 2).equals("00")) {
-         return 0;
+      } else if (memo.containsKey(index)) {
+         return memo.get(index);
+      }
+
+      if (str.charAt(index) == '0') {
+         memo.put(index, 0);
       } else {
          int counter = 0;
-         char lastChar = str.charAt(str.length() - 1);
+         char curr = str.charAt(index);
 
-         if (lastChar == '0') {
-            counter += rec(str.substring(0, str.length() - 2));
-         } else {
-            counter += rec(str.substring(0, str.length() - 1));
+         counter += rec(str, index + 1, memo);
 
-            if (str.length() > 1) {
-               String substring = str.substring(0, str.length() - 2);
-               char beforeLastChar = str.charAt(str.length() - 2);
-
-               if (beforeLastChar == '1') {
-                  counter += rec(substring);
-               } else if (beforeLastChar == '2' && lastChar < '7') {
-                  counter += rec(substring);
-               }
+         if (index + 1 < length) {
+            if (curr == '1') {
+               counter += rec(str, index + 2, memo);
+            } else if (curr == '2' && str.charAt(index + 1) < '7') {
+               counter += rec(str, index + 2, memo);
             }
          }
-
-         return counter;
+         memo.put(index, counter);
       }
+      return memo.get(index);
    }
 }
