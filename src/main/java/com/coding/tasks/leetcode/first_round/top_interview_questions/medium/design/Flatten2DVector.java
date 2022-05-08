@@ -1,5 +1,7 @@
 package com.coding.tasks.leetcode.first_round.top_interview_questions.medium.design;
 
+import java.util.NoSuchElementException;
+
 public class Flatten2DVector {
 
    public static void main(String[] args) {
@@ -15,29 +17,38 @@ public class Flatten2DVector {
     */
    static class Vector2D {
 
-      private int[][] vec;
-      private int i;
-      private int j;
+      private int[][] vector;
+      private int i = 0;
+      private int j = 0;
 
-      public Vector2D(int[][] vec) {
-         this.vec = vec;
-         this.i = 0;
-         this.j = 0;
+      public Vector2D(int[][] v) {
+         vector = v;
       }
 
       public int next() {
-         int ans = this.vec[i][j];
-         if (j + 1 < vec[i].length) {
-            j++;
-         } else {
-            i++;
-            j = 0;
+         if (!hasNext()) {
+            throw new NoSuchElementException();
          }
-         return ans;
+         return vector[i][j++];
       }
 
       public boolean hasNext() {
-         return vec != null && vec.length != 0 && i < vec.length;
+         advanceToNext();
+         return i < vector.length;
+      }
+
+      // If the current outer and inner point to an integer, this method does nothing.
+      // Otherwise, inner and outer are advanced until they point to an integer.
+      // If there are no more integers, then outer will be equal to vector.length
+      // when this method terminates.
+      private void advanceToNext() {
+         // While outer is still within the vector, but inner is over the
+         // end of the inner list pointed to by outer, we want to move
+         // forward to the start of the next inner vector.
+         while (i < vector.length && j == vector[i].length) {
+            j = 0;
+            i++;
+         }
       }
    }
 }
