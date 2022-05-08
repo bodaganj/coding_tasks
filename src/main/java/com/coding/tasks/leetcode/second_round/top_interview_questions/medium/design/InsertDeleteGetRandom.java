@@ -42,8 +42,6 @@ public class InsertDeleteGetRandom {
 
       public boolean insert(int val) {
          if (map.containsKey(val)) {
-            map.put(val, list.size());
-            list.add(val);
             return false;
          } else {
             map.put(val, list.size());
@@ -55,21 +53,12 @@ public class InsertDeleteGetRandom {
       public boolean remove(int val) {
          if (map.containsKey(val)) {
             int indexToRemove = map.get(val);
+            int lastElement = list.get(list.size() - 1);
+            list.set(indexToRemove, lastElement);
+            map.put(lastElement, indexToRemove);
 
-            if (indexToRemove == list.size() - 1) {
-               list.remove(list.size() - 1);
-               map.remove(val);
-            } else {
-               int lastElement = list.get(list.size() - 1);
-               int toRemoveElement = list.get(indexToRemove);
-
-               list.set(indexToRemove, lastElement);
-               list.set(list.size() - 1, toRemoveElement);
-               list.remove(list.size() - 1);
-
-               map.remove(val);
-               map.put(lastElement, indexToRemove);
-            }
+            list.remove(list.size() - 1);
+            map.remove(val);
             return true;
          } else {
             return false;
