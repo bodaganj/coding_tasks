@@ -1,7 +1,6 @@
 package com.coding.tasks.leetcode.second_round.top_interview_questions.hard.design;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 public class LRUCacheTask {
@@ -32,8 +31,6 @@ public class LRUCacheTask {
       public LRUCache(int capacity) {
          super(capacity, 0.75f, true);
          this.capacity = capacity;
-         LinkedList<Integer> ll = new LinkedList<>();
-         ll.add(1, 3);
       }
 
       public int get(int key) {
