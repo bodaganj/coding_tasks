@@ -1,5 +1,8 @@
 package com.coding.tasks.leetcode.second_round.google.design;
 
+import java.util.Collections;
+import java.util.LinkedList;
+
 public class SerializeAndDeserializeBinaryTree {
 
    public static void main(String[] args) {
@@ -35,8 +38,6 @@ public class SerializeAndDeserializeBinaryTree {
 
    static class Codec {
 
-      private int index = 0;
-
       public String serialize(TreeNode root) {
          StringBuilder sb = new StringBuilder();
          recSer(root, sb);
@@ -44,16 +45,11 @@ public class SerializeAndDeserializeBinaryTree {
       }
 
       public TreeNode deserialize(String data) {
-         index = 0;
          String[] split = data.split(",");
-         if (split.length < 2) {
-            return null;
-         } else {
-            TreeNode root = new TreeNode(Integer.parseInt(split[index]));
-            index++;
-            recDes(root, split);
-            return root;
-         }
+         LinkedList<String> list = new LinkedList<>();
+         Collections.addAll(list, split);
+
+         return recDes(list);
       }
 
       private void recSer(TreeNode node, StringBuilder sb) {
@@ -66,23 +62,18 @@ public class SerializeAndDeserializeBinaryTree {
          }
       }
 
-      private void recDes(TreeNode node, String[] split) {
-         if (index < split.length) {
-            if (!split[index].equals("#")) {
-               TreeNode newNode = new TreeNode(Integer.parseInt(split[index++]));
-               node.left = newNode;
-               recDes(newNode, split);
+      private TreeNode recDes(LinkedList<String> split) {
+         if (!split.isEmpty()) {
+            if (!split.get(0).equals("#")) {
+               TreeNode node = new TreeNode(Integer.parseInt(split.removeFirst()));
+               node.left = recDes(split);
+               node.right = recDes(split);
+               return node;
             } else {
-               index++;
-            }
-            if (!split[index].equals("#")) {
-               TreeNode newNode = new TreeNode(Integer.parseInt(split[index++]));
-               node.right = newNode;
-               recDes(newNode, split);
-            } else {
-               index++;
+               split.removeFirst();
             }
          }
+         return null;
       }
    }
 
