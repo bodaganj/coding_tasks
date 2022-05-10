@@ -1,5 +1,8 @@
 package com.coding.tasks.leetcode.second_round.google.design;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class LRUCacheTask {
 
    /**
@@ -8,15 +11,26 @@ public class LRUCacheTask {
     * int param_1 = obj.get(key);
     * obj.put(key,value);
     */
-   static class LRUCache {
+   static class LRUCache extends LinkedHashMap<Integer, Integer> {
+
+      private int capacity;
 
       public LRUCache(int capacity) {
+         super(capacity, 0.75f, true);
+         this.capacity = capacity;
       }
 
-//      public int get(int key) {
-//      }
+      public int get(int key) {
+         return super.getOrDefault(key, -1);
+      }
 
       public void put(int key, int value) {
+         super.put(key, value);
+      }
+
+      @Override
+      public boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
+         return super.size() > capacity;
       }
    }
 }
