@@ -1,5 +1,13 @@
 package com.coding.tasks.leetcode.second_round.amazon.design;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 public class MaximumFrequencyStack {
 
    public static void main(String[] args) {
@@ -10,10 +18,10 @@ public class MaximumFrequencyStack {
       o.push(7);
       o.push(4);
       o.push(5);
-//      System.out.println(o.pop());
-//      System.out.println(o.pop());
-//      System.out.println(o.pop());
-//      System.out.println(o.pop());
+      System.out.println(o.pop());
+      System.out.println(o.pop());
+      System.out.println(o.pop());
+      System.out.println(o.pop());
    }
 
    /**
@@ -24,13 +32,46 @@ public class MaximumFrequencyStack {
     */
    static class FreqStack {
 
+      private Map<Integer, Integer> map;
+      private List<int[]> list;
+      private Queue<Integer> pq;
+
       public FreqStack() {
+         map = new HashMap<>();
+         list = new ArrayList<>();
+         pq = new PriorityQueue<>(Collections.reverseOrder());
       }
 
       public void push(int val) {
+         if (map.containsKey(val)) {
+            int count = map.get(val) + 1;
+            map.put(val, count);
+            list.add(new int[]{val, count});
+            pq.offer(count);
+         } else {
+            map.put(val, 1);
+            list.add(new int[]{val, 1});
+            pq.offer(1);
+         }
       }
 
-//      public int pop() {
-//      }
+      public int pop() {
+         Integer count = pq.poll();
+         for (int i = list.size() - 1; i >= 0; i--) {
+            if (list.get(i)[1] == count) {
+               int ans = list.get(i)[0];
+               int newCount = map.get(ans) - 1;
+               if (newCount > 0) {
+                  map.put(ans, newCount);
+               } else {
+                  map.remove(ans);
+               }
+               list.remove(i);
+               return ans;
+            }
+         }
+
+         return -1;
+      }
    }
 }
