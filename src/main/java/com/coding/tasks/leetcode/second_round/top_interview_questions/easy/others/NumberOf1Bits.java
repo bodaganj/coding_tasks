@@ -12,7 +12,6 @@ public class NumberOf1Bits {
       int counter = 0;
       while (n != 0) {
          int b = n ^ 1;
-
          if (n > b) {
             counter++;
          }
