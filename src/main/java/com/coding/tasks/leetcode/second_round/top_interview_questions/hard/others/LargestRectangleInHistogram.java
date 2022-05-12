@@ -1,6 +1,6 @@
 package com.coding.tasks.leetcode.second_round.top_interview_questions.hard.others;
 
-import java.util.Arrays;
+import java.util.Stack;
 
 public class LargestRectangleInHistogram {
 
@@ -10,24 +10,23 @@ public class LargestRectangleInHistogram {
    }
 
    private static int largestRectangleArea(int[] heights) {
-      int[] dp = new int[heights.length];
-      dp[0] = heights[0];
+      Stack<Integer> stack = new Stack<>();
+      stack.push(-1);
 
-      for (int i = 1; i < heights.length; i++) {
-         int prevMax = 0;
-         int currMin = heights[i];
-
-//         if (heights[i] == heights[i - 1]) {
-//            dp[i] = dp[i - 1] + ;
-//         } else {
-         for (int j = i - 1; j >= 0; j--) {
-            currMin = Math.min(currMin, heights[j]);
-            prevMax = Math.max(prevMax, currMin * (i - j + 1));
+      int maxArea = 0;
+      for (int i = 0; i < heights.length; i++) {
+         while ((stack.peek() != -1) && (heights[stack.peek()] >= heights[i])) {
+            int currentHeight = heights[stack.pop()];
+            int currentWidth = i - stack.peek() - 1;
+            maxArea = Math.max(maxArea, currentHeight * currentWidth);
          }
-         dp[i] = Math.max(heights[i], prevMax);
-//         }
+         stack.push(i);
       }
-
-      return Arrays.stream(dp).max().getAsInt();
+      while (stack.peek() != -1) {
+         int currentHeight = heights[stack.pop()];
+         int currentWidth = heights.length - stack.peek() - 1;
+         maxArea = Math.max(maxArea, currentHeight * currentWidth);
+      }
+      return maxArea;
    }
 }
