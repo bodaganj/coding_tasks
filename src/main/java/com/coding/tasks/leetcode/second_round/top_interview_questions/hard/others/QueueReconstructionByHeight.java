@@ -43,6 +43,9 @@ public class QueueReconstructionByHeight {
                if (p[0] >= person[0]) {
                   amount++;
                }
+               if (amount > person[1]) {
+                  break;
+               }
             }
             if (amount == person[1]) {
                ans.add(person);
