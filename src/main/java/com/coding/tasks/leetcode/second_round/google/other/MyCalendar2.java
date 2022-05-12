@@ -1,7 +1,9 @@
 package com.coding.tasks.leetcode.second_round.google.other;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Stack;
 
 public class MyCalendar2 {
 
@@ -22,24 +24,51 @@ public class MyCalendar2 {
     */
    static class MyCalendarTwo {
 
-      private Map<Integer, Integer> map;
+      private List<Time> list;
 
       public MyCalendarTwo() {
-         map = new HashMap<>();
+         list = new ArrayList<>();
       }
 
+      // N^2 logN
       public boolean book(int start, int end) {
-         for (int i = start; i < end; i++) {
-            if (map.containsKey(i) && map.get(i) > 1) {
+         Time newStart = new Time(start, true);
+         Time newEnd = new Time(end, false);
+
+         list.add(newStart);
+         list.add(newEnd);
+         Collections.sort(list);
+         Stack<Integer> stack = new Stack<>();
+         for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).isStart) {
+               stack.push(i);
+            } else {
+               stack.pop();
+            }
+
+            if (stack.size() > 2) {
+               list.remove(newStart);
+               list.remove(newEnd);
                return false;
             }
          }
+         return true;
+      }
 
-         for (int i = start; i < end; i++) {
-            map.put(i, map.getOrDefault(i, 0) + 1);
+      static class Time implements Comparable<Time> {
+
+         public int time;
+         public boolean isStart;
+
+         public Time(int time, boolean isStart) {
+            this.time = time;
+            this.isStart = isStart;
          }
 
-         return true;
+         @Override
+         public int compareTo(Time o) {
+            return this.time == o.time ? (this.isStart == o.isStart ? 0 : (isStart ? 1 : -1)) : this.time - o.time;
+         }
       }
    }
 }
