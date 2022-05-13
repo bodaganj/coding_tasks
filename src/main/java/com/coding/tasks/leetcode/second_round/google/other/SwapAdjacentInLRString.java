@@ -5,9 +5,11 @@ public class SwapAdjacentInLRString {
    public static void main(String[] args) {
       System.out.println(canTransform("RXXLRXRXL", "XRLXXRRLX"));
       System.out.println(canTransform("X", "L"));
-      System.out.println(canTransform("LXLXRXLXLX", "LXLXRXLXLX"));
+      System.out.println(canTransform("XRLXXRRXL", "XRLXXRRLX"));
+      System.out.println(canTransform("XXXXXLXXXX", "LXXXXXXXXX"));
    }
 
+   // Only START can be modified!!!! The task description is bad!!!
    // "XL" -> "LX" and "RX" -> "XR"
    private static boolean canTransform(String start, String end) {
       if (start.equals(end)) {
@@ -17,10 +19,6 @@ public class SwapAdjacentInLRString {
             if (start.charAt(i) != end.charAt(i)) {
                if (start.startsWith("XL", i) || start.startsWith("RX", i)) {
                   start = swap(start, i);
-                  return canTransform(start, end);
-               }
-               if (end.startsWith("XL", i) || end.startsWith("RX", i)) {
-                  end = swap(end, i);
                   return canTransform(start, end);
                }
             }
