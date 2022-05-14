@@ -3,40 +3,20 @@ package com.coding.tasks.leetcode.second_round.top_interview_questions.medium.ma
 public class ExcelSheetColumnNumber {
 
    public static void main(String[] args) {
-//      System.out.println(titleToNumber("A"));
-//      System.out.println(titleToNumber("AB"));
-//      System.out.println(titleToNumber("ZY"));
-//      System.out.println(titleToNumber("FXSHRXW"));
-//   }
-//
-//   private static int titleToNumber(String columnTitle) {
-//      Map<Character, Integer> mapping = new HashMap<>();
-//      mapping.put('A', 1);
-//      mapping.put('B', 2);
-//      mapping.put('C', 3);
-//      mapping.put('D', 4);
-//      mapping.put('E', 5);
-//      mapping.put('F', 6);
-//      mapping.put('G', 7);
-//      mapping.put('H', 8);
-//      mapping.put('I', 9);
-//      mapping.put('J', 10);
-//      mapping.put('K', 11);
-//      mapping.put('L', 12);
-//      mapping.put('M', 13);
-//      mapping.put('N', 14);
-//      mapping.put('O', 15);
-//      mapping.put('P', 16);
-//      mapping.put('Q', 17);
-//      mapping.put('R', 18);
-//      mapping.put('S', 19);
-//      mapping.put('T', 20);
-//      mapping.put('U', 21);
-//      mapping.put('V', 22);
-//      mapping.put('W', 23);
-//      mapping.put('X', 24);
-//      mapping.put('Y', 25);
-//      mapping.put('Z', 26);
+      System.out.println(titleToNumber("A"));
+      System.out.println(titleToNumber("AB"));
+      System.out.println(titleToNumber("ZY"));
+      System.out.println(titleToNumber("FXSHRXW"));
+   }
 
+   private static int titleToNumber(String columnTitle) {
+      int result = 0;
+      int n = columnTitle.length();
+      for (int i = 0; i < n; i++) {
+         result *= 26;
+         // In Java, subtracting characters is subtracting ASCII values of characters
+         result += columnTitle.charAt(i) - 'A' + 1;
+      }
+      return result;
    }
 }

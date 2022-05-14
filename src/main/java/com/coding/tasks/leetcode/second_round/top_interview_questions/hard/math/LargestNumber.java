@@ -34,19 +34,20 @@ public class LargestNumber {
             return 0;
          }
 
-         if (i >= o1.length()) {
+         if (i >= o1.length()) { // 113 : 11311
             if (o2.charAt(i) < o1.charAt(0)) {
-               return 1;
-            } else {
                return -1;
+            } else {
+               return 1;
             }
-         }
+         } // 111311, 1113
 
-         if (o1.charAt(i) < o2.charAt(0)) {
+         // 34 : 3 and 30 : 3
+         if (o1.charAt(i) <= o2.charAt(0)) {
             return 1;
          } else {
             return -1;
-         }
+         } // 34,3,30
       };
 
       list.sort(custom);
