@@ -3,12 +3,12 @@ package com.coding.tasks.other;
 public class KnuthMorrisPratt {
 
    public static void main(String[] args) {
-//      System.out.println("False = " + isMatching("abcd", "ef"));
-//      System.out.println("True = " + isMatching("abcbcglx", "bcgl"));
-//      System.out.println("True = " + isMatching("abcxabcdabxabcdabcdabcy", "abcdabcy"));
+      System.out.println("False = " + isMatching("abcd", "ef"));
+      System.out.println("True = " + isMatching("abcbcglx", "bcgl"));
+      System.out.println("True = " + isMatching("abcxabcdabxabcdabcdabcy", "abcdabcy"));
       System.out.println("True = " + isMatching("xccaabaaxccbaaaxccaabaabaaaxcc", "aabaabaaa"));
-//      System.out.println("True = " + isMatching("aaaaab", "aaab"));
-//      System.out.println("True = " + isMatching("adsgwadsxdsgwadsgz", "dsgwadsgz"));
+      System.out.println("True = " + isMatching("aaaaab", "aaab"));
+      System.out.println("True = " + isMatching("adsgwadsxdsgwadsgz", "dsgwadsgz"));
    }
 
    private static boolean isMatching(String text, String pattern) {

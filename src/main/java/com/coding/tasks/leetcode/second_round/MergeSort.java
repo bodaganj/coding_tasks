@@ -9,6 +9,7 @@ public class MergeSort {
       int[] arr2 = new int[]{5, 4, 3, 2, 1};
       int[] arr3 = new int[]{2, 5, 1, 3, 4};
       int[] arr4 = new int[]{};
+
       System.out.println(Arrays.toString(arr1));
       System.out.println(Arrays.toString(arr2));
       System.out.println(Arrays.toString(arr3));
@@ -30,58 +31,51 @@ public class MergeSort {
    }
 
    private static void mergeSort(int[] array) {
-      if (array == null || array.length == 0) {
-         return;
-      }
       sort(array, 0, array.length - 1);
    }
 
    private static void sort(int[] array, int left, int right) {
-      if (left != right) {
-         int middle = left + (right - left) / 2;
-
-         sort(array, left, middle);
-         sort(array, middle + 1, right);
-         merge(array, left, middle + 1, right);
+      if (left < right) {
+         int mid = right - (right - left) / 2;
+         sort(array, left, mid - 1);
+         sort(array, mid, right);
+         merge(array, left, mid, right);
       }
    }
 
-   private static void merge(int[] array, int left, int middle, int right) {
-      int[] ans = new int[right - left + 1];
+   private static void merge(int[] array, int left, int mid, int right) {
+      int[] tmp = new int[right - left + 1];
+
+      int l = left;
+      int r = mid;
       int i = 0;
-
-      int counterLeft = left;
-      int counterRight = middle;
-
-      while (counterLeft < middle && counterRight <= right) {
-         if (array[counterLeft] < array[counterRight]) {
-            ans[i] = array[counterLeft];
-            counterLeft++;
+      while (l < mid && r <= right) {
+         if (array[l] < array[r]) {
+            tmp[i] = array[l];
+            l++;
          } else {
-            ans[i] = array[counterRight];
-            counterRight++;
+            tmp[i] = array[r];
+            r++;
          }
          i++;
       }
 
-      while (counterLeft < middle) {
-         ans[i] = array[counterLeft];
-         counterLeft++;
+      while (l < mid) {
+         tmp[i] = array[l];
          i++;
+         l++;
       }
 
-      while (counterRight <= right) {
-         ans[i] = array[counterRight];
-         counterRight++;
+      while (r <= right) {
+         tmp[i] = array[r];
          i++;
+         r++;
       }
 
-      int j = 0;
-      int counter = left;
-      while (j < ans.length) {
-         array[counter] = ans[j];
-         j++;
-         counter++;
+      i = 0;
+      while (i < tmp.length) {
+         array[left + i] = tmp[i];
+         i++;
       }
    }
 }

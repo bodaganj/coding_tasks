@@ -18,9 +18,9 @@ public class QualtricsGetSortedPermutationTask {
     * ccc -> c, cc, ccc ->               ccc
     */
    public static void main(String[] args) {
-      System.out.println(findString("abc"));
-      System.out.println(findString("cab"));
-      System.out.println(findString("ccc"));
+//      System.out.println(findString("abc"));
+//      System.out.println(findString("cab"));
+//      System.out.println(findString("ccc"));
       // ========================
       System.out.println();
       System.out.println(simpleSolution("abc"));
