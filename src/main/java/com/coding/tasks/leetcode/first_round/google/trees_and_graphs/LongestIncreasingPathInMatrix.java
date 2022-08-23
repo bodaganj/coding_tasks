@@ -40,15 +40,18 @@ public class LongestIncreasingPathInMatrix {
          return memo[i][j];
       }
 
+      int max = 1;
       for (int[] dir : dirs) {
          int x = i + dir[0];
          int y = j + dir[1];
 
          if (x >= 0 && x < matrix.length && y >= 0 && y < matrix[0].length && matrix[x][y] > matrix[i][j]) {
-            memo[i][j] = Math.max(memo[i][j], dfs(matrix, x, y, memo));
+            int curr = 1 + dfs(matrix, x, y, memo);
+            max = Math.max(max, curr);
          }
       }
-      // this one is tricky!!!
-      return ++memo[i][j];
+      memo[i][j] = max;
+
+      return memo[i][j];
    }
 }
