@@ -18,18 +18,10 @@ public class EvaluateReversePolishNotation {
             int second = stack.pop();
             int first = stack.pop();
             switch (token) {
-               case "*":
-                  stack.push(first * second);
-                  break;
-               case "/":
-                  stack.push(first / second);
-                  break;
-               case "-":
-                  stack.push(first - second);
-                  break;
-               default:
-                  stack.push(first + second);
-                  break;
+               case "*" -> stack.push(first * second);
+               case "/" -> stack.push(first / second);
+               case "-" -> stack.push(first - second);
+               default -> stack.push(first + second);
             }
          }
       }
