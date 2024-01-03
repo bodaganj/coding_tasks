@@ -15,34 +15,26 @@ public class SortList {
    }
 
    public static ListNode sortList(ListNode head) {
-      if (head == null || head.next == null) {
+      if (head == null) {
+         return null;
+      }
+
+      if (head.next == null) {
          return head;
-      }
-
-      ListNode last = head;
-      while (last.next != null) {
-         last = last.next;
-      }
-      return sort(head, last);
-   }
-
-   private static ListNode sort(ListNode nodeLeft, ListNode nodeRight) {
-      if (nodeLeft == nodeRight) {
-         return nodeLeft;
       } else {
-         int length = getLength(nodeLeft, nodeRight);
+         int length = getLength(head);
          int mid = length / 2;
 
-         ListNode tmpLeft = nodeLeft;
+         ListNode tmpLeft = head;
          int i = 1;
          while (i < mid) {
             tmpLeft = tmpLeft.next;
             i++;
          }
-         ListNode tmpRight = tmpLeft.next;
+         ListNode nextNode = tmpLeft.next;
          tmpLeft.next = null;
-         ListNode left = sort(nodeLeft, tmpLeft);
-         ListNode right = sort(tmpRight, nodeRight);
+         ListNode left = sortList(head);
+         ListNode right = sortList(nextNode);
          return merge(left, right);
       }
    }
@@ -73,10 +65,10 @@ public class SortList {
       return dummy.next;
    }
 
-   private static int getLength(ListNode nodeLeft, ListNode nodeRight) {
+   private static int getLength(ListNode nodeLeft) {
       int length = 1;
       ListNode tmp = nodeLeft;
-      while (tmp != nodeRight) {
+      while (tmp != null) {
          tmp = tmp.next;
          length++;
       }
