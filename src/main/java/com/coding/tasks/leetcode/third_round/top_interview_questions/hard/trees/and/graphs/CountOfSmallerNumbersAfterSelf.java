@@ -23,7 +23,7 @@ public class CountOfSmallerNumbersAfterSelf {
       if (left == right) {
          return;
       }
-      int pivot = pivot(left, right, nums);
+      int pivot = pivot(left, right, nums, ans);
       if (pivot - 1 >= 0) {
          quickSort(left, pivot - 1, nums, ans);
       }
@@ -32,12 +32,13 @@ public class CountOfSmallerNumbersAfterSelf {
       }
    }
 
-   private static int pivot(int left, int right, int[] nums) {
+   private static int pivot(int left, int right, int[] nums, int[] ans) {
       int mid = left + (right - left) / 2;
       int pivotValue = nums[mid];
       swap(mid, right, nums);
       int i = left;
       int j = right;
+      int count = 0;
       while (i <= j) {
          while (i < right && nums[i] < pivotValue) {
             i++;
@@ -47,9 +48,11 @@ public class CountOfSmallerNumbersAfterSelf {
          }
          if (i <= j) {
             swap(i, j, nums);
+            count++;
          }
       }
       swap(i, right, nums);
+      ans[i] = count;
       return i;
    }
 
