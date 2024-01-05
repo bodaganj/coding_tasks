@@ -16,19 +16,15 @@ public class PalindromePartitioning {
    }
 
    private static void rec(String s, List<String> cur, List<List<String>> ans) {
-      if (s.length() == 1) {
-         List<String> tmp = new ArrayList<>(cur);
-         tmp.add(s);
-         ans.add(tmp);
-      } else if (s.length() == 0) {
+      if (s.length() == 0) {
          ans.add(new ArrayList<>(cur));
       } else {
          for (int i = 1; i <= s.length(); i++) {
             String substring = s.substring(0, i);
             if (isPalindrome(substring)) {
-               List<String> tmp = new ArrayList<>(cur);
-               tmp.add(substring);
-               rec(s.substring(i), tmp, ans);
+               cur.add(substring);
+               rec(s.substring(i), cur, ans);
+               cur.remove(cur.size() - 1);
             }
          }
       }
