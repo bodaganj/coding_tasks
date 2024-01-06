@@ -15,44 +15,48 @@ public class RemoveInvalidParentheses {
       System.out.println(removeInvalidParentheses("(a("));
       System.out.println(removeInvalidParentheses("a("));
       System.out.println(removeInvalidParentheses(")(a"));
+      System.out.println(removeInvalidParentheses(")()))())))"));
    }
 
    public static List<String> removeInvalidParentheses(String s) {
-      int openAmount = getAmountOfParentheses(true, s);
-      int closeAmount = getAmountOfParentheses(false, s);
-      int dif = Math.abs(openAmount - closeAmount);
-      boolean isOpenMore = openAmount - closeAmount > 0;
+      if (isValid(s)) {
+         return List.of(s);
+      }
+      int count = getParenthesesCount(s);
       Set<String> ans = new HashSet<>();
       char[] chars = s.toCharArray();
-      for (int i = 0; i < chars.length; i++) {
-         backtrack(isOpenMore, dif, i, s, ans);
+      for (int removes = 1; removes <= count; removes++) {
+         for (int i = 0; i < chars.length; i++) {
+            backtrack(removes, i, s, ans);
+         }
+         if (ans.size() > 0) {
+            return new ArrayList<>(ans);
+         }
       }
-      return ans.size() == 0 ? List.of("") : new ArrayList<>(ans);
+      return List.of("");
    }
 
-   private static int getAmountOfParentheses(boolean isOpen, String s) {
+   private static void backtrack(int amountOfRemoves, int index, String s, Set<String> ans) {
+      if (amountOfRemoves == 0 && isValid(s)) {
+         ans.add(s);
+      } else {
+         if (index < s.length() && (s.charAt(index) == ')' || s.charAt(index) == '(')) {
+            String newString = s.substring(0, index) + s.substring(index + 1);
+            for (int i = 0; i < s.length(); i++) {
+               backtrack(amountOfRemoves - 1, i, newString, ans);
+            }
+         }
+      }
+   }
+
+   private static int getParenthesesCount(String s) {
       int count = 0;
-      char expected = isOpen ? '(' : ')';
-      for (char c : s.toCharArray()) {
-         if (c == expected) {
+      for (int i = 0; i < s.length(); i++) {
+         if (s.charAt(i) == '(' || s.charAt(i) == ')') {
             count++;
          }
       }
       return count;
-   }
-
-   private static void backtrack(boolean isOpen, int leftCount, int index, String s, Set<String> ans) {
-      if (leftCount == 0 && isValid(s)) {
-         ans.add(s);
-      } else {
-         char expected = isOpen ? '(' : ')';
-         if (index < s.length() && s.charAt(index) == expected) {
-            String newString = s.substring(0, index) + s.substring(index + 1);
-            for (int i = index + 1; i <= s.length(); i++) {
-               backtrack(isOpen, leftCount - 1, i, newString, ans);
-            }
-         }
-      }
    }
 
    private static boolean isValid(String s) {
