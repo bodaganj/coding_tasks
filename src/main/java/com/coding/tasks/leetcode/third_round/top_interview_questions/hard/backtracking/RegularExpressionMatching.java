@@ -6,20 +6,19 @@ import java.util.Map;
 public class RegularExpressionMatching {
 
    public static void main(String[] args) {
-//      System.out.println(isMatch("aa", "a")); // false
-//      System.out.println(isMatch("aaa", "ab*a")); // false
-//      System.out.println(isMatch("aab", "b.*")); // true
-//      System.out.println(isMatch("aa", "a*")); // true
-//      System.out.println(isMatch("aa", ".*")); // true
-//      System.out.println(isMatch("aaa", ".*")); // true
-//      System.out.println(isMatch("ab", ".*")); // true
-//      System.out.println(isMatch("mississippi", "mis*is*ip*.")); // true
-//      System.out.println(isMatch("aab", "c*a*b")); // true
-//      System.out.println(isMatch("ab", ".*..")); // true
-//      System.out.println(isMatch("a", "c*.")); // true
-//      System.out.println(isMatch("a", "..*")); // true
-//      System.out.println(isMatch("aaabaaaababcbccbaab", "c*c*.*c*a*..*c*")); // true
-      System.out.println(isMatch("aaabaaaababcbccbaab", "b*a*a*.c*bb*b*.*.*")); // true
+      System.out.println(isMatch("aa", "a")); // false
+      System.out.println(isMatch("aaa", "ab*a")); // false
+      System.out.println(isMatch("aab", "b.*")); // false
+      System.out.println(isMatch("aa", "a*")); // true
+      System.out.println(isMatch("aa", ".*")); // true
+      System.out.println(isMatch("aaa", ".*")); // true
+      System.out.println(isMatch("ab", ".*")); // true
+      System.out.println(isMatch("mississippi", "mis*is*ip*.")); // true
+      System.out.println(isMatch("aab", "c*a*b")); // true
+      System.out.println(isMatch("ab", ".*..")); // true
+      System.out.println(isMatch("a", "c*.")); // true
+      System.out.println(isMatch("a", "..*")); // true
+      System.out.println(isMatch("aaabaaaababcbccbaab", "c*c*.*c*a*..*c*")); // true
       System.out.println(isMatch("aaabaaaababcbccbaab", "b*a*a*.c*bb*b*.*.*")); // true
    }
 
@@ -45,19 +44,13 @@ public class RegularExpressionMatching {
          }
       }
 
-      int j = 1;
-      while (j < dp[0].length) {
-         int i = 1;
-         while (i < dp.length) {
+      for (int j = 1; j < dp[0].length; j++) {
+         for (int i = 1; i < dp.length; i++) {
             char curP = pattern.charAt(j - 1);
             char curS = s.charAt(i - 1);
             if (Character.isLetter(curP)) { // both letters
                if (curP == curS) {
-                  if (j >= 2 && pattern.charAt(j - 2) == '*') {
-                     dp[i][j] = dp[i - 1][j - 1] || dp[i - 1][j - 3];
-                  } else {
-                     dp[i][j] = dp[i - 1][j - 1];
-                  }
+                  dp[i][j] = dp[i - 1][j - 1];
                }
             } else {
                if (curP == '.') { // pattern is '.'
@@ -77,9 +70,7 @@ public class RegularExpressionMatching {
                   }
                }
             }
-            i++;
          }
-         j++;
       }
 
       return dp[s.length()][pattern.length()];
