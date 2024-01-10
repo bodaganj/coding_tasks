@@ -12,23 +12,32 @@ public class BestTimeToBuyAndSellStockWithCooldown {
 
    public static int maxProfit(int[] prices) {
       max = 0;
-      rec(0, 0, prices);
+      rec(0, prices, new int[prices.length]);
       return max;
    }
 
-   private static void rec(int indexToBuy, int currProfit, int[] prices) {
-      if (indexToBuy < prices.length - 1) {
-         for (int buy = indexToBuy; buy < prices.length - 1; buy++) {
-            int buyPrice = prices[buy];
-            for (int i = buy + 1; i < prices.length; i++) {
-               if (prices[i] > buyPrice) {
-                  int profit = prices[i] - buyPrice;
-                  int profitSum = currProfit + profit;
-                  max = Math.max(max, profitSum);
-                  rec(i + 2, profitSum, prices);
+   private static int rec(int indexToBuy, int[] prices, int[] memo) {
+      if (indexToBuy >= prices.length) {
+         return 0;
+      } else if (memo[indexToBuy] > 0) {
+         return memo[indexToBuy];
+      } else {
+         int maxCurrentIndexProfit = 0;
+         if (indexToBuy < prices.length - 1) {
+            for (int buy = indexToBuy; buy < prices.length - 1; buy++) {
+               int buyPrice = prices[buy];
+               for (int i = buy + 1; i < prices.length; i++) {
+                  if (prices[i] > buyPrice) {
+                     int profit = prices[i] - buyPrice;
+                     int profitSum = profit + rec(i + 2, prices, memo);
+                     max = Math.max(max, profitSum);
+                     maxCurrentIndexProfit = Math.max(maxCurrentIndexProfit, profitSum);
+                  }
                }
             }
          }
+         memo[indexToBuy] = maxCurrentIndexProfit;
+         return memo[indexToBuy];
       }
    }
 }
