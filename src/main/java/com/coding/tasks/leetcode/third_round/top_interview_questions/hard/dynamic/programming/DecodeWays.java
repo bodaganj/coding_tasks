@@ -5,8 +5,7 @@ import java.util.Map;
 
 public class DecodeWays {
 
-   private static Map<String, String> mapping;
-   private static int count = 0;
+   private static final Map<String, String> mapping;
 
    static {
       mapping = new HashMap<>();
@@ -45,21 +44,22 @@ public class DecodeWays {
    }
 
    public static int numDecodings(String s) {
-      count = 0;
-      rec(0, s);
-      return count;
+      return rec(0, s);
    }
 
-   private static void rec(int index, String s) {
+   private static int rec(int index, String s) {
       if (index == s.length()) {
-         count++;
+         return 1;
       } else {
+         int oneLetter = 0;
+         int twoLetters = 0;
          if (mapping.containsKey("" + s.charAt(index))) {
-            rec(index + 1, s);
+            oneLetter = rec(index + 1, s);
          }
          if (index < s.length() - 1 && mapping.containsKey("" + s.charAt(index) + s.charAt(index + 1))) {
-            rec(index + 2, s);
+            twoLetters = rec(index + 2, s);
          }
+         return oneLetter + twoLetters;
       }
    }
 }
