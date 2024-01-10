@@ -44,22 +44,25 @@ public class DecodeWays {
    }
 
    public static int numDecodings(String s) {
-      return rec(0, s);
+      return rec(0, s, new int[s.length()]);
    }
 
-   private static int rec(int index, String s) {
+   private static int rec(int index, String s, int[] memo) {
       if (index == s.length()) {
          return 1;
+      } else if (memo[index] > 0) {
+         return memo[index];
       } else {
          int oneLetter = 0;
          int twoLetters = 0;
          if (mapping.containsKey("" + s.charAt(index))) {
-            oneLetter = rec(index + 1, s);
+            oneLetter = rec(index + 1, s, memo);
          }
          if (index < s.length() - 1 && mapping.containsKey("" + s.charAt(index) + s.charAt(index + 1))) {
-            twoLetters = rec(index + 2, s);
+            twoLetters = rec(index + 2, s, memo);
          }
-         return oneLetter + twoLetters;
+         memo[index] = oneLetter + twoLetters;
+         return memo[index];
       }
    }
 }
