@@ -9,30 +9,91 @@ import java.util.Set;
 public class WordBreak {
 
    public static void main(String[] args) {
-//      System.out.println(wordBreak("leetcode", List.of("leet", "code")));
-//      System.out.println(wordBreak("applepenapple", List.of("apple", "pen")));
-      System.out.println(wordBreak("catsandog", List.of("cats", "dog", "sand", "and", "cat")));
+      System.out.println(wordBreak("leetcode", List.of("leet", "code"))); // true
+      System.out.println(wordBreak("applepenapple", List.of("apple", "pen"))); // true
+      System.out.println(wordBreak("aaa", List.of("aa", "a"))); // true
+      System.out.println(wordBreak("aaaaaaa", List.of("aaaa", "aaa"))); // true
+      System.out.println(wordBreak("catsandog", List.of("cats", "dog", "sand", "and", "cat"))); // false
+      System.out.println(wordBreak("aaa", List.of("aa"))); // false
    }
 
 //   public static boolean wordBreak(String s, List<String> wordDict) {
+//      if (!checkAllNeededLetters(s, wordDict)) {
+//         return false;
+//      }
+//      TreeNode trie = getTrie(wordDict);
+//      return find(s, trie);
+//   }
 //
+//   private static boolean find(String s, TreeNode root) {
+//      Queue<Pair> queue = new LinkedList<>();
+//      queue.add(new Pair(0, root));
+//      while (!queue.isEmpty()) {
+//         Pair poll = queue.poll();
+//         int index = poll.index;
+//         TreeNode tmp = poll.node;
+//
+//         while (index < s.length() && tmp.children.containsKey(s.charAt(index))) {
+//            TreeNode treeNode = tmp.children.get(s.charAt(index));
+//            if (treeNode.isWord) {
+//               if (index == s.length() - 1) {
+//                  return true;
+//               } else {
+//                  queue.add(new Pair(index + 1, root));
+//               }
+//            }
+//            tmp = treeNode;
+//            index++;
+//         }
+//      }
+//      return false;
+//   }
+//
+//   private record Pair(int index, TreeNode node){}
+//
+//   private static TreeNode getTrie(List<String> wordDict) {
+//      TreeNode root = new TreeNode();
+//      for (String word : wordDict) {
+//         TreeNode tmp = root;
+//         for (char c : word.toCharArray()) {
+//            if (tmp.children.containsKey(c)) {
+//               tmp = tmp.children.get(c);
+//            } else {
+//               TreeNode newNode = new TreeNode();
+//               tmp.children.put(c, newNode);
+//               tmp = newNode;
+//            }
+//         }
+//         tmp.isWord = true;
+//      }
+//      return root;
+//   }
+//
+//   private static class TreeNode {
+//
+//      public Map<Character, TreeNode> children = new HashMap<>();
+//      public boolean isWord;
 //   }
 
    public static boolean wordBreak(String s, List<String> wordDict) {
+      int maxLength = 0;
+      for (String word : wordDict) {
+         maxLength = Math.max(maxLength, word.length());
+      }
+
       Set<String> words = new HashSet<>(wordDict);
       if (!checkAllNeededLetters(s, wordDict)) {
          return false;
       }
-      HashMap<Pair, Boolean> memo = new HashMap<>();
-      boolean res = recursion(0, s, words, memo);
-      return res;
+      return recursion(0, s, words, new HashMap<>(), maxLength);
    }
 
-   private static boolean recursion(int index, String s, Set<String> words, Map<Pair, Boolean> memo) {
+   private static boolean recursion(int index, String s, Set<String> words, Map<Pair, Boolean> memo, int maxLength) {
       if (index == s.length()) {
          return true;
       } else {
-         for (int i = index + 1; i <= s.length(); i++) {
+         int i = index + 1;
+         while (i <= s.length() && i - index <= maxLength) {
             String substring = s.substring(index, i);
             if (words.contains(substring)) {
                Pair pair = new Pair(index, substring);
@@ -41,12 +102,13 @@ public class WordBreak {
                      return true;
                   }
                }
-               if (recursion(i, s, words, memo)) {
+               if (recursion(i, s, words, memo, maxLength)) {
                   return true;
                } else {
                   memo.put(new Pair(index, substring), false);
                }
             }
+            i++;
          }
          return false;
       }
