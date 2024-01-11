@@ -9,8 +9,8 @@ import java.util.Set;
 public class WordBreak {
 
    public static void main(String[] args) {
-      System.out.println(wordBreak("leetcode", List.of("leet", "code")));
-      System.out.println(wordBreak("applepenapple", List.of("apple", "pen")));
+//      System.out.println(wordBreak("leetcode", List.of("leet", "code")));
+//      System.out.println(wordBreak("applepenapple", List.of("apple", "pen")));
       System.out.println(wordBreak("catsandog", List.of("cats", "dog", "sand", "and", "cat")));
    }
 
@@ -23,17 +23,28 @@ public class WordBreak {
       if (!checkAllNeededLetters(s, wordDict)) {
          return false;
       }
-      return recursion(0, s, words);
+      HashMap<Pair, Boolean> memo = new HashMap<>();
+      boolean res = recursion(0, s, words, memo);
+      return res;
    }
 
-   private static boolean recursion(int index, String s, Set<String> words) {
+   private static boolean recursion(int index, String s, Set<String> words, Map<Pair, Boolean> memo) {
       if (index == s.length()) {
          return true;
       } else {
          for (int i = index + 1; i <= s.length(); i++) {
-            if (words.contains(s.substring(index, i))) {
-               if (recursion(i, s, words)) {
+            String substring = s.substring(index, i);
+            if (words.contains(substring)) {
+               Pair pair = new Pair(index, substring);
+               if (memo.containsKey(pair)) {
+                  if (memo.get(pair)) {
+                     return true;
+                  }
+               }
+               if (recursion(i, s, words, memo)) {
                   return true;
+               } else {
+                  memo.put(new Pair(index, substring), false);
                }
             }
          }
