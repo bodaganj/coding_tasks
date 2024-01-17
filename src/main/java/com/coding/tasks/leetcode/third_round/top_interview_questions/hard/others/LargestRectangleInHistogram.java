@@ -1,5 +1,7 @@
 package com.coding.tasks.leetcode.third_round.top_interview_questions.hard.others;
 
+import java.util.Stack;
+
 public class LargestRectangleInHistogram {
 
    public static void main(String[] args) {
@@ -7,15 +9,25 @@ public class LargestRectangleInHistogram {
    }
 
    public static int largestRectangleArea(int[] heights) {
-      int max = 0;
+      Stack<Integer> stack = new Stack<>();
+      stack.push(-1);
+      int maxArea = 0;
+
       for (int i = 0; i < heights.length; i++) {
-         max = Math.max(max, heights[i]);
-         int currentMin = heights[i];
-         for (int j = i + 1; j < heights.length; j++) {
-            currentMin = Math.min(currentMin, heights[j]);
-            max = Math.max(max, currentMin * (j - i + 1));
+         while ((stack.peek() != -1) && (heights[stack.peek()] >= heights[i])) { //
+            int currentHeight = heights[stack.pop()];
+            int currentWidth = i - stack.peek() - 1;
+            maxArea = Math.max(maxArea, currentHeight * currentWidth);
          }
+         stack.push(i);
       }
-      return max;
+
+      while (stack.peek() != -1) {
+         int currentHeight = heights[stack.pop()];
+         int currentWidth = heights.length - stack.peek() - 1;
+         maxArea = Math.max(maxArea, currentHeight * currentWidth);
+      }
+
+      return maxArea;
    }
 }
