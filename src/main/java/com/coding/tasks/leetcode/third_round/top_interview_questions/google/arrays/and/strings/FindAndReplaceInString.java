@@ -7,7 +7,7 @@ import java.util.List;
 public class FindAndReplaceInString {
 
    public static void main(String[] args) {
-//      System.out.println(findReplaceString("abcd", new int[]{0, 2}, new String[]{"a", "cd"}, new String[]{"eee", "ffff"}));
+      System.out.println(findReplaceString("abcd", new int[]{0, 2}, new String[]{"a", "cd"}, new String[]{"eee", "ffff"}));
       System.out.println(findReplaceString("vmokgggqzp",
                                            new int[]{3, 5, 1},
                                            new String[]{"kg", "ggq", "mo"},
@@ -25,15 +25,16 @@ public class FindAndReplaceInString {
       }
       indicesList.sort(Comparator.comparingInt(Pair::value));
 
-      StringBuilder sb = new StringBuilder();
+      String ans = s;
 
       for (int i = indicesList.size() - 1; i >= 0; i--) {
-         int index = indicesList.get(i).index;
-         if (s.startsWith(sources[index], indicesList.get(i).value)) {
-            s = s.substring(0, indicesList.get(i).value) + targets[index] + s.substring(indicesList.get(i).value + sources[index].length());
+         Pair pair = indicesList.get(i);
+         int index = pair.index;
+         if (s.startsWith(sources[index], pair.value)) {
+            ans = ans.substring(0, pair.value) + targets[index] + ans.substring(pair.value + sources[index].length());
          }
       }
-      return s;
+      return ans;
    }
 
    private record Pair(int value, int index) {
