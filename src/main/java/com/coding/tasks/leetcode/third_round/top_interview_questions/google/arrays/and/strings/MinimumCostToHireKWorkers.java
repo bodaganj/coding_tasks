@@ -24,7 +24,7 @@ public class MinimumCostToHireKWorkers {
          while (j < quality.length) {
             if (j != i) {
                double potentialSalary = (double) wage[i] * quality[j] / quality[i];
-               if (potentialSalary >= wage[j]) {
+               if (potentialSalary >= wage[j] && potentialSalary < min) {
                   queue.add(potentialSalary);
                }
                while (queue.size() > k) {
@@ -34,7 +34,7 @@ public class MinimumCostToHireKWorkers {
             j++;
          }
 
-         if (j == wage.length && queue.size() == k) {
+         if (queue.size() == k) {
             double currentMin = 0;
             while (!queue.isEmpty()) {
                currentMin += queue.poll();
