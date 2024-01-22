@@ -9,48 +9,64 @@ public class DecodeString {
       System.out.println(decodeString("3[a2[c]]"));
       System.out.println(decodeString("abc3[cd]xyz"));
       System.out.println(decodeString("3[z]2[2[y]pq4[2[jk]e1[f]]]ef")); // "zzzyypqjkjkefjkjkefjkjkefjkjkefyypqjkjkefjkjkefjkjkefjkjkefef"
+      System.out.println(decodeString("sd2[f2[e]g]i")); // "sdfeegfeegi"
+      System.out.println(decodeString("1[a1[b1[c]d]s]")); // "abcds"     "bcdas"
    }
 
    public static String decodeString(String s) {
       StringBuilder ans = new StringBuilder();
-      StringBuilder current = new StringBuilder();
+      StringBuilder currentString = new StringBuilder();
       int digit = 0;
       Stack<Integer> intStack = new Stack<>();
       Stack<String> strStack = new Stack<>();
       for (int i = 0; i < s.length(); i++) {
          char currChar = s.charAt(i);
+
          if (Character.isDigit(currChar)) {
-            if (!current.isEmpty()) {
-               strStack.add(current.toString());
-               current = new StringBuilder();
+            if (!currentString.isEmpty()) {
+               strStack.add(strStack.pop() + currentString);
+               currentString = new StringBuilder();
             }
             digit = digit * 10 + Integer.parseInt(currChar + "");
          } else if (currChar == '[') {
+            strStack.add("");
             intStack.add(digit);
             digit = 0;
          } else if (Character.isLetter(currChar)) {
             if (intStack.isEmpty()) {
                ans.append(currChar);
             } else {
-               current.append(currChar);
+               currentString.append(currChar);
             }
          } else { // ']'
-            // TODO: fix that or recursion which returns string
-            if (strStack.isEmpty()) {
-               ans.append(current.toString().repeat(intStack.pop()));
+            if (currentString.isEmpty()) {
+               String repeat = strStack.pop().repeat(intStack.pop());
+               if (intStack.isEmpty()) {
+                  ans.append(repeat);
+               } else {
+                  strStack.add(strStack.pop() + repeat);
+               }
             } else {
-               if (current.isEmpty()) {
+               if (strStack.peek().equals("")) {
+                  String repeat = currentString.toString().repeat(intStack.pop());
+                  String fullStr = strStack.pop() + repeat;
+                  if (intStack.isEmpty()) {
+                     ans.append(repeat);
+                  } else {
+                     strStack.add(strStack.pop() + fullStr);
+                  }
+               } else {
+                  strStack.add(strStack.pop() + currentString);
                   String repeat = strStack.pop().repeat(intStack.pop());
-                  if (strStack.isEmpty()) {
+                  if (intStack.isEmpty()) {
                      ans.append(repeat);
                   } else {
                      strStack.add(strStack.pop() + repeat);
                   }
-               } else {
-                  strStack.add(strStack.pop() + current.toString().repeat(intStack.pop()));
                }
+
+               currentString = new StringBuilder();
             }
-            current = new StringBuilder();
          }
       }
 
