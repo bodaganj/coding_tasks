@@ -5,8 +5,10 @@ import java.util.Stack;
 public class DecodeString {
 
    public static void main(String[] args) {
-//      System.out.println(decodeString("3[a]2[c]"));
+      System.out.println(decodeString("3[a]2[c]"));
       System.out.println(decodeString("3[a2[c]]"));
+      System.out.println(decodeString("abc3[cd]xyz"));
+      System.out.println(decodeString("3[z]2[2[y]pq4[2[jk]e1[f]]]ef")); // "zzzyypqjkjkefjkjkefjkjkefjkjkefyypqjkjkefjkjkefjkjkefjkjkefef"
    }
 
    public static String decodeString(String s) {
@@ -27,13 +29,26 @@ public class DecodeString {
             intStack.add(digit);
             digit = 0;
          } else if (Character.isLetter(currChar)) {
-            current.append(currChar);
+            if (intStack.isEmpty()) {
+               ans.append(currChar);
+            } else {
+               current.append(currChar);
+            }
          } else { // ']'
             // TODO: fix that or recursion which returns string
             if (strStack.isEmpty()) {
                ans.append(current.toString().repeat(intStack.pop()));
             } else {
-               strStack.add(strStack.pop() + current.toString().repeat(intStack.pop()));
+               if (current.isEmpty()) {
+                  String repeat = strStack.pop().repeat(intStack.pop());
+                  if (strStack.isEmpty()) {
+                     ans.append(repeat);
+                  } else {
+                     strStack.add(strStack.pop() + repeat);
+                  }
+               } else {
+                  strStack.add(strStack.pop() + current.toString().repeat(intStack.pop()));
+               }
             }
             current = new StringBuilder();
          }
