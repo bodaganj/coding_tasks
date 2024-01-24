@@ -12,11 +12,11 @@ import java.util.Set;
 public class EvaluateDivision {
 
    public static void main(String[] args) {
-//      System.out.println(Arrays.toString(calcEquation(
-//         List.of(List.of("a", "b"), List.of("b", "c")),
-//         new double[]{2.0, 3.0},
-//         List.of(List.of("a", "c"), List.of("b", "a"), List.of("a", "e"), List.of("a", "a"), List.of("x", "x")) // 6, 0.5, -1, 1, -1
-//      )));
+      System.out.println(Arrays.toString(calcEquation(
+         List.of(List.of("a", "b"), List.of("b", "c")),
+         new double[]{2.0, 3.0},
+         List.of(List.of("a", "c"), List.of("b", "a"), List.of("a", "e"), List.of("a", "a"), List.of("x", "x")) // 6, 0.5, -1, 1, -1
+      )));
 
       System.out.println(Arrays.toString(calcEquation(
          List.of(List.of("x1", "x2"), List.of("x2", "x3"), List.of("x3", "x4"), List.of("x4", "x5")),
