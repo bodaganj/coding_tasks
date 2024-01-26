@@ -39,6 +39,11 @@ public class WordSearchII {
       TreeNode node = treeNode.children.get(board[i][j]);
       if (node.word != null) {
         ans.add(node.word);
+        node.word = null;
+      }
+      if (node.children.isEmpty()) {
+        treeNode.children.remove(board[i][j]);
+        return;
       }
       for (int[] dir : dirs) {
         int x = i + dir[0];
@@ -47,7 +52,6 @@ public class WordSearchII {
           rec(x, y, board, node, tmp, ans);
         }
       }
-
     }
   }
 
