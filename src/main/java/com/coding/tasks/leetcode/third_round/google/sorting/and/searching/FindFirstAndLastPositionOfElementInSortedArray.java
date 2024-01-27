@@ -19,7 +19,7 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
     while (left <= right) {
       int mid = left + (right - left) / 2;
       if (nums[mid] == target) {
-        return new int[]{findStart(left, mid, target, nums), findEnd(mid, right, target, nums)};
+        return new int[]{findStart(left, mid, target, nums), findEnd(mid, right + 1, target, nums)};
       } else if (nums[mid] > target) {
         right = mid - 1;
       } else {
@@ -42,7 +42,7 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
   }
 
   private static int findEnd(int left, int right, int target, int[] nums) {
-    while (left != nums.length - 1 && nums[left + 1] == target) {
+    while (left < nums.length - 1 && nums[left + 1] == target) {
       int mid = left + (right - left) / 2;
       if (nums[mid] > target) {
         right = mid;
