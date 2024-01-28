@@ -15,8 +15,8 @@ public class LongestPalindromicSubstring {
 
       String longest = "";
       for (int i = 0; i < s.length(); i++) {
-         String longest1 = getLongest1(s, i);
-         String longest2 = getLongest2(s, i, i + 1);
+         String longest1 = getLongest(s, i, i);
+         String longest2 = getLongest(s, i, i + 1);
          if (longest1.length() > longest.length()) {
             longest = longest1;
          }
@@ -27,32 +27,15 @@ public class LongestPalindromicSubstring {
       return longest;
    }
 
-   private String getLongest1(String s, int mid) {
+   private String getLongest(String s, int left, int right) {
       LinkedList<Character> list = new LinkedList<>();
-      list.add(s.charAt(mid));
-
-      int left = mid - 1;
-      int right = mid + 1;
       while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
-         list.addFirst(s.charAt(left));
-         list.addLast(s.charAt(right));
-         left--;
-         right++;
-      }
-      StringBuilder sb = new StringBuilder();
-      for (Character character : list) {
-         sb.append(character);
-      }
-
-      return sb.toString();
-   }
-
-   private String getLongest2(String s, int left, int right) {
-      LinkedList<Character> list = new LinkedList<>();
-
-      while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
-         list.addFirst(s.charAt(left));
-         list.addLast(s.charAt(right));
+         if (left == right) {
+            list.addFirst(s.charAt(left));
+         } else {
+            list.addFirst(s.charAt(left));
+            list.addLast(s.charAt(right));
+         }
          left--;
          right++;
       }
