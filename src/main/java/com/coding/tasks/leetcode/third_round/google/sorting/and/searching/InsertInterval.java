@@ -39,7 +39,6 @@ public class InsertInterval {
             finish = Math.max(finish, newInterval[1]);
             added = true;
           }
-
         }
         if (currInterval[0] > finish) {
           ans.add(new int[]{start, finish});
