@@ -27,12 +27,18 @@ public class SplitArrayLargestSum {
   }
 
   private static void split(int currentIndex, int currentMax, int[] sum, int leftArrays) {
-    if (leftArrays == 0 && currentIndex == length) {
-      max = Math.min(max, currentMax);
+    if (leftArrays == 0 && currentIndex != length) {
+      return;
+    }
+    if (currentMax > max) {
+      return;
+    }
+    if (leftArrays == 0) {
+      max = currentMax;
     } else {
-      for (int i = currentIndex; i < length; i++) {
+      for (int i = currentIndex; i < length - (leftArrays - 1); i++) {
         if (sum[i + 1] - sum[currentIndex] > max) {
-          return;
+          break;
         } else {
           currentMax = Math.max(currentMax, sum[i + 1] - sum[currentIndex]);
           split(i + 1, currentMax, sum, leftArrays - 1);
