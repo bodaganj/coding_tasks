@@ -49,8 +49,14 @@ public class SplitArrayLargestSum {
         if (sum[i + 1] - sum[currentIndex] > max) {
           break;
         } else {
-          while (i + 2 <= length && sum[i + 2] - sum[currentIndex] < maxNumber) {
-            i++;
+          if (max == Integer.MAX_VALUE) {
+            while (i + 2 <= length && sum[i + 2] - sum[currentIndex] < maxNumber) {
+              i++;
+            }
+          } else {
+            while (i + 2 <= length && sum[i + 2] - sum[currentIndex] < max) {
+              i++;
+            }
           }
           currentMax = Math.max(currentMax, sum[i + 1] - sum[currentIndex]);
           split(i + 1, currentMax, sum, leftArrays - 1, maxNumber);
