@@ -10,23 +10,15 @@ public class SplitArrayLargestSum {
     System.out.println(splitArray(new int[]{1, 2, 3, 4, 5}, 2));
   }
 
-  public static int splitArray(int[] nums, int k) {
-    max = Integer.MAX_VALUE;
-    length = nums.length;
-    int[] sum = getSum(nums);
-    split(0, 0, sum, k);
-    return max;
-  }
-
-  private static int[] getSum(int[] nums) {
-    int[] sum = new int[nums.length + 1];
-    for (int i = 1; i < sum.length; i++) {
-      sum[i] = sum[i - 1] + nums[i - 1];
-    }
-    return sum;
-  }
-
   private static void split(int currentIndex, int currentMax, int[] sum, int leftArrays) {
+    if (leftArrays == 1) {
+      if (sum[length] - sum[currentIndex] > max) {
+        return;
+      } else {
+        currentMax = Math.max(currentMax, sum[length] - sum[currentIndex]);
+        split(length, currentMax, sum, 0);
+      }
+    }
     if (leftArrays == 0 && currentIndex != length) {
       return;
     }
@@ -45,5 +37,21 @@ public class SplitArrayLargestSum {
         }
       }
     }
+  }
+
+  public static int splitArray(int[] nums, int k) {
+    max = Integer.MAX_VALUE;
+    length = nums.length;
+    int[] sum = getSum(nums);
+    split(0, 0, sum, k);
+    return max;
+  }
+
+  private static int[] getSum(int[] nums) {
+    int[] sum = new int[nums.length + 1];
+    for (int i = 1; i < sum.length; i++) {
+      sum[i] = sum[i - 1] + nums[i - 1];
+    }
+    return sum;
   }
 }
