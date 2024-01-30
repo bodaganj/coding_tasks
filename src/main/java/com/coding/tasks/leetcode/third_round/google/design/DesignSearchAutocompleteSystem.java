@@ -18,8 +18,20 @@ public class DesignSearchAutocompleteSystem {
       autocompleteSystem.input(' ');
       autocompleteSystem.input('a');
       autocompleteSystem.input('#');
+      //      [["i love you","island","i love leetcode"],["i love you","i love leetcode"],[],[]]
+      System.out.println("*************");
+      autocompleteSystem.input('i');
+      autocompleteSystem.input(' ');
+      autocompleteSystem.input('a');
+      autocompleteSystem.input('#');
+      //      ["i love you","island","i love leetcode"],["i love you","i love leetcode","i a"],["i a"],[]
+      System.out.println("*************");
+      autocompleteSystem.input('i');
+      autocompleteSystem.input(' ');
+      autocompleteSystem.input('a');
+      autocompleteSystem.input('#');
 
-//      [null,["i love you","island","i love leetcode"],["i love you","i love leetcode"],[],[]]
+      //       ["i love you","island","i a"],["i love you","i a","i love leetcode"],["i a"],[]]
    }
 
    static class AutocompleteSystem {
@@ -73,36 +85,38 @@ public class DesignSearchAutocompleteSystem {
          TreeNode node = root;
          for (char curr : sentence.toCharArray()) {
             if (node.children.containsKey(curr)) {
+               TreeNode treeNode = node.children.get(curr);
+
                // increase counter for current sentence
                int count = 0;
-               if (node.stringsCounter.containsKey(sentence)) {
-                  count = node.stringsCounter.get(sentence);
+               if (treeNode.stringsCounter.containsKey(sentence)) {
+                  count = treeNode.stringsCounter.get(sentence);
                }
                count += counter;
-               node.stringsCounter.put(sentence, count);
+               treeNode.stringsCounter.put(sentence, count);
 
                // update hot strings list
-               node.hotStrings.add(sentence);
-               if (node.hotStrings.size() == 4) {
-                  node.hotStrings.poll();
+               treeNode.hotStrings.add(sentence);
+               if (treeNode.hotStrings.size() == 4) {
+                  treeNode.hotStrings.poll();
                }
 
                // move to next char within the sentence
-               node = node.children.get(curr);
+               node = treeNode;
             } else {
                // add current char to children
                TreeNode newNode = new TreeNode();
-               node.children.put(curr, newNode);
 
                // add current string to all hot strings
-               node.stringsCounter.put(sentence, counter);
+               newNode.stringsCounter.put(sentence, counter);
 
                // update hot strings list
-               node.hotStrings.add(sentence);
-               if (node.hotStrings.size() == 4) {
-                  node.hotStrings.poll();
+               newNode.hotStrings.add(sentence);
+               if (newNode.hotStrings.size() == 4) {
+                  newNode.hotStrings.poll();
                }
 
+               node.children.put(curr, newNode);
                node = newNode;
             }
          }
