@@ -49,11 +49,12 @@ public class DesignSearchAutocompleteSystem {
             if (currentNode.children.containsKey(c)) {
                TreeNode treeNode = currentNode.children.get(c);
                currentNode = treeNode;
-               Queue<String> hotStrings = treeNode.hotStrings;
                LinkedList<String> ans = new LinkedList<>();
-               while (!hotStrings.isEmpty()) {
-                  ans.add(hotStrings.poll());
+               Queue<String> hot = treeNode.hotStrings;
+               while (!hot.isEmpty()) {
+                  ans.addFirst(hot.poll());
                }
+
                treeNode.hotStrings.addAll(ans);
                System.out.println("------");
                for (String an : ans) {
