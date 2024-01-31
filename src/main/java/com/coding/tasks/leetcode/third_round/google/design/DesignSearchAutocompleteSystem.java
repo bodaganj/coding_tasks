@@ -2,12 +2,12 @@ package com.coding.tasks.leetcode.third_round.google.design;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DesignSearchAutocompleteSystem {
 
@@ -58,24 +58,23 @@ public class DesignSearchAutocompleteSystem {
             return List.of();
          } else {
             sb.append(c);
-            if (currentNode.children.containsKey(c)) {
-               TreeNode treeNode = currentNode.children.get(c);
-               currentNode = treeNode;
-               LinkedList<String> ans = new LinkedList<>();
-               Queue<String> hot = treeNode.hotStrings;
-               while (!hot.isEmpty()) {
-                  ans.addFirst(hot.poll());
-               }
+            if (currentNode != null && currentNode.children.containsKey(c)) {
+               currentNode = currentNode.children.get(c);
 
-               treeNode.hotStrings.addAll(ans);
-               System.out.println("------");
-               for (String an : ans) {
-                  System.out.println(an + " -> " + currentNode.stringsCounter.get(an));
-               }
-               System.out.println("------");
-
-               return ans;
+               return currentNode.hotStrings.stream()
+                                            .distinct()
+                                            .sorted((o1, o2) -> {
+                                               if (!Objects.equals(currentNode.stringsCounter.get(o1),
+                                                                   currentNode.stringsCounter.get(o2))) {
+                                                  return currentNode.stringsCounter.get(o2) - currentNode.stringsCounter.get(o1);
+                                               } else {
+                                                  return o1.compareTo(o2);
+                                               }
+                                            })
+                                            .limit(3)
+                                            .collect(Collectors.toList());
             } else {
+               currentNode = null;
                return Collections.emptyList();
             }
          }
@@ -97,9 +96,6 @@ public class DesignSearchAutocompleteSystem {
 
                // update hot strings list
                treeNode.hotStrings.add(sentence);
-               if (treeNode.hotStrings.size() == 4) {
-                  treeNode.hotStrings.poll();
-               }
 
                // move to next char within the sentence
                node = treeNode;
@@ -112,9 +108,6 @@ public class DesignSearchAutocompleteSystem {
 
                // update hot strings list
                newNode.hotStrings.add(sentence);
-               if (newNode.hotStrings.size() == 4) {
-                  newNode.hotStrings.poll();
-               }
 
                node.children.put(curr, newNode);
                node = newNode;
@@ -126,18 +119,12 @@ public class DesignSearchAutocompleteSystem {
 
          private final Map<Character, TreeNode> children;
          private final Map<String, Integer> stringsCounter;
-         private final Queue<String> hotStrings;
+         private final Set<String> hotStrings;
 
          public TreeNode() {
             this.children = new HashMap<>();
             this.stringsCounter = new HashMap<>();
-            this.hotStrings = new PriorityQueue<>((o1, o2) -> {
-               if (!Objects.equals(stringsCounter.get(o1), stringsCounter.get(o2))) {
-                  return stringsCounter.get(o1) - stringsCounter.get(o2);
-               } else {
-                  return o2.compareTo(o1);
-               }
-            });
+            this.hotStrings = new HashSet<>();
          }
       }
    }
