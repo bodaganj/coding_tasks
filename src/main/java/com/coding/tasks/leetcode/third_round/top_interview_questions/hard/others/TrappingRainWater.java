@@ -13,7 +13,7 @@ public class TrappingRainWater {
       int max = height[0];
       for (int i = 1; i < height.length; i++) {
          if (max <= height[i]) {
-            max = Math.max(max, height[i]);
+            max = height[i];
          } else {
             ans[i] = max - height[i];
          }
@@ -23,7 +23,7 @@ public class TrappingRainWater {
       max = height[height.length - 1];
       for (int i = height.length - 2; i >= 0; i--) {
          if (max <= height[i]) {
-            max = Math.max(max, height[i]);
+            max = height[i];
             ans[i] = 0;
          } else {
             ans[i] = Math.min(ans[i], max - height[i]);
