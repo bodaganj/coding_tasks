@@ -15,7 +15,7 @@ public class WordLadderII {
 
    public static void main(String[] args) {
       System.out.println(findLadders("hit", "cog", List.of("hot", "dot", "dog", "lot", "log", "cog")));
-      System.out.println(findLadders("hot", "dog", List.of("hot", "dog")));
+//      System.out.println(findLadders("hot", "dog", List.of("hot", "dog")));
    }
 
    public static List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
@@ -26,9 +26,9 @@ public class WordLadderII {
       }
 
       Map<String, Set<String>> oneLetterMapping = new HashMap<>();
-      getOneLetterMapping(beginWord, wordList, oneLetterMapping);
+      oneLetterMapping.put(beginWord, getOneLetterMapping(beginWord, wordList));
       for (String s : wordList) {
-         getOneLetterMapping(s, wordList, oneLetterMapping);
+         oneLetterMapping.put(s, getOneLetterMapping(s, wordList));
       }
 
       int shortest = Integer.MAX_VALUE;
@@ -72,36 +72,25 @@ public class WordLadderII {
       return ans.stream().filter(l -> l.size() == finalShortest).collect(Collectors.toList());
    }
 
-   private static void getOneLetterMapping(String str, List<String> wordList, Map<String, Set<String>> oneLetterMapping) {
-      for (String s : wordList) {
-         if (!oneLetterMapping.containsKey(str) || !oneLetterMapping.containsKey(s) || !oneLetterMapping.get(s).contains(str)) {
-            if (isOneLetterDif(s, str)) {
-               Set<String> list1 = oneLetterMapping.getOrDefault(str, new HashSet<>());
-               list1.add(s);
-               oneLetterMapping.put(str, list1);
+   private static Set<String> getOneLetterMapping(String str, List<String> wordList) {
+      Set<String> neighbors = new HashSet<>();
+      char charList[] = str.toCharArray();
 
-               Set<String> list2 = oneLetterMapping.getOrDefault(s, new HashSet<>());
-               list2.add(str);
-               oneLetterMapping.put(s, list2);
+      for (int i = 0; i < str.length(); i++) {
+         char oldChar = charList[i];
+
+         // replace the i-th character with all letters from a to z except the original character
+         for (char c = 'a'; c <= 'z'; c++) {
+            charList[i] = c;
+
+            // skip if the character is same as original or if the word is not present in the wordList
+            if (c == oldChar || !wordList.contains(String.valueOf(charList))) {
+               continue;
             }
+            neighbors.add(String.valueOf(charList));
          }
+         charList[i] = oldChar;
       }
-   }
-
-   private static boolean isOneLetterDif(String str1, String str2) {
-      int count = 0;
-
-      int index = 0;
-      while (index < str1.length()) {
-         if (count == 2) {
-            return false;
-         }
-         if (str1.charAt(index) != str2.charAt(index)) {
-            count++;
-         }
-         index++;
-      }
-
-      return count == 1;
+      return neighbors;
    }
 }
