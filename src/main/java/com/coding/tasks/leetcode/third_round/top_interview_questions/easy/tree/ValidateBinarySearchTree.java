@@ -24,8 +24,8 @@ public class ValidateBinarySearchTree {
          return true;
       }
       List<Integer> list = new ArrayList<>();
-      iter(root, list);
-//      rec(root, list);
+//      iter(root, list);
+      rec(root, list);
       Integer prev = list.get(0);
       for (int i = 1; i < list.size(); i++) {
          if (prev >= list.get(i)) {
