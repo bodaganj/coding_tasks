@@ -23,28 +23,38 @@ public class ReorderList {
    }
 
    public static void reorderList(ListNode head) {
-      ListNode reversedNode = reverseList(head);
+      int length = getLength(head);
       ListNode dummy = head;
-      while (dummy != null && reversedNode != null) {
-         ListNode next = dummy.next;
-         dummy.next = reversedNode;
-         ListNode reverseNext = reversedNode.next;
-         reversedNode.next = next;
-         dummy = next;
-         reversedNode = reverseNext;
+      int index = 1;
+      int right = 1;
+      while (index <= length / 2) {
+         ListNode tmp = dummy;
+         int count = 0;
+         while (count < length - right) {
+            tmp = tmp.next;
+            count++;
+         }
+
+         ListNode dummyNext = dummy.next;
+         dummy.next = tmp;
+         if (tmp != null) {
+            tmp.next = dummyNext;
+         }
+         dummy = dummyNext;
+         index++;
+         right += 2;
       }
+      dummy.next = null;
    }
 
-   private static ListNode reverseList(ListNode node) {
-      ListNode prev = null;
-      ListNode curr = node;
-      while (curr != null) {
-         ListNode next = curr.next;
-         curr.next = prev;
-         prev = curr;
-         curr = next;
+   private static int getLength(ListNode head) {
+      int length = 0;
+      ListNode dummy = head;
+      while (dummy != null) {
+         length++;
+         dummy = dummy.next;
       }
-      return prev;
+      return length;
    }
 
    public static class ListNode {
