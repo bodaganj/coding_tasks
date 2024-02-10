@@ -29,15 +29,11 @@ public class AccountsMerge {
     Set<Integer> seenIndex = new HashSet<>();
     Queue<Integer> queue = new LinkedList<>();
 
-    for (List<String> account : accounts) {
-      for (int j = 1; j < account.size(); j++) {
-        List<Integer> indexs = mapping.get(account.get(j));
-        for (Integer index : indexs) {
-          if (!seenIndex.contains(index)) {
-            seenIndex.add(index);
-            queue.add(index);
-          }
-        }
+    for (int i = 0; i < accounts.size(); i++) {
+      List<String> account = accounts.get(i);
+      if (!seenIndex.contains(i)) {
+        queue.add(i);
+        seenIndex.add(i);
       }
 
       List<String> tmp = new ArrayList<>();
