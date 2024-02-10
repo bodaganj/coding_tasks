@@ -52,7 +52,9 @@ public class ShortestDistanceFromAllBuildings {
    private static int getShortest(Pair emptySlot, List<Pair> allBuildings, int[][] grid) {
       int sum = 0;
       for (Pair building : allBuildings) {
-         int distance = getDistanceToBuilding(emptySlot, building, grid);
+         Set<Pair> set = new HashSet<>();
+         set.add(emptySlot);
+         int distance = getDistanceToBuilding(emptySlot, building, grid, 1, memo, set);
          if (distance == 0) {
             return 0;
          } else {
@@ -62,52 +64,35 @@ public class ShortestDistanceFromAllBuildings {
       return sum;
    }
 
-   private static int getDistanceToBuilding(Pair emptySlot, Pair building, int[][] grid) {
-      if (memo.containsKey(List.of(emptySlot, building))) {
-         return memo.get(List.of(emptySlot, building));
-      }
-      int count = 0;
-      Queue<Pair> queue = new LinkedList<>();
-      for (int[] dir : dirs) {
-         int x = emptySlot.x + dir[0];
-         int y = emptySlot.y + dir[1];
-         if (x >= 0 && x < grid.length && y >= 0 && y < grid[0].length && grid[x][y] != 2) {
-            queue.add(new Pair(x, y));
-         }
+   private static int getDistanceToBuilding(Pair nextSlot, Pair building, int[][] grid, int count, Map<List<Pair>, Integer> memo, Set<Pair> seen) {
+      if (memo.containsKey(List.of(nextSlot, building))) {
+         return memo.get(List.of(nextSlot, building));
       }
 
-      Set<Pair> seen = new HashSet<>();
-      seen.add(emptySlot);
-      while (!queue.isEmpty()) {
-         count++;
-         if (count > shortest) {
-            return 0;
-         }
-         int size = queue.size();
-         while (size > 0) {
-            Pair poll = queue.poll();
-            seen.add(poll);
-            if (poll.equals(building)) {
-               memo.put(List.of(emptySlot, building), count);
-               return count;
-            } else {
-               if (grid[poll.x][poll.y] != 1) {
-                  for (int[] dir : dirs) {
-                     int x = poll.x + dir[0];
-                     int y = poll.y + dir[1];
-                     if (x >= 0 && x < grid.length && y >= 0 && y < grid[0].length && grid[x][y] != 2 && !seen.contains(new Pair(
-                        x, y))) {
-                        seen.add(new Pair(x, y));
-                        queue.add(new Pair(x, y));
-                     }
-                  }
+      if (nextSlot.equals(building)) {
+         return count;
+      } else if (grid[nextSlot.x][nextSlot.y] == 1){
+         return 0;
+      } else {
+         int currentMin = Integer.MAX_VALUE;
+
+         for (int[] dir : dirs) {
+            int x = nextSlot.x + dir[0];
+            int y = nextSlot.y + dir[1];
+            Pair pair = new Pair(x, y);
+            if (x >= 0 && x < grid.length && y >= 0 && y < grid[0].length && grid[x][y] != 2 && !seen.contains(pair)) {
+               seen.add(pair);
+               int distanceToBuilding = getDistanceToBuilding(pair, building, grid, count + 1, memo, seen);
+               if (distanceToBuilding > 0) {
+                  currentMin = Math.min(currentMin, count + distanceToBuilding);
                }
+               seen.remove(pair);
             }
-            size--;
          }
+         memo.put(List.of(nextSlot, building), currentMin);
+         System.out.println("Path from " + nextSlot.x + ":" + nextSlot.y + " to building " + building.x + ":" + building.y + " is - " + currentMin);
+         return currentMin;
       }
-      memo.put(List.of(emptySlot, building), 0);
-      return 0;
    }
 
    private record Pair(int x, int y) {
