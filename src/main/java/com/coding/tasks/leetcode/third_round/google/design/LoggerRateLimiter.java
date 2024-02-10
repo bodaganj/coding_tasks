@@ -5,26 +5,26 @@ import java.util.Map;
 
 public class LoggerRateLimiter {
 
-  class Logger {
+   static class Logger {
 
-    private Map<String, Integer> map;
+      private Map<String, Integer> map;
 
-    public Logger() {
-      map = new HashMap<>();
-    }
-
-    public boolean shouldPrintMessage(int timestamp, String message) {
-      if (map.containsKey(message)) {
-        if (map.get(message) + 10 > timestamp) {
-          return false;
-        } else {
-          map.put(message, timestamp);
-          return true;
-        }
-      } else {
-        map.put(message, timestamp);
-        return true;
+      public Logger() {
+         map = new HashMap<>();
       }
-    }
-  }
+
+      public boolean shouldPrintMessage(int timestamp, String message) {
+         if (map.containsKey(message)) {
+            if (timestamp < map.get(message)) {
+               return false;
+            } else {
+               map.put(message, timestamp + 10);
+               return true;
+            }
+         } else {
+            map.put(message, timestamp + 10);
+            return true;
+         }
+      }
+   }
 }
