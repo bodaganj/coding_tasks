@@ -9,6 +9,19 @@ import java.util.stream.Collectors;
 
 public class BinaryTreeVerticalOrderTraversal {
 
+   public static void main(String[] args) {
+      TreeNode tn2 = new TreeNode(2);
+      TreeNode tn5 = new TreeNode(5);
+      TreeNode tn7 = new TreeNode(7);
+      TreeNode tn1 = new TreeNode(1, null, tn2);
+      TreeNode tn0 = new TreeNode(0, tn5, null);
+      TreeNode tn4 = new TreeNode(4);
+      TreeNode tn8 = new TreeNode(8, tn1, tn7);
+      TreeNode tn9 = new TreeNode(9, tn4, tn0);
+      TreeNode tn3 = new TreeNode(3, tn9, tn8);
+      System.out.println(verticalOrder(tn3));
+   }
+
    public static List<List<Integer>> verticalOrder(TreeNode root) {
       if (root == null) {
          return Collections.emptyList();
@@ -31,7 +44,7 @@ public class BinaryTreeVerticalOrderTraversal {
       }
    }
 
-   public class TreeNode {
+   static class TreeNode {
 
       int val;
       TreeNode left;
