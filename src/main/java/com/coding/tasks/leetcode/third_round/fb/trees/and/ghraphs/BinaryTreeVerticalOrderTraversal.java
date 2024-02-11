@@ -27,9 +27,8 @@ public class BinaryTreeVerticalOrderTraversal {
       if (root == null) {
          return Collections.emptyList();
       }
-
       Map<Integer, List<Pair>> map = new TreeMap<>();
-      rec(root, 0, 0, map);
+      dfs(root, 0, 0, map);
 
       return map.values()
                 .stream()
@@ -40,14 +39,14 @@ public class BinaryTreeVerticalOrderTraversal {
                 .collect(Collectors.toList());
    }
 
-   private static void rec(TreeNode node, int i, int level, Map<Integer, List<Pair>> map) {
+   private static void dfs(TreeNode node, int i, int level, Map<Integer, List<Pair>> map) {
       if (node != null) {
          if (!map.containsKey(i)) {
             map.put(i, new ArrayList<>());
          }
          map.get(i).add(new Pair(node.val, level));
-         rec(node.left, i - 1, level + 1, map);
-         rec(node.right, i + 1, level + 1, map);
+         dfs(node.left, i - 1, level + 1, map);
+         dfs(node.right, i + 1, level + 1, map);
       }
    }
 
