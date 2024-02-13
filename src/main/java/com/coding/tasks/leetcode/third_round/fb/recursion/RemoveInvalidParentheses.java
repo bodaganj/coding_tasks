@@ -44,18 +44,4 @@ public class RemoveInvalidParentheses {
       }
     }
   }
-
-  private static int getMaxAmountOfParenteses(String s) {
-    int open = 0;
-    int close = 0;
-    for (char c : s.toCharArray()) {
-      if (c == '(') {
-        open++;
-      } else if (c == ')') {
-        close++;
-      }
-    }
-
-    return Math.min(open, close);
-  }
 }
