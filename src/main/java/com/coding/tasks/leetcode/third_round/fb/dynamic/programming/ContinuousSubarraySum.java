@@ -3,30 +3,43 @@ package com.coding.tasks.leetcode.third_round.fb.dynamic.programming;
 public class ContinuousSubarraySum {
 
   public static void main(String[] args) {
-    System.out.println(checkSubarraySum(new int[]{23, 2, 6, 4, 7}, 6));
+    System.out.println(checkSubarraySum(new int[]{23, 2, 6, 2, 5}, 6));
+//    System.out.println(checkSubarraySum(new int[]{23, 2, 6, 4, 7}, 6));
+//    System.out.println(checkSubarraySum(new int[]{1, 0}, 2));
   }
 
   public static boolean checkSubarraySum(int[] nums, int k) {
-    int[][] dp = new int[nums.length][nums.length];
+    int[] dp = new int[nums.length];
     int sum = 0;
     for (int i = 0; i < nums.length; i++) {
       sum += nums[i];
-      dp[0][i] = sum;
-      dp[i][i] = nums[i];
-    }
-
-    for (int i = 1; i < dp.length; i++) {
-      for (int j = i + 1; j < dp[0].length; j++) {
-        dp[i][j] = dp[i][j - 1] + dp[i - 1][j] - dp[i - 1][j - 1];
+      if (i > 0 && sum % k == 0) {
+        return true;
       }
+      dp[i] = sum;
     }
 
-    for (int i = 0; i < dp.length; i++) {
-      for (int j = i + 1; j < dp[0].length; j++) {
-        if (dp[i][j] % k == 0) {
+
+    int index = 1;
+    while (index < dp.length) {
+      int prev = 0;
+      for (int i = index ; i < dp.length; i++) {
+        int curr;
+        if (i == index) {
+          curr = nums[i];
+        } else {
+          curr = prev + dp[i] - dp[i - 1];
+        }
+        if (i > index && curr % k == 0) {
           return true;
         }
+        dp[i - 1] = prev;
+        prev = curr;
+        if (i == dp.length - 1) {
+          dp[i] = curr;
+        }
       }
+      index++;
     }
 
     return false;
